@@ -1,0 +1,16 @@
+@import '../../../../sass/variables';
+
+.navbar {
+  height: 100%;
+  .brand-icon {
+    height: 100%;
+    margin-left: 26px;
+  }
+  .navigation-buttons-wrapper {
+    height: $navbar-height;
+    .navigation-button {
+      line-height: 38px;
+      font-size: 16px;
+    }
+  }
+}

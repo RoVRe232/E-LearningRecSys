@@ -1,0 +1,21 @@
+<div class="search-results-page" fxLayout="column" fxLayoutAlign="start center">
+  <div class="search-box-wrapper">
+    <app-search-bar></app-search-bar>
+  </div>
+  <div class="results-wrapper">
+    <div class="result-card-wrapper" *ngFor="let resultCard of searchResults">
+      <app-result-card
+        [title]="resultCard.title"
+        [description]="resultCard.description"
+        [author]="resultCard.author"
+      ></app-result-card>
+    </div>
+    <mat-paginator
+      [length]="5"
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+  </div>
+</div>

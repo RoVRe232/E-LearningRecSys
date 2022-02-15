@@ -1,0 +1,61 @@
+<form appearance="outline" [formGroup]="this.searchGroup">
+  <div
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    fxLayoutGap="12px"
+    class="search-bar-background"
+  >
+    <mat-form-field appearance="outline" class="search-control">
+      <mat-label>{{ 'Search' }}</mat-label>
+      <mat-chip-list #chipList aria-label="Fruit selection">
+        <mat-chip
+          *ngFor="let searchTag of searchTags"
+          (removed)="remove(searchTag)"
+        >
+          {{ searchTag.value }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        <input
+          type="text"
+          placeholder="E.g. Ohm's law"
+          aria-label="Search"
+          matInput
+          [formControl]="this.searchControl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)"
+        />
+
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option
+            *ngFor="
+              let option of this.searchService.searchAutocompleteOptions | async
+            "
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-chip-list>
+      <mat-hint>{{
+        'Search for videos, materials or other resources...'
+      }}</mat-hint>
+    </mat-form-field>
+    <button
+      mat-mini-fab
+      type="button"
+      (click)="submitAnonymousSearch()"
+      aria-label="Control Menu"
+      color="primary"
+    >
+      <mat-icon>send</mat-icon>
+    </button>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px">
+    <div *ngFor="let searchTag of searchTags"></div>
+  </div>
+</form>

@@ -1,0 +1,20 @@
+@import '../../../../sass/variables';
+
+.home-page {
+  .carousel-wrapper {
+    height: calc(80vh - $navbar-height);
+  }
+  .search-box-wrapper {
+    width: 30%;
+    background-color: whitesmoke;
+    z-index: 1;
+    border-radius: 16px;
+
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}

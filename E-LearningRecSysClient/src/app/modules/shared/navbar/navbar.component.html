@@ -1,0 +1,94 @@
+<div
+  class="navbar full-width"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+  fxLayoutGap="10px"
+>
+  <div class="brand-icon" fxLayout="row">
+    <button
+      mat-fab
+      color="primary"
+      aria-label="Example icon button with a home icon"
+      type="button"
+      [routerLink]="['/']"
+    >
+      <mat-icon>home</mat-icon>
+    </button>
+  </div>
+
+  <div
+    class="control-buttons-wrapper"
+    fxLayoutGap="64px"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+  >
+    <div
+      class="navigation-buttons-wrapper"
+      fxLayoutGap="12px"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+    >
+      <button
+        mat-raised-button
+        class="navigation-button"
+        type="button"
+        [routerLink]="['/search-results']"
+      >
+        {{ 'Search Videos' | uppercase }}
+      </button>
+      <button
+        mat-raised-button
+        class="navigation-button"
+        type="button"
+        [routerLink]="['/videos/categories']"
+      >
+        {{ 'Categories' | uppercase }}
+      </button>
+      <button
+        mat-raised-button
+        class="navigation-button"
+        type="button"
+        [routerLink]="['/videos/bundles']"
+      >
+        {{ 'Educational Bundles' | uppercase }}
+      </button>
+      <button
+        mat-raised-button
+        class="navigation-button"
+        type="button"
+        [routerLink]="['/contact-us']"
+      >
+        {{ 'Contact us' | uppercase }}
+      </button>
+    </div>
+
+    <div
+      class="account-actions-wrapper"
+      fxLayoutGap="12px"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+    >
+      <button mat-fab aria-label="Cart" color="primary">
+        <mat-icon class="shopping-cart-icon">shopping_cart</mat-icon>
+      </button>
+      <button
+        mat-fab
+        [matMenuTriggerFor]="menu"
+        aria-label="Control Menu"
+        color="primary"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>account_circle</mat-icon>
+          <span>Account</span>
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon>receipt</mat-icon>
+          <span>Orders</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</div>
