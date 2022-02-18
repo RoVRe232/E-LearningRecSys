@@ -2,19 +2,34 @@
 
 .home-page {
   .carousel-wrapper {
-    height: calc(80vh - $navbar-height);
+    height: calc(100vh - $navbar-height - $footer-height);
   }
   .search-box-wrapper {
-    width: 30%;
+    width: 40%;
     background-color: whitesmoke;
     z-index: 1;
     border-radius: 16px;
 
     margin: 0;
     position: absolute;
-    top: 50%;
+    top: 35%;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+  }
+
+  .search-box-wrapper-lt-lg {
+    @extend .search-box-wrapper;
+    width: 40%;
+  }
+
+  .search-box-wrapper-lt-md {
+    @extend .search-box-wrapper;
+    width: 70%;
+  }
+
+  .search-box-wrapper-lt-sm {
+    @extend .search-box-wrapper;
+    width: 90%;
   }
 }

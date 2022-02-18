@@ -46,7 +46,15 @@ const materialModules = [
     ReactiveFormsModule,
     RouterModule,
   ],
-  exports: [NavbarComponent, FooterComponent, SearchBarComponent],
+  exports: [
+    NavbarComponent,
+    FooterComponent,
+    SearchBarComponent,
+    FlexLayoutModule,
+    MatPaginatorModule,
+    MatSidenavModule,
+    MatCardModule,
+  ],
   providers: [HttpService, SearchService],
 })
 export class SharedModule {}
