@@ -1,24 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RecSysApi.Application;
-using RecSysApi.Application.Interfaces;
 using RecSysApi.Domain;
 using RecSysApi.Infrastructure;
-using RecSysApi.Infrastructure.Context;
-using RecSysApi.Infrastructure.Repositories;
 using RecSysApi.Presentation.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RecSysApi
 {
@@ -38,11 +27,7 @@ namespace RecSysApi
 
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
 
-            var connection = 
-                @"Server=(localdb)\mssqllocaldb;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<RecSysApiContext>(options => options.UseSqlServer(connection));
-
-            services.AddInfrsatructureLayerDependencies();
+            services.AddInfrastructureLayerDependencies();
             services.AddDomainLayerDependencies();
             services.AddApplicationLayerDependencies();
 

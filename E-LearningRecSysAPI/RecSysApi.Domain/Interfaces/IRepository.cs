@@ -9,7 +9,7 @@ namespace RecSysApi.Domain.Interfaces
 {
     public interface IRepository<T>
     {
-        IEnumerable<T> GetAll();
+        ICollection<T> GetAll();
         IQueryable<T> GetQuery(Expression<Func<T, bool>> expression);
         Task<T> GetByIdAsync(Guid Id);
         T GetById(int Id);
@@ -18,8 +18,7 @@ namespace RecSysApi.Domain.Interfaces
         Task<T> AddAsync(T entity);
         T Update(T entity);
         T Delete(T entity);
-        Task DeleteAsync(T entity);
-        Task<int> SaveChangesAsync();
-        void Save();
+        Task<T> FindAsync(Expression<Func<T, bool>> expression);
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression);
     }
 }

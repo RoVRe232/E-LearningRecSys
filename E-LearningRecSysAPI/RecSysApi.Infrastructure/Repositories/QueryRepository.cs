@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using RecSysApi.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using RecSysApi.Domain.Entities.Common;
 using RecSysApi.Domain.Interfaces;
 using RecSysApi.Infrastructure.Context;
 using System;
@@ -13,11 +14,11 @@ namespace RecSysApi.Infrastructure.Repositories
     public class QueryRepository : Repository<Query>, IQueryRepository
     {
         private readonly ILogger<QueryRepository> _logger;
-        public QueryRepository(RecSysApiContext dbContext, ILogger<QueryRepository> logger) : base(dbContext)
+        public QueryRepository(DbContext dbContext, ILogger<QueryRepository> logger) : base(dbContext)
         {
             _logger = logger;
         }
-        public QueryRepository(RecSysApiContext dbContext) : base(dbContext)
+        public QueryRepository(DbContext dbContext) : base(dbContext)
         {
 
         }

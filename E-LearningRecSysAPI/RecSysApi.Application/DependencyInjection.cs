@@ -13,8 +13,8 @@ namespace RecSysApi.Application
     {
         public static IServiceCollection AddApplicationLayerDependencies(this IServiceCollection services)
         {
-            services.AddScoped<IVideosLookupService, VideosLookupService>();
-            services.AddScoped<IVideosJsonService, VideosJsonService>();
+            services.AddTransient<IVideosLookupService, VideosLookupService>();
+            services.AddTransient<IVideosJsonService, VideosJsonService>();
 
             return services;
         }

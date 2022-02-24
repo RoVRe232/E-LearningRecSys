@@ -64,6 +64,7 @@
     </div>
 
     <div
+      *ngIf="userService.isLoggedIn"
       class="account-actions-wrapper"
       fxLayoutGap="12px"
       fxLayout="row"
@@ -90,6 +91,30 @@
           <span>Orders</span>
         </button>
       </mat-menu>
+    </div>
+    <div
+      *ngIf="!userService.isLoggedIn"
+      class="account-actions-wrapper"
+      fxLayoutGap="12px"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+    >
+      <button mat-fab aria-label="Cart" color="primary">
+        <mat-icon class="shopping-cart-icon">shopping_cart</mat-icon>
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        fxLayoutGap="6px"
+        [routerLink]="'/accounts'"
+      >
+        <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="6px">
+          <mat-icon>account_box</mat-icon>
+          <h2 class="log-in-text">Log in</h2>
+        </span>
+      </button>
     </div>
   </div>
 </div>

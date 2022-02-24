@@ -4,6 +4,7 @@ using RecSysApi.Application.Interfaces;
 using RecSysApi.Application.Models;
 using RecSysApi.Domain.Commons.Models;
 using RecSysApi.Domain.Entities;
+using RecSysApi.Domain.Entities.Common;
 using RecSysApi.Domain.Interfaces;
 using System;
 using System.Collections.Generic;

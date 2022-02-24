@@ -20,6 +20,8 @@ import { RouterModule } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { AuthModule } from '../auth/_auth.module';
+import { UserService } from '../auth/services/user.service';
 
 const materialModules = [
   MatButtonModule,
@@ -51,10 +53,10 @@ const materialModules = [
     FooterComponent,
     SearchBarComponent,
     FlexLayoutModule,
-    MatPaginatorModule,
-    MatSidenavModule,
-    MatCardModule,
+    ReactiveFormsModule,
+    materialModules,
+    AuthModule,
   ],
-  providers: [HttpService, SearchService],
+  providers: [HttpService, SearchService, UserService],
 })
 export class SharedModule {}

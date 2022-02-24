@@ -8,5 +8,15 @@ namespace RecSysApi.Domain.Interfaces
 {
     public interface IUnitOfWork
     {
+        public IVideoRepository Videos { get; }
+        public IQueryRepository Queries{ get; }
+        public IAccountRepository Accounts { get; }
+        public ICourseRepository Courses { get; }
+        public IUserRepository Users { get; }
+        public ISectionRepository Sections { get; }
+
+        public void SaveChanges();
+        public void SaveChangesAsync();
+        
     }
 }

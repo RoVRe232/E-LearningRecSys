@@ -1,3 +1,62 @@
-<p>
-    Login Component Works
-</p>
+<div fxLayout="row" fxLayoutAlign="center center" ngClass="login-wrapper">
+  <div
+    ngClass="login-form-wrapper"
+    ngClass.lt-lg="login-form-wrapper-lt-lg"
+    ngClass.lt-md="login-form-wrapper-lt-md"
+    ngClass.lt-sm="login-form-wrapper-lt-sm"
+  >
+    <form [formGroup]="loginData" (ngSubmit)="onSubmit()">
+      <div
+        class="inputs-container"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+        fxLayoutGap="12px"
+      >
+        <h1 class="page-title">Log into your account</h1>
+        <mat-form-field appearance="outline">
+          <mat-label>Enter your email</mat-label>
+          <input
+            matInput
+            placeholder="pat@example.com"
+            [formControl]="email"
+            required
+          />
+          <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'Enter your password' }}</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword"
+          >
+            <mat-icon>{{
+              hidePassword ? 'visibility_off' : 'visibility'
+            }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <div
+          class="full-width"
+          fxLayout="row"
+          fxLayoutAlign="center center"
+          fxLayoutGap="8px"
+        >
+          <button mat-raised-button type="submit" [disabled]="!loginData.valid">
+            Log-in
+          </button>
+          <button
+            mat-button
+            color="ternary"
+            type="button"
+            [routerLink]="'/accounts/sign-up'"
+          >
+            Sign-up
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

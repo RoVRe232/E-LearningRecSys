@@ -13,9 +13,7 @@ using System.Threading.Tasks;
 
 namespace RecSysApi.Presentation.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class VideosController : ControllerBase
+    public class VideosController : ApiBaseController
     {
         private readonly ILogger<VideosController> _logger;
         private readonly IVideosLookupService _videosLookupService;

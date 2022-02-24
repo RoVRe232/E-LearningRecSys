@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RecSysApi.Application.Filters
 {
-    public class GetVideosFilter : PaginationInfoFilter
+    public class GetVideosFilter : PaginationFilter
     {
         public string Name { get; set; }
         public List<string> Tags { get; set; }

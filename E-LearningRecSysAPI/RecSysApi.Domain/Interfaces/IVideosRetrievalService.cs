@@ -1,5 +1,6 @@
 ﻿using RecSysApi.Domain.Commons.Models;
 using RecSysApi.Domain.Entities;
+using RecSysApi.Domain.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace RecSysApi.Domain.Interfaces
     public interface IVideosRetrievalService
     {
         Task<ICollection<VideoIdentifier>> GetVideosIdentifiersForQueryAsync(Query queryString);
-        Task<ICollection<Video>> GetInternalVideosForQueryAsync(ICollection<VideoIdentifier> videosIdentifiers);
+        Task<ICollection<Video>> GetInternalVideosForQueryAsync(ICollection<VideoIdentifier> videoIdentifiers);
     }
 }

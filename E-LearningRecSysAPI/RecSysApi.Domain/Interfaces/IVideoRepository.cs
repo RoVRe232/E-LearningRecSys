@@ -9,6 +9,6 @@ namespace RecSysApi.Domain.Interfaces
 {
     public interface IVideoRepository : IRepository<Video>
     {
-        List<Video> GetVideosWithIds(List<Guid> VideosIds);
+        List<Video> GetVideosWithIds(List<Guid> videoIds);
     }
 }

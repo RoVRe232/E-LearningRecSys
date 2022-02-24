@@ -1,4 +1,5 @@
-﻿using RecSysApi.Domain.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using RecSysApi.Domain.Interfaces;
 using RecSysApi.Infrastructure.Context;
 using System;
 using System.Collections.Generic;
@@ -11,92 +12,86 @@ namespace RecSysApi.Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class, new()
     {
-        protected readonly RecSysApiContext dbContext;
+        protected readonly DbContext dbContext;
+        protected readonly DbSet<T> dbSet;
 
-        public Repository(RecSysApiContext dbContext)
+        public Repository(DbContext dbContext)
         {
             this.dbContext = dbContext;
+            dbSet = this.dbContext.Set<T>();
         }
 
         public IQueryable<T> GetQuery(Expression<Func<T, bool>> expression)
         {
-            return dbContext.Set<T>().Where(expression);
+            return dbSet.Where(expression);
         }
 
         public T Add(T itemToAdd)
         {
-            var entity = dbContext.Add<T>(itemToAdd);
-            dbContext.SaveChanges();
+            var entity = dbSet.Add(itemToAdd);
             return entity.Entity;
         }
 
         public T GetById(Guid Id)
         {
-            return dbContext.Set<T>()
-                            .Find(Id);
+            return dbSet.Find(Id);
         }
 
         public T GetById(int Id)
         {
-            return dbContext.Set<T>()
-                .Find(Id);
+            return dbSet.Find(Id);
         }
 
         public T GetById(string Id)
         {
-            return dbContext.Set<T>()
-                .Find(Id);
+            return dbSet.Find(Id);
         }
 
-        public bool Delete(T itemToDelete)
+        public T Delete(T itemToDelete)
         {
-            dbContext.Remove<T>(itemToDelete);
-            dbContext.SaveChanges();
-            return true;
-
+            return dbSet.Remove(itemToDelete).Entity;
         }
 
-        public IEnumerable<T> GetAll()
+        public ICollection<T> GetAll()
         {
-            return dbContext.Set<T>().AsEnumerable();
+            return dbSet.AsEnumerable().ToList();
         }
 
         public T Update(T itemToUpdate)
         {
-            var entity = dbContext.Update<T>(itemToUpdate);
+            var entity = dbSet.Update(itemToUpdate);
             dbContext.SaveChanges();
             return entity.Entity;
         }
 
-        public void Save()
+        public async Task<T> GetByIdAsync(Guid Id)
         {
-            dbContext.SaveChanges();
+            return await dbSet.FindAsync(Id);
         }
 
-        public Task<T> GetByIdAsync(Guid Id)
+        public async Task<T> FindAsync(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            return await dbSet.FindAsync(expression);
         }
 
-        public Task<T> AddAsync(T entity)
+        public async Task<T> FirstAsync(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            return await dbSet.FirstAsync(expression);
         }
 
-        T IRepository<T>.Delete(T entity)
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            return await dbSet.FirstOrDefaultAsync(expression);
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            return (await dbSet.AddAsync(entity)).Entity;
         }
 
         public Task<int> SaveChangesAsync()
         {
             throw new NotImplementedException();
         }
-
     }
 }

@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace RecSysApi.Presentation.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class HealthController : ControllerBase
+    public class HealthController : ApiBaseController
     {
         [HttpGet]
         public string Index()

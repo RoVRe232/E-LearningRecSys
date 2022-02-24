@@ -9,6 +9,6 @@ namespace RecSysApi.Application.Dtos.Video
     public class QueryContentDto
     {
         public string BulkKeywords { get; set; }
-        public List<string> SplitKeywords { get; set; }
+        public List<string> SplitKeywords { get; set; } = new List<string>();
     }
 }
