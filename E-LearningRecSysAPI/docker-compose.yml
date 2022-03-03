@@ -1,0 +1,55 @@
+version: '3.4'
+
+volumes:
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+  recsysdb-data:
+    driver: local
+
+services:
+  recsysapi.presentation:
+    image: ${DOCKER_REGISTRY-}recsysapipresentation
+    build:
+      context: .
+      dockerfile: RecSysApi/Dockerfile
+    ports:
+      - "5006:80"
+    depends_on:
+      - recsysdb
+  recsysdb:
+    image: "mcr.microsoft.com/mssql/server"
+    volumes: 
+        - recsysdb-data:/app
+    ports:
+        - "5010:1433"
+    environment:
+        SA_PASSWORD: "abcDEF123#"
+        ACCEPT_EULA: "Y"
+  prometheus:
+    container_name: prometheus
+    build:
+      context: .
+      dockerfile: Dockerfile-prometheus
+    ports:
+      - "9090:9090"
+    #volumes:
+    #  - /etc/prometheus:/etc/prometheus
+    #  - prometheus-data:/prometheus
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+        - "3000:3000"
+    volumes:
+        - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+
+networks:
+  localdev:
+    external:
+      name: localdev

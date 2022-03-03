@@ -71,17 +71,17 @@ namespace RecSysApi.Infrastructure.Repositories
 
         public async Task<T> FindAsync(Expression<Func<T, bool>> expression)
         {
-            return await dbSet.FindAsync(expression);
+            return await dbSet.AsQueryable().FirstOrDefaultAsync(expression);
         }
 
         public async Task<T> FirstAsync(Expression<Func<T, bool>> expression)
         {
-            return await dbSet.FirstAsync(expression);
+            return await dbSet.AsQueryable().FirstAsync(expression);
         }
 
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression)
         {
-            return await dbSet.FirstOrDefaultAsync(expression);
+            return await dbSet.AsQueryable().FirstOrDefaultAsync(expression);
         }
 
         public async Task<T> AddAsync(T entity)

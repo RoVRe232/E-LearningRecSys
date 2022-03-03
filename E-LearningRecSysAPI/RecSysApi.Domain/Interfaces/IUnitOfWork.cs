@@ -16,7 +16,7 @@ namespace RecSysApi.Domain.Interfaces
         public ISectionRepository Sections { get; }
 
         public void SaveChanges();
-        public void SaveChangesAsync();
+        public Task SaveChangesAsync();
         
     }
 }

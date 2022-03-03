@@ -18,12 +18,19 @@ namespace RecSysApi.Infrastructure
     {
         public static IServiceCollection AddInfrastructureLayerDependencies(this IServiceCollection services)
         {
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0";
+            //var connection = @"Server=(localdb)\mssqllocaldb;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = @"
+              Server=recsysdb;
+              Database=RecSysApiDb;
+              User=SA;
+              Password=abcDEF123#";
+
 
             services.AddSingleton<IHttpService, HttpService>();
             services.AddScoped<IVideosRetrievalService, VideosRetrievalService>();
             services.AddDbContext<RecSysApiContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("RecSysApi.Infrastructure")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ISessionService, SessionService>();
 
             return services;
         }

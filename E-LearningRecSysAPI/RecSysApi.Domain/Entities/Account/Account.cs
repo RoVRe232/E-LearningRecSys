@@ -12,8 +12,10 @@ namespace RecSysApi.Domain.Entities.Account
         public Guid AccountID { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
-        public virtual ICollection<Course> Courses { get; set; }
-        public virtual ICollection<Bundle> Bundles { get; set; }
+        public virtual ICollection<User> Users { get; set; } = new List<User>();
+        public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
+        public virtual ICollection<Bundle> Bundles { get; set; } = new List<Bundle>();
+        public virtual ICollection<AccountSignupInvitation> AccountSignupInvitations { get; set; } 
+            = new List<AccountSignupInvitation>();
     }
 }

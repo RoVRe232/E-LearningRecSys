@@ -11,6 +11,7 @@ namespace RecSysApi.Application.Dtos.Account
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string AccountName { get; set; }
+        public string AccountSignupInvitationToken { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }

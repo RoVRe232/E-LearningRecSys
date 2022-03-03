@@ -15,6 +15,7 @@ namespace RecSysApi.Application
         {
             services.AddTransient<IVideosLookupService, VideosLookupService>();
             services.AddTransient<IVideosJsonService, VideosJsonService>();
+            services.AddTransient<IAuthService, AuthService>();
 
             return services;
         }

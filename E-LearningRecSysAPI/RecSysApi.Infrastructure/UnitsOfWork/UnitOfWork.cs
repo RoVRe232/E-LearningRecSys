@@ -40,7 +40,7 @@ namespace RecSysApi.Infrastructure.UnitsOfWork
             _dbContext.SaveChanges();
         }
 
-        public async void SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
         }

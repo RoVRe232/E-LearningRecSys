@@ -1,0 +1,61 @@
+version: "3.9"
+
+networks:
+    localdev:
+        name: localdev
+
+volumes:
+    prometheus-data:
+        driver: local
+    grafana-data:
+        driver: local
+    recsysdb-data:
+        external: true
+
+services:
+    webapi:
+        image: ${DOCKER_REGISTRY-}webapi
+        build:
+            context: .
+            dockerfile: E-LearningRecSysAPI/RecSysApi/Dockerfile
+        ports:
+            - "5006:80"
+        networks:
+            - localdev
+        depends_on:
+            - db
+    recsysdb:
+        image: "mcr.microsoft.com/mssql/server"
+        volumes:
+            - recsysdb-data:/app
+        ports:
+            - "5010:1433"
+        networks:
+            - localdev
+        environment:
+            SA_PASSWORD: "abcDEF123#"
+            ACCEPT_EULA: "Y"
+    prometheus:
+        image: prom/prometheus:latest
+        container_name: prometheus
+        ports:
+            - "9090:9090"
+        networks:
+            - localdev
+        volumes:
+            - /etc/prometheus:/etc/prometheus
+            - prometheus-data:/prometheus
+        restart: unless-stopped
+        command:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        ports:
+            - "3000:3000"
+        networks:
+            - localdev
+        volumes:
+            - grafana-data:/var/lib/grafana
+        restart: unless-stopped

@@ -10,6 +10,6 @@ namespace RecSysApi.Domain.Interfaces
 {
     public interface IUserRepository : IRepository<User>
     {
-        public Task<User> GetUserWithAccountByExpression(Expression<Func<User, bool>> expression);
+        public Task<User> GetUserWithAccountByExpressionAsync(Expression<Func<User, bool>> expression);
     }
 }
