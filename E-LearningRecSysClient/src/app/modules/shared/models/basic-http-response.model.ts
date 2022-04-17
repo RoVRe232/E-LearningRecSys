@@ -1,4 +1,5 @@
 export interface BasicHttpResponse {
-  errors?: string[];
-  result: string;
+  success: boolean;
+  errors: string[];
+  result: any;
 }

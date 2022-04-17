@@ -80,6 +80,9 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.Property<Guid>("AccountID")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ActiveRefreshTokenToken")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("AddressLine1")
                         .HasColumnType("nvarchar(max)");
 
@@ -122,6 +125,8 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.HasKey("UserID");
 
                     b.HasIndex("AccountID");
+
+                    b.HasIndex("ActiveRefreshTokenToken");
 
                     b.ToTable("Users");
                 });
@@ -229,6 +234,24 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.HasKey("SearchPropertiesID");
 
                     b.ToTable("SearchProperties");
+                });
+
+            modelBuilder.Entity("RecSysApi.Domain.Entities.Tokens.JwtToken", b =>
+                {
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Token");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("JwtToken");
                 });
 
             modelBuilder.Entity("RecSysApi.Domain.Entities.Video", b =>
@@ -459,7 +482,13 @@ namespace RecSysApi.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RecSysApi.Domain.Entities.Tokens.JwtToken", "ActiveRefreshToken")
+                        .WithMany()
+                        .HasForeignKey("ActiveRefreshTokenToken");
+
                     b.Navigation("Account");
+
+                    b.Navigation("ActiveRefreshToken");
                 });
 
             modelBuilder.Entity("RecSysApi.Domain.Entities.Products.Bundle", b =>
@@ -497,6 +526,13 @@ namespace RecSysApi.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("RecSysApi.Domain.Entities.Tokens.JwtToken", b =>
+                {
+                    b.HasOne("RecSysApi.Domain.Entities.Account.User", null)
+                        .WithMany("UsedRefreshTokensFamily")
+                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("RecSysApi.Domain.Entities.Video", b =>
@@ -560,6 +596,11 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.Navigation("Courses");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("RecSysApi.Domain.Entities.Account.User", b =>
+                {
+                    b.Navigation("UsedRefreshTokensFamily");
                 });
 
             modelBuilder.Entity("RecSysApi.Domain.Entities.Products.Bundle", b =>

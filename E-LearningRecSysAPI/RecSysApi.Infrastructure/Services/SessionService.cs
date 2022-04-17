@@ -2,6 +2,7 @@
 using RecSysApi.Application.Interfaces;
 using RecSysApi.Application.Models;
 using RecSysApi.Domain.Entities.Account;
+using RecSysApi.Domain.Entities.Tokens;
 using RecSysApi.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ namespace RecSysApi.Infrastructure.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
         private readonly IAccountRepository _accountRepository;
-        public SessionService(IUnitOfWork unitOfWork)
+        private readonly IAuthService _authService;
+        public SessionService(IUnitOfWork unitOfWork, IAuthService authService)
         {
             _unitOfWork = unitOfWork;
             _userRepository = _unitOfWork.Users;
             _accountRepository = _unitOfWork.Accounts;
+            _authService = authService;
         }
 
         public Task<bool> CreateUnconfirmedAdminAsync(SignupDTO signupData, string confirmationToken)
@@ -82,17 +85,95 @@ namespace RecSysApi.Infrastructure.Services
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
-
-        public async Task<User> GetAuthenticatedUserFromLoginAsync(LoginDTO login)
+        public async Task<AuthenticatedUserDTO> GetAuthenticatedUserFromLoginAsync(LoginDTO login)
         {
             var user = await _userRepository
                 .GetUserWithAccountByExpressionAsync(e => e.Email == login.Email);
+
+            var authenticatedUser = new AuthenticatedUserDTO
+            {
+                UserID = user.UserID,
+                AccountID = user.AccountID,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role,
+                AuthToken = _authService.GenerateToken(user),
+                RefreshToken = _authService.GenerateToken(user, true)
+            };
+
+            user.ActiveRefreshToken = new JwtToken{
+                Token = authenticatedUser.RefreshToken.Token,
+                ExpirationDate = authenticatedUser.RefreshToken.ExpirationDate
+            };
+
+            await _unitOfWork.SaveChangesAsync();
+
             if (user != null && BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
             {
-                return user;
+                return authenticatedUser;
             }
 
             throw new ApplicationException("Invalid username or password or user does not exist");
+        }
+
+        public async Task<RefreshedAuthTokensDTO> GetRefreshTokenForAuthenticatedUser(Guid userId, string refreshToken)
+        {
+            var user = await _userRepository
+                .FindAsync(e => e.UserID == userId);
+            if (user != null)
+            {
+                if(user.ActiveRefreshToken.Token != refreshToken)
+                {
+                    //Invalidate refresh token family and force user to log in again
+                    user.UsedRefreshTokensFamily.Add(user.ActiveRefreshToken);
+                    user.ActiveRefreshToken = null;
+
+                    await _unitOfWork.SaveChangesAsync();
+
+                    throw new ApplicationException("Refresh token invalidated");
+                }
+                else
+                {
+                    var refreshedAuthTokens = new RefreshedAuthTokensDTO
+                    {
+                        AuthToken = _authService.GenerateToken(user),
+                        RefreshToken = _authService.GenerateToken(user, true)
+                    };
+
+                    user.UsedRefreshTokensFamily.Add(user.ActiveRefreshToken);
+                    user.ActiveRefreshToken = new JwtToken
+                    {
+                        Token = refreshedAuthTokens.RefreshToken.Token,
+                        ExpirationDate = refreshedAuthTokens.RefreshToken.ExpirationDate
+                    };
+                    await _unitOfWork.SaveChangesAsync();
+
+                    return refreshedAuthTokens;
+                }
+            }
+
+            throw new ApplicationException("Invalid username or password or user does not exist");
+        }
+
+        public async Task<UserDetailsDTO> GetUserDetailsAsync(Guid userId)
+        {
+            var user = await _userRepository
+                .GetUserWithAccountByExpressionAsync(e => e.UserID == userId);
+            return new UserDetailsDTO
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                AccountName = user.Account.Name,
+                Email = user.Email,
+                Phone = user.Phone,
+                AddressLine1 = user.AddressLine1,
+                AddressLine2 = user.AddressLine2,
+                Country = user.Country,
+                City = user.City,
+                State = user.State,
+                PostalCode = user.PostalCode
+            };
         }
 
         public Task<User> GetUserFromLoginAsync(LoginData login)

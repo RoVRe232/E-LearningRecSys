@@ -20,7 +20,19 @@ namespace RecSysApi.Infrastructure.Repositories
 
         public async Task<User> GetUserWithAccountByExpressionAsync(Expression<Func<User, bool>> expression)
         {
-            return await dbContext.Set<User>().Where(expression).Include(e => e.Account).FirstAsync();
+            return await dbContext.Set<User>()
+                .Where(expression)
+                .Include(e => e.Account)
+                .FirstAsync();
+        }
+
+        public async Task<User> GetUserWithTokensFamilyAsync(Expression<Func<User, bool>> expression)
+        {
+            return await dbContext.Set<User>()
+                .Include(e => e.ActiveRefreshToken)
+                .Include(e => e.UsedRefreshTokensFamily)
+                .Where(expression).Include(e => e.Account)
+                .FirstAsync();
         }
     }
 }

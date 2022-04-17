@@ -10,6 +10,6 @@ namespace RecSysApi.Application.Interfaces
 {
     public interface IAuthService
     {
-        JwtDTO GenerateToken(User user);
+        JwtDTO GenerateToken(User user, bool isRefreshToken = false);
     }
 }

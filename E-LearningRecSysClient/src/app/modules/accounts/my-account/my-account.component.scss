@@ -1,0 +1,39 @@
+@import '../../../../sass/variables';
+
+.signup-wrapper {
+  //   height: calc(100vh - $navbar-height - $footer-height);
+  height: 100%;
+  padding: 32px;
+}
+
+.signup-form-wrapper {
+  width: 70%;
+  background-color: whitesmoke;
+  border-radius: 16px;
+  margin: 0;
+  mat-form-field {
+    width: 80%;
+  }
+  padding: 22px;
+}
+
+.signup-form-wrapper-lt-lg {
+  @extend .signup-form-wrapper;
+  width: 40%;
+}
+
+.signup-form-wrapper-lt-md {
+  @extend .signup-form-wrapper;
+  width: 70%;
+}
+
+.signup-form-wrapper-lt-sm {
+  @extend .signup-form-wrapper;
+  width: 90%;
+}
+
+.page-title {
+  margin-top: 22px;
+  margin-bottom: 32px !important;
+  font-weight: 500;
+}

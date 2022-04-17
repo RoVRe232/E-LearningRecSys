@@ -11,8 +11,11 @@ export class HttpService {
   constructor(private http: HttpClient) {}
 
   public get(request: BasicHttpRequest) {
+    console.log(this.buildRequestTargetUrl(request));
     return this.http
-      .get<BasicHttpResponse>(this.buildRequestTargetUrl(request))
+      .get<BasicHttpResponse>(this.buildRequestTargetUrl(request), {
+        headers: request.headers,
+      })
       .pipe(retry(1), catchError(this.handleError));
   }
 
@@ -21,19 +24,30 @@ export class HttpService {
       .post<BasicHttpResponse>(
         this.buildRequestTargetUrl(request),
         request.body,
+        {
+          headers: request.headers,
+        },
       )
       .pipe(retry(1), catchError(this.handleError));
   }
 
   public put(request: BasicHttpRequest) {
     return this.http
-      .put<BasicHttpResponse>(this.buildRequestTargetUrl(request), request.body)
+      .put<BasicHttpResponse>(
+        this.buildRequestTargetUrl(request),
+        request.body,
+        {
+          headers: request.headers,
+        },
+      )
       .pipe(retry(1), catchError(this.handleError));
   }
 
   public delete(request: BasicHttpRequest) {
     return this.http
-      .delete<BasicHttpResponse>(this.buildRequestTargetUrl(request))
+      .delete<BasicHttpResponse>(this.buildRequestTargetUrl(request), {
+        headers: request.headers,
+      })
       .pipe(retry(1), catchError(this.handleError));
   }
 

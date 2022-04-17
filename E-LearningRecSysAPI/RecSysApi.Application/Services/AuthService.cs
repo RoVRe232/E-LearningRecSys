@@ -20,17 +20,23 @@ namespace RecSysApi.Application.Services
         {
             _tokenConfiguration = tokenConfiguration.Value;
         }
-        public JwtDTO GenerateToken(User user)
+        public JwtDTO GenerateToken(User user, bool isRefreshToken = false)
         {
             var key = Encoding.ASCII.GetBytes(_tokenConfiguration.Secret);
             var claims = new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
             });
 
-            var expirationDate = DateTime.UtcNow.AddHours(12);
+            if (isRefreshToken)
+                claims.AddClaim(new Claim("RefreshToken", "true"));
+            else
+                claims.AddClaim(new Claim("AuthToken", "true"));
+
+
+            var expirationDate = DateTime.UtcNow.AddHours(isRefreshToken ? 12 : 3);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

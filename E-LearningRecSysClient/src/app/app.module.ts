@@ -7,7 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountsModule } from './modules/accounts/_accounts.module';
 import { SharedModule } from './modules/shared/_shared.module';
 import { PortalModule } from './modules/portal/_portal.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BackapiOutgoingInterceptor } from './modules/shared/interceptors/backapi-outgoing.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +21,15 @@ import { HttpClientModule } from '@angular/common/http';
     AccountsModule,
     PortalModule,
   ],
-  providers: [],
+  providers: [
+    [
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: BackapiOutgoingInterceptor,
+        multi: true,
+      },
+    ],
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

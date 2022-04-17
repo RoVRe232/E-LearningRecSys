@@ -1,0 +1,118 @@
+<div fxLayout="row" fxLayoutAlign="center center" ngClass="contact-wrapper">
+  <div
+    ngClass="contact-form-wrapper"
+    ngClass.lt-lg="contact-form-wrapper-lt-lg"
+    ngClass.lt-md="contact-form-wrapper-lt-md"
+    ngClass.lt-sm="contact-form-wrapper-lt-sm"
+    fxLayoutGap="20px"
+    fxLayout="row"
+    fxLayoutAlign="space-around center"
+  >
+    <form [formGroup]="contactData" (ngSubmit)="onSubmit()">
+      <div
+        class="inputs-container"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+        fxLayoutGap="12px"
+      >
+        <h1 class="page-title">How can we help you?</h1>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="center center"
+          fxLayoutGap="8px"
+          class="full-width"
+        >
+          <mat-form-field appearance="outline" style="margin-top: 16px">
+            <mat-label>{{ 'First name' }}</mat-label>
+            <input
+              matInput
+              placeholder="John"
+              [formControl]="firstName"
+              required
+            />
+            <mat-error *ngIf="firstName.invalid">{{
+              getErrorMessage(firstName)
+            }}</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'Last name' }}</mat-label>
+            <input
+              matInput
+              placeholder="Smith"
+              [formControl]="lastName"
+              required
+            />
+            <mat-error *ngIf="lastName.invalid">{{
+              getErrorMessage(lastName)
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" style="width: 100% !important">
+          <mat-label>Enter your email</mat-label>
+          <input
+            matInput
+            placeholder="pat@example.com"
+            [formControl]="email"
+            type="email"
+            required
+          />
+          <mat-error *ngIf="email.invalid">{{
+            getErrorMessage(email)
+          }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width: 100% !important">
+          <mat-label>Message</mat-label>
+          <input matInput [formControl]="message" type="textarea" required />
+          <mat-error *ngIf="email.invalid">{{
+            getErrorMessage(email)
+          }}</mat-error>
+        </mat-form-field>
+        <div
+          (click)="uploadFile.click()"
+          style="margin-bottom: 24px !important"
+        >
+          <button mat-raised-button color="ternary" type="button">
+            Choose File
+          </button>
+          <mat-label>
+            Choose a file to send that could help with your request</mat-label
+          >
+          <input
+            #uploadFile
+            (change)="upload($event)"
+            type="file"
+            style="display: none"
+          />
+        </div>
+        <div
+          class="full-width"
+          fxLayout="row"
+          fxLayoutAlign="center center"
+          fxLayoutGap="8px"
+        >
+          <button
+            mat-raised-button
+            type="submit"
+            [disabled]="contactData.invalid"
+            color="primary"
+            class="full-width"
+          >
+            Send Message
+          </button>
+        </div>
+      </div>
+    </form>
+    <div id="canvas_map">
+      <iframe
+        width="600"
+        height="500"
+        id="gmap_canvas"
+        src="https://maps.google.com/maps?q=44.306895%2C23.804633&t=&z=13&ie=UTF8&iwloc=&output=embed"
+        frameborder="0"
+        scrolling="no"
+        marginheight="0"
+        marginwidth="0"
+      ></iframe>
+    </div>
+  </div>
+</div>

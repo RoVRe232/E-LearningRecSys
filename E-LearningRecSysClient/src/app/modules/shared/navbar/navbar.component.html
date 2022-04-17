@@ -35,7 +35,7 @@
         type="button"
         [routerLink]="['/search-results']"
       >
-        {{ 'Search Videos' | uppercase }}
+        {{ 'Search' | uppercase }}
       </button>
       <button
         mat-raised-button
@@ -43,7 +43,7 @@
         type="button"
         [routerLink]="['/videos/categories']"
       >
-        {{ 'Categories' | uppercase }}
+        {{ 'Courses' | uppercase }}
       </button>
       <button
         mat-raised-button
@@ -64,7 +64,7 @@
     </div>
 
     <div
-      *ngIf="userService.isLoggedIn"
+      *ngIf="accountService.isLoggedIn | async"
       class="account-actions-wrapper"
       fxLayoutGap="12px"
       fxLayout="row"
@@ -82,7 +82,7 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item [routerLink]="'/accounts/my-account'">
           <mat-icon>account_circle</mat-icon>
           <span>Account</span>
         </button>
@@ -90,10 +90,14 @@
           <mat-icon>receipt</mat-icon>
           <span>Orders</span>
         </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Log out</span>
+        </button>
       </mat-menu>
     </div>
     <div
-      *ngIf="!userService.isLoggedIn"
+      *ngIf="!(accountService.isLoggedIn | async)"
       class="account-actions-wrapper"
       fxLayoutGap="12px"
       fxLayout="row"
@@ -108,7 +112,7 @@
         fxLayout="row"
         fxLayoutAlign="center center"
         fxLayoutGap="6px"
-        [routerLink]="'/accounts'"
+        [routerLink]="'/accounts/login'"
       >
         <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="6px">
           <mat-icon>account_box</mat-icon>

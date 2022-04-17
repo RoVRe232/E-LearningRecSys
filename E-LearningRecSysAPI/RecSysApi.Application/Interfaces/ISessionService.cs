@@ -12,8 +12,10 @@ namespace RecSysApi.Application.Interfaces
     public interface ISessionService
     {
         public Task<User> GetUserFromLoginAsync(LoginData login);
-        public Task<User> GetAuthenticatedUserFromLoginAsync(LoginDTO login);
+        public Task<UserDetailsDTO> GetUserDetailsAsync(Guid userId);
+        public Task<AuthenticatedUserDTO> GetAuthenticatedUserFromLoginAsync(LoginDTO login);
         public Task<bool> CreateUnconfirmedUserAsync(SignupDTO signupData);
         public Task<bool> CreateUnconfirmedAdminAsync(SignupDTO signupData, string confirmationToken);
+        public Task<RefreshedAuthTokensDTO> GetRefreshTokenForAuthenticatedUser(Guid userId, string refreshToken);
     }
 }

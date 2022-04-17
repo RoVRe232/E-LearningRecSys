@@ -10,7 +10,9 @@ using RecSysApi.Application;
 using RecSysApi.Application.Dtos.Account;
 using RecSysApi.Domain;
 using RecSysApi.Infrastructure;
+using RecSysApi.Infrastructure.Context;
 using RecSysApi.Presentation.Settings;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -60,7 +62,13 @@ namespace RecSysApi
                         ValidAudience = tokenSettings.Audience
                     };
                 });
-
+            services.AddAuthorization(options =>
+                {
+                    options.AddPolicy("RefreshOnly", policy => policy.RequireClaim("RefreshToken"));
+                    options.AddPolicy("AuthOnly", policy => policy.RequireClaim("AuthToken"));
+                    options.AddPolicy("CustomerOnly", policy => policy.RequireClaim(ClaimTypes.Role, "customer"));
+                    options.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
+                });
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
 
             services.AddInfrastructureLayerDependencies();
@@ -84,8 +92,13 @@ namespace RecSysApi
             }
 
             app.UseHttpsRedirection();
-            //TODO remove this once deployed to sandbox/production
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                builder.WithOrigins("http://localhost:5006")
+                .AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+            });
             app.UseRouting();
             app.UseHttpsRedirection();
 

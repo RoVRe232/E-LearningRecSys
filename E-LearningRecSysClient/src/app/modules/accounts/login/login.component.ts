@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs';
+import { HttpService } from '../../shared/services/http.service';
+import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +10,11 @@ import { takeUntil } from 'rxjs';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private httpService: HttpService,
+    private accountService: AccountService,
+  ) {}
 
   loginData = this.fb.group({
     email: this.fb.control('', [Validators.required, Validators.email]),
@@ -18,16 +24,21 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginData.valueChanges.subscribe((e) => {
-      console.log(this.loginData.valid);
+      const invalidControls = [];
+      for (const control in this.loginData.controls) {
+        if ((this.loginData.controls[control] as FormControl).invalid) {
+          invalidControls.push(control);
+        }
+      }
     });
   }
 
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
+  getErrorMessage(control: FormControl) {
+    if (control.hasError('required')) {
       return 'You must enter a value';
     }
 
-    return this.email.hasError('email') ? 'Not a valid email' : '';
+    return control.hasError('invalid') ? 'Not a valid input' : '';
   }
 
   get email(): FormControl {
@@ -39,6 +50,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.accountService.login(this.email.value, this.password.value);
     //TODO send login request
   }
 }

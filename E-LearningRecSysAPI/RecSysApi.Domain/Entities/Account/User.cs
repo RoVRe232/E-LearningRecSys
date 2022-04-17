@@ -1,4 +1,5 @@
 ﻿using RecSysApi.Domain.Entities.Products;
+using RecSysApi.Domain.Entities.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace RecSysApi.Domain.Entities.Account
     public class User
     {
         public Guid UserID { get; set; }
+        public ICollection<JwtToken> UsedRefreshTokensFamily { get; set; } = new List<JwtToken>();
+        public JwtToken ActiveRefreshToken { get; set; }
         public string Role { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

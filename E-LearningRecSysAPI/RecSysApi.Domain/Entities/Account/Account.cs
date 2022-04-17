@@ -1,4 +1,5 @@
 ﻿using RecSysApi.Domain.Entities.Products;
+using RecSysApi.Domain.Entities.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -22,6 +22,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AuthModule } from '../auth/_auth.module';
 import { UserService } from '../auth/services/user.service';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const materialModules = [
   MatButtonModule,
@@ -36,6 +38,8 @@ const materialModules = [
   MatChipsModule,
   MatSidenavModule,
   MatPaginatorModule,
+  MatStepperModule,
+  MatExpansionModule,
 ];
 
 @NgModule({

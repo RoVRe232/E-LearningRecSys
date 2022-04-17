@@ -1,0 +1,285 @@
+<div fxLayout="row" fxLayoutAlign="center center" ngClass="signup-wrapper">
+  <div
+    ngClass="signup-form-wrapper"
+    ngClass.lt-lg="signup-form-wrapper-lt-lg"
+    ngClass.lt-md="signup-form-wrapper-lt-md"
+    ngClass.lt-sm="signup-form-wrapper-lt-sm"
+  >
+    <form [formGroup]="signupData" (ngSubmit)="onSubmit()">
+      <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="loginData">
+          <form [formGroup]="loginData">
+            <ng-template matStepLabel>{{
+              'Fill out your credentials'
+            }}</ng-template>
+            <div
+              class="inputs-container"
+              fxLayout="column"
+              fxLayoutAlign="center center"
+              fxLayoutGap="12px"
+            >
+              <h1 class="page-title">{{ 'Create your account' }}</h1>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Enter your email' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="pat@example.com"
+                  [formControl]="email"
+                  required
+                />
+                <mat-error *ngIf="email.invalid">{{
+                  getErrorMessage(email)
+                }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Phone number' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="+123456789"
+                  [formControl]="phone"
+                  required
+                />
+                <mat-error *ngIf="phone.invalid">
+                  {{ getErrorMessage(phone) }}</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Enter your password' }}</mat-label>
+                <input
+                  matInput
+                  [formControl]="password"
+                  [type]="hidePassword ? 'password' : 'text'"
+                  required
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hidePassword"
+                >
+                  <mat-icon>{{
+                    hidePassword ? 'visibility_off' : 'visibility'
+                  }}</mat-icon>
+                </button>
+                <mat-error *ngIf="password.invalid">{{
+                  getErrorMessage(password)
+                }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Confirm password' }}</mat-label>
+                <input
+                  matInput
+                  [formControl]="confirmPassword"
+                  [type]="'password'"
+                  required
+                />
+                <mat-error *ngIf="confirmPassword.invalid">{{
+                  getErrorMessage(confirmPassword)
+                }}</mat-error>
+              </mat-form-field>
+
+              <div
+                class="full-width"
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                fxLayoutGap="8px"
+              >
+                <button
+                  mat-raised-button
+                  [disabled]="loginData.invalid"
+                  color="primary"
+                  matStepperNext
+                >
+                  {{ 'Next' }}
+                </button>
+                <button
+                  mat-raised-button
+                  type="button"
+                  [routerLink]="'/accounts/login'"
+                >
+                  {{ 'Back to Log-in' }}
+                </button>
+              </div>
+            </div>
+            <div></div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="billingData">
+          <form [formGroup]="billingData">
+            <ng-template matStepLabel>{{
+              'Fill out your address details'
+            }}</ng-template>
+            <div
+              class="inputs-container"
+              fxLayout="column"
+              fxLayoutAlign="center center"
+              fxLayoutGap="12px"
+            >
+              <mat-form-field appearance="outline" style="margin-top: 16px">
+                <mat-label>{{ 'First name' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="John"
+                  [formControl]="firstName"
+                  required
+                />
+                <mat-error *ngIf="firstName.invalid">{{
+                  getErrorMessage(firstName)
+                }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Last name' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="Smith"
+                  [formControl]="lastName"
+                  required
+                />
+                <mat-error *ngIf="lastName.invalid">{{
+                  getErrorMessage(lastName)
+                }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Address line 1' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="St. Line1"
+                  [formControl]="addressLine1"
+                  required
+                />
+                <mat-error *ngIf="addressLine1.invalid">{{
+                  getErrorMessage(addressLine1)
+                }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Address line 2' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="Block 7 ap 10"
+                  [formControl]="addressLine2"
+                />
+                <mat-error *ngIf="addressLine2.invalid">{{
+                  getErrorMessage(addressLine2)
+                }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Country' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="Romania"
+                  [formControl]="country"
+                  required
+                />
+                <mat-error *ngIf="country.invalid">{{
+                  getErrorMessage(country)
+                }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'City' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="Craiova"
+                  [formControl]="city"
+                  required
+                />
+                <mat-error *ngIf="city.invalid">{{
+                  getErrorMessage(city)
+                }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'State' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="Dolj"
+                  [formControl]="state"
+                  required
+                />
+                <mat-error *ngIf="state.invalid">{{
+                  getErrorMessage(state)
+                }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Postal code' }}</mat-label>
+                <input matInput placeholder="Dolj" [formControl]="postalCode" />
+                <mat-error *ngIf="postalCode.invalid">{{
+                  getErrorMessage(postalCode)
+                }}</mat-error>
+              </mat-form-field>
+              <div
+                fxLayout="row"
+                fxLayoutAlign="center start"
+                fxLayoutGap="8px"
+              >
+                <button mat-raised-button matStepperPrevious>
+                  {{ 'Back' }}
+                </button>
+                <button
+                  mat-raised-button
+                  [disabled]="billingData.invalid"
+                  color="primary"
+                  matStepperNext
+                >
+                  {{ 'Next' }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="accountData">
+          <form [formGroup]="accountData">
+            <ng-template matStepLabel>{{
+              'Fill out account details'
+            }}</ng-template>
+            <div
+              class="inputs-container"
+              fxLayout="column"
+              fxLayoutAlign="center center"
+              fxLayoutGap="12px"
+            >
+              <mat-form-field appearance="outline" style="margin-top: 16px">
+                <mat-label>{{ 'Account name' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="E.g. my-1st-account"
+                  [formControl]="accountName"
+                  required
+                />
+                <mat-error *ngIf="accountName.invalid">{{
+                  getErrorMessage(accountName)
+                }}</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'Account signup invitation token' }}</mat-label>
+                <input
+                  matInput
+                  placeholder="AAAA-BBBB-CCCC-ZZZZ"
+                  [formControl]="accountSignupInvitationToken"
+                />
+                <mat-error *ngIf="accountSignupInvitationToken.invalid">{{
+                  getErrorMessage(accountSignupInvitationToken)
+                }}</mat-error>
+              </mat-form-field>
+            </div>
+          </form>
+          <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="8px">
+            <button mat-raised-button matStepperPrevious>
+              {{ 'Back' }}
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="signupData.invalid"
+              color="primary"
+              type="submit"
+            >
+              {{ 'Sign up' }}
+            </button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    </form>
+  </div>
+</div>

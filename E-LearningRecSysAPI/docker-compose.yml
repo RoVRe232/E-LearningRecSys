@@ -15,7 +15,7 @@ services:
       context: .
       dockerfile: RecSysApi/Dockerfile
     ports:
-      - "5006:80"
+      - "5006:443"
     depends_on:
       - recsysdb
   recsysdb:
