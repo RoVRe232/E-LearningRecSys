@@ -2,48 +2,95 @@
   <div class="search-box-wrapper">
     <app-search-bar></app-search-bar>
   </div>
-
-  <div class="results-wrapper">
-    <mat-accordion [multi]="true">
-      <mat-expansion-panel [expanded]="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title> This is the expansion title </mat-panel-title>
-          <mat-panel-description> Results for courses </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div
-          class="result-card-wrapper"
-          *ngFor="let resultCard of searchResults"
-        >
-          <app-result-card
-            [title]="resultCard.title"
-            [description]="resultCard.description"
-            [author]="resultCard.author"
-          ></app-result-card>
-        </div>
-      </mat-expansion-panel>
-      <mat-expansion-panel [expanded]="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title> Self aware panel </mat-panel-title>
-          <mat-panel-description> Results for videos </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div
-          class="result-card-wrapper"
-          *ngFor="let resultCard of searchResults"
-        >
-          <app-result-card
-            [title]="resultCard.title"
-            [description]="resultCard.description"
-            [author]="resultCard.author"
-          ></app-result-card>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-paginator
-      [length]="5"
-      [pageSize]="5"
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      aria-label="Select page"
+  <div class="main-wrapper" fxLayout="row" fxLayoutAlign="space-around start">
+    <div
+      class="filters-wrapper"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxFlex="22"
     >
-    </mat-paginator>
+      <mat-card class="full-width">
+        <mat-card-title>
+          <h2>{{ 'Filters' }}</h2>
+        </mat-card-title>
+        <mat-accordion [multi]="true" class="full-width">
+          <mat-expansion-panel
+            [expanded]="true"
+            *ngFor="let category of categories"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title> Java Courses </mat-panel-title>
+              <mat-panel-description> Description </mat-panel-description>
+            </mat-expansion-panel-header>
+            <section class="example-section">
+              <span class="example-list-section">
+                <mat-checkbox
+                  class="example-margin"
+                  [checked]="allComplete"
+                  [color]="category.color"
+                  [indeterminate]="someComplete(category)"
+                  (change)="setAll(category, $event.checked)"
+                >
+                  {{ category.name }}
+                </mat-checkbox>
+              </span>
+              <span class="example-list-section">
+                <ul>
+                  <li *ngFor="let subtask of category.subtasks">
+                    <mat-checkbox
+                      [(ngModel)]="subtask.completed"
+                      [color]="subtask.color"
+                      (ngModelChange)="updateAllComplete(category)"
+                    >
+                      {{ subtask.name }}
+                    </mat-checkbox>
+                  </li>
+                </ul>
+              </span>
+            </section>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card>
+    </div>
+    <div
+      class="results-wrapper"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxFlex="75"
+    >
+      <mat-accordion [multi]="true" class="full-width">
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> <h2>Courses</h2> </mat-panel-title>
+            <mat-panel-description> Results for courses </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div
+            class="result-card-wrapper"
+            *ngFor="let course of searchResults?.courses"
+          >
+            <app-result-card [course]="course"></app-result-card>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> <h2>Videos</h2> </mat-panel-title>
+            <mat-panel-description> Results for videos </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div
+            class="result-card-wrapper"
+            *ngFor="let video of searchResults?.videos"
+          >
+            <app-result-card [video]="video"></app-result-card>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-paginator
+        [length]="5"
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page"
+      >
+      </mat-paginator>
+    </div>
   </div>
 </div>

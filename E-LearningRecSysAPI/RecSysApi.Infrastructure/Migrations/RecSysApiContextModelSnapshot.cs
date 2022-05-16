@@ -165,7 +165,10 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.Property<Guid?>("BundleID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
+                    b.Property<double>("Hours")
+                        .HasColumnType("float");
+
+                    b.Property<string>("LargeDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -173,6 +176,12 @@ namespace RecSysApi.Infrastructure.Migrations
 
                     b.Property<Guid>("PriceID")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SmallDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThumbnailImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CourseID");
 
@@ -211,29 +220,20 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.Property<Guid>("CourseID")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThumbnailImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("SectionID");
 
                     b.HasIndex("CourseID");
 
                     b.ToTable("Sections");
-                });
-
-            modelBuilder.Entity("RecSysApi.Domain.Entities.SearchProperties", b =>
-                {
-                    b.Property<Guid>("SearchPropertiesID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Transcription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SearchPropertiesID");
-
-                    b.ToTable("SearchProperties");
                 });
 
             modelBuilder.Entity("RecSysApi.Domain.Entities.Tokens.JwtToken", b =>
@@ -264,21 +264,14 @@ namespace RecSysApi.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("CanRead")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CanWrite")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Catalog")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DeletionDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Duration")
                         .HasColumnType("float");
@@ -289,28 +282,15 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.Property<bool>("HiddenInSearches")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("HideSocial")
-                        .HasColumnType("bit");
+                    b.Property<string>("Keywords")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Language")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<Guid?>("MetadataVideoMetadataID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("ProcessSlides")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("Published")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Repository")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<Guid?>("SearchPropertiesID")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SectionID")
                         .HasColumnType("uniqueidentifier");
@@ -323,21 +303,13 @@ namespace RecSysApi.Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Transcription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Unprocessed")
-                        .HasColumnType("bit");
-
                     b.HasKey("VideoID");
-
-                    b.HasIndex("MetadataVideoMetadataID");
-
-                    b.HasIndex("SearchPropertiesID");
 
                     b.HasIndex("SectionID");
 
@@ -346,55 +318,11 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.ToTable("Videos");
                 });
 
-            modelBuilder.Entity("RecSysApi.Domain.Entities.VideoBoxDescription", b =>
-                {
-                    b.Property<Guid>("VideoBoxDescriptionID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Mimetype")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Src")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<Guid?>("VideoSourceID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Width")
-                        .HasColumnType("int");
-
-                    b.HasKey("VideoBoxDescriptionID");
-
-                    b.HasIndex("VideoSourceID");
-
-                    b.ToTable("VideoBoxDescription");
-                });
-
-            modelBuilder.Entity("RecSysApi.Domain.Entities.VideoMetadata", b =>
-                {
-                    b.Property<Guid>("VideoMetadataID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Keywords")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("VideoMetadataID");
-
-                    b.ToTable("VideoMetadata");
-                });
-
             modelBuilder.Entity("RecSysApi.Domain.Entities.VideoSlides", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<Guid>("VideoSlidesID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Mimetype")
                         .HasMaxLength(256)
@@ -415,10 +343,7 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.Property<Guid?>("VideoID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("VideoSlidesID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
+                    b.HasKey("VideoSlidesID");
 
                     b.HasIndex("VideoID");
 
@@ -431,9 +356,8 @@ namespace RecSysApi.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Poster")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
                         .HasMaxLength(256)
@@ -537,14 +461,6 @@ namespace RecSysApi.Infrastructure.Migrations
 
             modelBuilder.Entity("RecSysApi.Domain.Entities.Video", b =>
                 {
-                    b.HasOne("RecSysApi.Domain.Entities.VideoMetadata", "Metadata")
-                        .WithMany()
-                        .HasForeignKey("MetadataVideoMetadataID");
-
-                    b.HasOne("RecSysApi.Domain.Entities.SearchProperties", "Search")
-                        .WithMany()
-                        .HasForeignKey("SearchPropertiesID");
-
                     b.HasOne("RecSysApi.Domain.Entities.Products.Section", "Section")
                         .WithMany("Videos")
                         .HasForeignKey("SectionID")
@@ -555,20 +471,9 @@ namespace RecSysApi.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("SourceVideoSourceID");
 
-                    b.Navigation("Metadata");
-
-                    b.Navigation("Search");
-
                     b.Navigation("Section");
 
                     b.Navigation("Source");
-                });
-
-            modelBuilder.Entity("RecSysApi.Domain.Entities.VideoBoxDescription", b =>
-                {
-                    b.HasOne("RecSysApi.Domain.Entities.VideoSource", null)
-                        .WithMany("VideoBoxDescriptions")
-                        .HasForeignKey("VideoSourceID");
                 });
 
             modelBuilder.Entity("RecSysApi.Domain.Entities.VideoSlides", b =>
@@ -621,11 +526,6 @@ namespace RecSysApi.Infrastructure.Migrations
             modelBuilder.Entity("RecSysApi.Domain.Entities.Video", b =>
                 {
                     b.Navigation("Slides");
-                });
-
-            modelBuilder.Entity("RecSysApi.Domain.Entities.VideoSource", b =>
-                {
-                    b.Navigation("VideoBoxDescriptions");
                 });
 #pragma warning restore 612, 618
         }

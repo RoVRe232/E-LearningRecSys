@@ -11,8 +11,7 @@ namespace RecSysApi.Domain.Entities
         [StringLength(256)]
         public string Url { get; set; }
         [StringLength(256)]
-        public string Id { get; set; }
-        [StringLength(256)]
+
         public string Thumb { get; set; }
         [StringLength(256)]
         public string Time { get; set; }

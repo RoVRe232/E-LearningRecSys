@@ -120,10 +120,10 @@ namespace RecSysApi.Infrastructure.Services
         public async Task<RefreshedAuthTokensDTO> GetRefreshTokenForAuthenticatedUser(Guid userId, string refreshToken)
         {
             var user = await _userRepository
-                .FindAsync(e => e.UserID == userId);
+                .GetUserWithTokensFamilyAsync(e => e.UserID == userId);
             if (user != null)
             {
-                if(user.ActiveRefreshToken.Token != refreshToken)
+                if(user.ActiveRefreshToken.Token != refreshToken.Split(' ')[1])
                 {
                     //Invalidate refresh token family and force user to log in again
                     user.UsedRefreshTokensFamily.Add(user.ActiveRefreshToken);

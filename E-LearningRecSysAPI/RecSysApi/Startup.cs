@@ -1,6 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +37,7 @@ namespace RecSysApi
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.IgnoreNullValues = true;
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); // for enum as strings
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
             var token = Configuration.GetSection("TokenConfiguration");
@@ -71,6 +74,19 @@ namespace RecSysApi
                 });
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
 
+            services.Configure<FormOptions>(options =>
+            {
+                
+                options.MultipartBodyLengthLimit = 10000000000000;
+            });
+
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+                options.EnableForHttps = true;
+            });
+
             services.AddInfrastructureLayerDependencies();
             services.AddDomainLayerDependencies();
             services.AddApplicationLayerDependencies();
@@ -81,7 +97,6 @@ namespace RecSysApi
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -101,6 +116,8 @@ namespace RecSysApi
             });
             app.UseRouting();
             app.UseHttpsRedirection();
+
+            app.UseResponseCompression();
 
             app.UseAuthentication();
             app.UseAuthorization();

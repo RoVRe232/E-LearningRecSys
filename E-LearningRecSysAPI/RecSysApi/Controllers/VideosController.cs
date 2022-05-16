@@ -13,46 +13,32 @@ using System.Threading.Tasks;
 
 namespace RecSysApi.Presentation.Controllers
 {
+    [Route("api/videos")]
     public class VideosController : ApiBaseController
     {
         private readonly ILogger<VideosController> _logger;
-        private readonly IVideosLookupService _videosLookupService;
-        public VideosController(ILogger<VideosController> logger, IVideosLookupService videosLookupService)
+        private readonly IVideosService _videosService;
+        public VideosController(ILogger<VideosController> logger, IVideosService videosService)
         {
             _logger = logger;
-            _videosLookupService = videosLookupService;
+            _videosService = videosService;
+        }
+
+        [HttpPost]
+        [Route("add-source-content")]
+        [DisableRequestSizeLimit]
+        public async Task<string> AddSourceContent([FromForm] VideoSourceUploadDTO source)
+        {
+            return await _videosService.AddVideoSourceContent(source);
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<Video>>> GetVideosForQuery([FromQuery] string keywords, int take, int skip, string sessionId)
+        [Route("get-source-content")]
+        public async Task<string> GetSourceContent([FromQuery] string id)
         {
-            var getVideosQueryDto = new GetVideosQueryDto
-            {
-                Content = new QueryContentDto { BulkKeywords = keywords },
-                Take = take,
-                Skip = skip,
-                SessionId = sessionId
-            };
-            var queryResponse = await _videosLookupService.LookupForVideosAsync(getVideosQueryDto);
-            if (queryResponse == null || queryResponse.Count() == 0)
-                return NotFound(queryResponse);
-
-            return Ok(queryResponse);
+            var result = await _videosService.GetVideoContent(id);
+            //TODO Return video in better format
+            return "data:video/mp4;base64," + System.Convert.ToBase64String(result);
         }
-
-        //[HttpGet]
-        //public ActionResult<ICollection<Video>> GetVideos([FromQuery] string keywords)
-        //{
-        //    var result = new List<Video>();
-        //    var video = new Video
-        //    {
-        //        Id = System.Guid.NewGuid(),
-        //        Title = "VideoTitle",
-        //        Thumbnail = "thumbnailUrl"
-        //    };
-        //    result.Add(video);
-
-        //    return Ok(result);
-        //}
     }
 }

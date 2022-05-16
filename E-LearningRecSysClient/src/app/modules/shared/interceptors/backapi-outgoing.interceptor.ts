@@ -5,7 +5,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { AuthenticatedUserModel } from '../../accounts/models/authenticated-user.model';
 import { AccountService } from '../../accounts/services/account.service';
 
@@ -29,15 +29,21 @@ export class BackapiOutgoingInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
+    console.log('interceptor!!');
     if (this.isLoggedIn && !!this.activeAccount.authToken?.token) {
       let token = this.activeAccount.authToken?.token;
       if (
-        new Date(this.activeAccount.authToken?.expirationDate) <
-        new Date(Date.now())
+        new Date(this.activeAccount.authToken?.expirationDate).getTime() <
+        Date.now()
       ) {
         if (this.activeAccount.refreshToken?.token)
           token = this.activeAccount.refreshToken?.token;
       }
+      if (
+        req.url.endsWith('api/sessions/refreshToken') &&
+        this.activeAccount.refreshToken?.token
+      )
+        token = this.activeAccount.refreshToken?.token;
       const authReq = req.clone({
         headers: req.headers.set('Authorization', `Bearer ${token}`),
       });

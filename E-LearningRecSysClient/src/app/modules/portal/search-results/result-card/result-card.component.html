@@ -1,20 +1,44 @@
 <mat-card
+  *ngIf="!!video && !video.hiddenInSearches"
   fxLayout="row"
   fxLayoutAlign="center-center"
   class="result-card container"
 >
-  <div fxLayout="row" fxLayoutAlign="center center" class="full-width row">
-    <div class="thumbnail-wrapper" fxLayout="column">
-      <img [src]="thumbnailUrl" class="thumbnail-image" />
+  <div fxLayout="row" fxLayoutAlign="start center" class="full-width">
+    <div class="thumbnail-wrapper">
+      <img [src]="video.thumbnail" class="thumbnail-image" />
+      <mat-chip color="primary" class="duration-chip">10:00</mat-chip>
     </div>
     <div
       class="video-description-wrapper column"
       fxLayout="column"
       fxLayoutAlign="start start"
     >
-      <h2 class="video-title">{{ title }}</h2>
-      <h3 class="video-author">{{ author }}</h3>
-      <p class="video-description">{{ description }}</p>
+      <h2 class="video-title">{{ video.title }}</h2>
+      <h3 class="video-author">{{ video.author }}</h3>
+      <p class="video-description">{{ video.description }}</p>
+    </div>
+  </div>
+</mat-card>
+<mat-card
+  *ngIf="!!course && !course.hiddenInSearches"
+  fxLayout="row"
+  fxLayoutAlign="center-center"
+  class="result-card container"
+>
+  <div fxLayout="row" fxLayoutAlign="start center" class="full-width">
+    <div class="thumbnail-wrapper" fxLayout="column">
+      <img [src]="course.thumbnail" class="thumbnail-image" />
+      <mat-chip color="primary" class="duration-chip">10:00</mat-chip>
+    </div>
+    <div
+      class="video-description-wrapper column"
+      fxLayout="column"
+      fxLayoutAlign="start start"
+    >
+      <h2 class="video-title">{{ course.title }}</h2>
+      <h3 class="video-author">{{ course.author }}</h3>
+      <p class="video-description">{{ course.description }}</p>
     </div>
   </div>
 </mat-card>

@@ -1,0 +1,82 @@
+networks:
+  localdev:
+    external: true
+    name: localdev
+services:
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+    - published: 3000
+      target: 3000
+    restart: unless-stopped
+    volumes:
+    - grafana-data:/var/lib/grafana:rw
+  prometheus:
+    build:
+      context: F:\Facultate\Licenta\E-LearningRecSys\E-LearningRecSysAPI
+      dockerfile: Dockerfile-prometheus
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    container_name: prometheus
+    ports:
+    - published: 9090
+      target: 9090
+    restart: unless-stopped
+  recsysapi.presentation:
+    build:
+      context: F:\Facultate\Licenta\E-LearningRecSys\E-LearningRecSysAPI
+      dockerfile: RecSysApi/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: RecSysApi.Presentation
+      target: base
+    container_name: RecSysApi.Presentation
+    depends_on:
+      recsysdb:
+        condition: service_started
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: ''
+    image: recsysapipresentation:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages  "/app/bin/Debug/net5.0/RecSysApi.Presentation.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - target: 80
+    - published: 5006
+      target: 443
+    - target: 443
+    tty: true
+    volumes:
+    - F:\Facultate\Licenta\E-LearningRecSys\E-LearningRecSysAPI\RecSysApi:/app:rw
+    - C:\Users\Remus\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\Remus\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\Remus\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Users\Remus\.nuget\packages:/root/.nuget/packages:ro
+    - F:\Facultate\Licenta\E-LearningRecSys\E-LearningRecSysAPI:/src:rw
+  recsysdb:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: abcDEF123#
+    image: mcr.microsoft.com/mssql/server
+    ports:
+    - published: 5010
+      target: 1433
+    volumes:
+    - recsysdb-data:/app:rw
+version: '3.4'
+volumes:
+  grafana-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  recsysdb-data:
+    driver: local

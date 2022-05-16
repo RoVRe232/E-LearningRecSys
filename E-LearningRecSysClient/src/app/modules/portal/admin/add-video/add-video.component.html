@@ -1,0 +1,65 @@
+<div
+  [formGroup]="videoForm"
+  class="full-width"
+  fxLayout="column"
+  fxLayoutAlign="start center"
+>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>{{ 'Enter video title' }}</mat-label>
+    <input matInput formControlName="title" placeholder="Video title" />
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>{{ 'Enter video keywords' }}</mat-label>
+    <input matInput formControlName="keywords" placeholder="Video keywords" />
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>{{ 'Enter video thumbnail' }}</mat-label>
+    <input matInput formControlName="thumbnail" placeholder="Video thumbnail" />
+  </mat-form-field>
+  <mat-card class="full-width">
+    <mat-form-field appearance="outline">
+      <mat-label>Upload to</mat-label>
+      <mat-select matNativeControl [formControl]="type" required>
+        <mat-option value="MONGO">MongoDB</mat-option>
+        <mat-option value="S3">S3</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'Enter video location' }}</mat-label>
+      <input matInput [formControl]="location" placeholder="Video location" />
+    </mat-form-field>
+    <label for="file">Video content</label>
+    <input id="file" type="file" (change)="uploadDocument($event)" />
+
+    <app-file-upload [fileUploadControl]="videoContent"></app-file-upload>
+  </mat-card>
+
+  <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px">
+    <mat-label>{{ 'Is hidden' }}</mat-label>
+    <input
+      type="checkbox"
+      formControlName="hidden"
+      fxLayout="row"
+      fxLayoutAlign="start start"
+    />
+
+    <mat-label>{{ 'Hidden in searches' }}</mat-label>
+    <input
+      type="checkbox"
+      formControlName="hiddenInSearches"
+      fxLayout="row"
+      fxLayoutAlign="start start"
+    />
+  </div>
+
+  <div class="NgxEditor__Wrapper full-width">
+    <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+    <ngx-editor
+      [editor]="editor"
+      [(ngModel)]="videoDescription"
+      [ngModelOptions]="{ standalone: true }"
+      [disabled]="false"
+      [placeholder]="'Type here course large description...'"
+    ></ngx-editor>
+  </div>
+</div>

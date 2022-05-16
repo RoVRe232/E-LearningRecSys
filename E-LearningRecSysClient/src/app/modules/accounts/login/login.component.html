@@ -37,6 +37,7 @@
           <button
             mat-icon-button
             matSuffix
+            type="button"
             (click)="hidePassword = !hidePassword"
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hidePassword"
@@ -56,6 +57,7 @@
             mat-raised-button
             type="submit"
             [disabled]="loginData.invalid"
+            (keyup.enter)="onSubmit()"
             color="primary"
           >
             Log-in

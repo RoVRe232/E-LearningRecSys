@@ -1,4 +1,4 @@
-import { SearchResultModel } from './search-result.model';
+import { CourseCardModel } from './course-card.model';
 
 export interface SearchResultsBundle {
   keywords: string;
@@ -6,5 +6,5 @@ export interface SearchResultsBundle {
   skip?: number;
   take?: number;
   totalCount?: number;
-  results?: SearchResultModel[];
+  results?: CourseCardModel[];
 }

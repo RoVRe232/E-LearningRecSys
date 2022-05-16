@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs';
-import { HttpService } from '../../shared/services/http.service';
 import { AccountService } from '../services/account.service';
 
 @Component({
@@ -12,7 +10,6 @@ import { AccountService } from '../services/account.service';
 export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
-    private httpService: HttpService,
     private accountService: AccountService,
   ) {}
 
@@ -23,7 +20,7 @@ export class LoginComponent implements OnInit {
   hidePassword = true;
 
   ngOnInit(): void {
-    this.loginData.valueChanges.subscribe((e) => {
+    this.loginData.valueChanges.subscribe(() => {
       const invalidControls = [];
       for (const control in this.loginData.controls) {
         if ((this.loginData.controls[control] as FormControl).invalid) {

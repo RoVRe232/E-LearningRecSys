@@ -24,6 +24,13 @@ import { AuthModule } from '../auth/_auth.module';
 import { UserService } from '../auth/services/user.service';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxEditorModule } from 'ngx-editor';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 
 const materialModules = [
   MatButtonModule,
@@ -40,6 +47,8 @@ const materialModules = [
   MatPaginatorModule,
   MatStepperModule,
   MatExpansionModule,
+  MatCheckboxModule,
+  MatSelectModule,
 ];
 
 @NgModule({
@@ -48,9 +57,14 @@ const materialModules = [
     CommonModule,
     FlexLayoutModule,
     materialModules,
+    NgxEditorModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
   ],
   exports: [
     NavbarComponent,
@@ -59,7 +73,12 @@ const materialModules = [
     FlexLayoutModule,
     ReactiveFormsModule,
     materialModules,
+    NgxEditorModule,
     AuthModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
   ],
   providers: [HttpService, SearchService, UserService],
 })

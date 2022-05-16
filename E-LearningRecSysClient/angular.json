@@ -28,6 +28,7 @@
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "./node_modules/@videogular/ngx-videogular/fonts/videogular.css",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
@@ -95,6 +96,7 @@
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "./node_modules/@videogular/ngx-videogular/fonts/videogular.css",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"

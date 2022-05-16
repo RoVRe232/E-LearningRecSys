@@ -12,8 +12,6 @@ namespace RecSysApi.Domain.Entities
         public Guid VideoSourceID { get; set; }
         [StringLength(256)]
         public string Type { get; set; }
-        public ICollection<VideoBoxDescription> VideoBoxDescriptions { get; set; }
-        [StringLength(256)]
-        public string Poster { get; set; }
+        public string Location { get; set; }
     }
 }
