@@ -1,9 +1,8 @@
 ﻿using RecSysApi.Application.Dtos.Courses;
+using RecSysApi.Application.Dtos.Search;
 using RecSysApi.Application.Dtos.Video;
-using System;
+using RecSysApi.Domain.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RecSysApi.Application.Interfaces
@@ -13,5 +12,7 @@ namespace RecSysApi.Application.Interfaces
         public Task<string> StoreVideoMetadata(VideoDTO video, CourseDTO videosUpvJson);
         public Task<string> AddVideoSourceContent(VideoSourceUploadDTO videoSource);
         public Task<byte[]> GetVideoContent(string id);
+        public Task<List<Video>> SearchForVideos(SearchQueryDTO query);
+        public List<VideoDTO> MapCoursesToCourseDTOs(List<Video> courses);
     }
 }

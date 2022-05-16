@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RecSysApi.Application.Dtos.Courses;
+using RecSysApi.Application.Dtos.Search;
 using RecSysApi.Application.Interfaces;
 using RecSysApi.Domain.Entities.Products;
 using RecSysApi.Domain.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RecSysApi.Application.Services
@@ -32,9 +32,27 @@ namespace RecSysApi.Application.Services
         public async Task<Course> CreateCourse(CourseDTO courseDto)
         {
             var course = _mapper.Map<Course>(courseDto);
-            var result =  await _courseRepository.AddAsync(course);
+            var result = await _courseRepository.AddAsync(course);
             await _unitOfWork.SaveChangesAsync();
             return result;
+        }
+
+        public async Task<List<Course>> SearchForCourses(SearchQueryDTO query)
+        {
+            string searchWords = query.KeyPhrases.Aggregate("", (acc, e) => acc += e);
+            var queryResults = await _courseRepository
+                .GetQuery(e => EF.Functions.FreeText(e.LargeDescription, searchWords) &&
+                     EF.Functions.FreeText(e.SmallDescription, searchWords) &&
+                     EF.Functions.FreeText(e.Name, searchWords))
+                .Skip(query.PaginationOptions.Skip)
+                .Take(query.PaginationOptions.Take)
+                .ToListAsync();
+            return queryResults;
+        }
+
+        public List<CourseDTO> MapCoursesToCourseDTOs(List<Course> courses)
+        {
+            return _mapper.Map<List<CourseDTO>>(courses);
         }
     }
 }

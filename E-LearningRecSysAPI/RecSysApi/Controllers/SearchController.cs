@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RecSysApi.Application.Dtos.Search;
 using RecSysApi.Application.Interfaces;
 using System.Collections.Generic;
@@ -19,9 +18,10 @@ namespace RecSysApi.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ICollection<SearchResultsDTO>>> Search([FromBody]string[] searchTerms) 
+        public async Task<ActionResult<ICollection<SearchResultsDTO>>> Search(SearchQueryDTO searchQueryDTO)
         {
-            
+            var coursesResults = _coursesServices.MapCoursesToCourseDTOs(await _coursesServices.SearchForCourses(searchQueryDTO));
+            var videosResults = _videosService.SearchVideo();
         }
 
     }
