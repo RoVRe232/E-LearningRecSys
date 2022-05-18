@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using RecSysApi.Application.Dtos.Account;
 using RecSysApi.Application.Dtos.Courses;
 using RecSysApi.Application.Dtos.Video;
 using RecSysApi.Application.Interfaces;
 using RecSysApi.Application.Services;
 using RecSysApi.Domain.Entities;
+using RecSysApi.Domain.Entities.Account;
 using RecSysApi.Domain.Entities.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecSysApi.Application
 {
@@ -28,6 +25,7 @@ namespace RecSysApi.Application
                 cfg.CreateMap<Video, VideoDTO>().IgnoreAllNonExisting().PreserveReferences().ReverseMap();
                 cfg.CreateMap<Price, PriceDTO>().IgnoreAllNonExisting().PreserveReferences().ReverseMap();
                 cfg.CreateMap<Section, SectionDTO>().IgnoreAllNonExisting().PreserveReferences().ReverseMap();
+                cfg.CreateMap<Publisher, PublisherDTO>().IgnoreAllNonExisting().PreserveReferences().ReverseMap();
                 cfg.CreateMap<Course, CourseDTO>().IgnoreAllNonExisting().PreserveReferences().ReverseMap();
             });
             autoMapperConfig.AssertConfigurationIsValid();

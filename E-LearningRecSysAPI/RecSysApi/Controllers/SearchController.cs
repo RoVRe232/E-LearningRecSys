@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RecSysApi.Application.Dtos.Search;
 using RecSysApi.Application.Interfaces;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RecSysApi.Presentation.Controllers
 {
-    [Route("api/courses")]
+    [Route("api/search")]
     public class SearchController : ApiBaseController
     {
         private readonly ICoursesService _coursesServices;
@@ -18,10 +17,16 @@ namespace RecSysApi.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ICollection<SearchResultsDTO>>> Search(SearchQueryDTO searchQueryDTO)
+        [Route("query")]
+        public async Task<ActionResult<SearchResultsDTO>> Query(SearchQueryDTO searchQueryDTO)
         {
             var coursesResults = _coursesServices.MapCoursesToCourseDTOs(await _coursesServices.SearchForCourses(searchQueryDTO));
-            var videosResults = _videosService.SearchVideo();
+            var videosResults = _videosService.MapVideosToVideoDTOs(await _videosService.SearchForVideos(searchQueryDTO));
+            return Ok(new SearchResultsDTO
+            {
+                Courses = coursesResults,
+                Videos = videosResults
+            });
         }
 
     }

@@ -1,8 +1,6 @@
-﻿using System;
+﻿using RecSysApi.Domain.Entities.Account;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecSysApi.Domain.Entities.Products
 {
@@ -15,7 +13,8 @@ namespace RecSysApi.Domain.Entities.Products
         public string ThumbnailImage { get; set; }
         public double Hours { get; set; }
         public Guid PriceID { get; set; }
-        
+
+        public virtual Publisher Author { get; set; }
         public virtual Price Price { get; set; }
         public virtual ICollection<Section> Sections { get; set; }
     }

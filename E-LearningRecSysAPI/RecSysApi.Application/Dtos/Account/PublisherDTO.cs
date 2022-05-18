@@ -1,12 +1,10 @@
 ﻿using System;
 
-namespace RecSysApi.Domain.Entities.Account
+namespace RecSysApi.Application.Dtos.Account
 {
-    public class Publisher
+    public class PublisherDTO
     {
         public Guid PublisherID { get; set; }
         public Guid UserID { get; set; }
-
-        public virtual User User { get; set; }
     }
 }

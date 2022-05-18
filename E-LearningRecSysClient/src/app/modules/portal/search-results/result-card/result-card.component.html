@@ -28,7 +28,7 @@
 >
   <div fxLayout="row" fxLayoutAlign="start center" class="full-width">
     <div class="thumbnail-wrapper" fxLayout="column">
-      <img [src]="course.thumbnail" class="thumbnail-image" />
+      <img [src]="course.thumbnailImage" class="thumbnail-image" />
       <mat-chip color="primary" class="duration-chip">10:00</mat-chip>
     </div>
     <div
@@ -36,9 +36,9 @@
       fxLayout="column"
       fxLayoutAlign="start start"
     >
-      <h2 class="video-title">{{ course.title }}</h2>
+      <h2 class="video-title">{{ course.name }}</h2>
       <h3 class="video-author">{{ course.author }}</h3>
-      <p class="video-description">{{ course.description }}</p>
+      <p class="video-description">{{ course.smallDescription }}</p>
     </div>
   </div>
 </mat-card>

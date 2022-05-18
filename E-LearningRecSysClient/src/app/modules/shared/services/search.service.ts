@@ -14,22 +14,7 @@ export interface SearchResults {
 @Injectable({ providedIn: 'root' })
 export class SearchService {
   private testData: SearchResults = {
-    courses: [
-      {
-        title: 'test-title1',
-        author: 'test-author',
-        description: 'test-description of video',
-        thumbnail:
-          'https://user-images.githubusercontent.com/101482/29592647-40da86ca-875a-11e7-8bc3-941700b0a323.png',
-      },
-      {
-        title: 'test-title2',
-        author: 'test-author',
-        description: 'test-description of video',
-        thumbnail:
-          'https://user-images.githubusercontent.com/101482/29592647-40da86ca-875a-11e7-8bc3-941700b0a323.png',
-      },
-    ],
+    courses: [],
     videos: [
       {
         videoId: 'testid',
@@ -87,13 +72,16 @@ export class SearchService {
         if (previousSearches.indexOf(keywords) == -1) {
           previousSearches.push(keywords);
         }
+        previousSearches.reduce((acc, e) => {
+          return acc + e;
+        });
         this.searchAutocompleteOptions.next(previousSearches);
       });
 
     this.keywords.next(keywords);
 
     this.httpService
-      .get(new BackApiHttpRequest('api/Videos', { keywords: keywords }))
+      .get(new BackApiHttpRequest('api/search/query', { keywords: keywords }))
       .pipe(
         take(1),
         map((response) => {
@@ -105,7 +93,8 @@ export class SearchService {
         }),
       )
       .subscribe((searchResults) => {
-        this.searchResults.next(searchResults);
+        console.log(`searchResults ${searchResults}`);
+        // this.searchResults.next(searchResults);
       });
   }
 

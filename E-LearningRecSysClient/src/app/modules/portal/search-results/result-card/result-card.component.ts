@@ -20,9 +20,11 @@ export class ResultCardComponent {
   };
 
   @Input() course: CourseCardModel = {
-    title: 'test-title1',
+    name: 'test-title1',
     author: 'test-author',
-    description: 'test-description of video',
+    smallDescription: 'test-description of video',
+    largeDescription: 'test-large description of video',
+    hours: 100,
     hiddenInSearches: true,
   };
 }
