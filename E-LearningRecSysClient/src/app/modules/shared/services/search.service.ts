@@ -17,7 +17,7 @@ export class SearchService {
     courses: [],
     videos: [
       {
-        videoId: 'testid',
+        videoID: 'testid',
         sectionId: 'string',
         title: 'string',
         description: 'string',
@@ -81,24 +81,29 @@ export class SearchService {
     this.keywords.next(keywords);
 
     this.httpService
-      .get(new BackApiHttpRequest('api/search/query', { keywords: keywords }))
+      .post(
+        new BackApiHttpRequest(
+          'api/search/query',
+          {},
+          {
+            keyPhrases: [keywords],
+            filters: {},
+            paginationOptions: {
+              take: 0,
+              skip: 0,
+            },
+          },
+        ),
+      )
       .pipe(
         take(1),
         map((response) => {
-          if (!response.errors || response.errors.length === 0) {
-            return this.mapSearchResultsDtoToSearchResultsModel(
-              JSON.parse(response.result),
-            );
-          } else return [];
+          return response.result;
         }),
       )
-      .subscribe((searchResults) => {
+      .subscribe((searchResults: SearchResults) => {
         console.log(`searchResults ${searchResults}`);
-        // this.searchResults.next(searchResults);
+        this.searchResults.next(searchResults);
       });
-  }
-
-  private mapSearchResultsDtoToSearchResultsModel(searchResultsDto: object) {
-    return {};
   }
 }

@@ -9,6 +9,7 @@ namespace RecSysApi.Application.Dtos.Video
     public class VideoDTO
     {
         public Guid VideoID { get; set; }
+        public string InternalId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public VideoSourceDTO Source { get; set; }

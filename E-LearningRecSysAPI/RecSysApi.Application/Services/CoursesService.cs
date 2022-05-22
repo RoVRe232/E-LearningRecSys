@@ -41,11 +41,9 @@ namespace RecSysApi.Application.Services
         {
             string searchWords = query.KeyPhrases.Aggregate("", (acc, e) => acc += e);
             var queryResults = await _courseRepository
-                .GetQuery(e => EF.Functions.FreeText(e.LargeDescription, searchWords) &&
-                     EF.Functions.FreeText(e.SmallDescription, searchWords) &&
+                .GetQuery(e => EF.Functions.FreeText(e.LargeDescription, searchWords) ||
+                     EF.Functions.FreeText(e.SmallDescription, searchWords) ||
                      EF.Functions.FreeText(e.Name, searchWords))
-                .Skip(query.PaginationOptions.Skip)
-                .Take(query.PaginationOptions.Take)
                 .ToListAsync();
             return queryResults;
         }

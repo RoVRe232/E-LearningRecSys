@@ -36,7 +36,7 @@ namespace RecSysApi.Application.Services
                 claims.AddClaim(new Claim("AuthToken", "true"));
 
 
-            var expirationDate = DateTime.UtcNow.AddHours(isRefreshToken ? 12 : 3);
+            var expirationDate = DateTime.UtcNow.AddHours(isRefreshToken ? 15 : 6);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

@@ -11,11 +11,7 @@ import { HttpService } from '../../shared/services/http.service';
   styleUrls: ['./contact.component.scss'],
 })
 export class ContactComponent {
-  constructor(
-    private fb: FormBuilder,
-    private httpService: HttpService,
-    private accountService: AccountService,
-  ) {
+  constructor(private fb: FormBuilder, private httpService: HttpService) {
     this.findUserLocation();
   }
 

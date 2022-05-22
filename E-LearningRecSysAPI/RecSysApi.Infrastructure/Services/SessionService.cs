@@ -123,10 +123,11 @@ namespace RecSysApi.Infrastructure.Services
                 .GetUserWithTokensFamilyAsync(e => e.UserID == userId);
             if (user != null)
             {
-                if(user.ActiveRefreshToken.Token != refreshToken.Split(' ')[1])
+                if(user.ActiveRefreshToken == null || user.ActiveRefreshToken.Token != refreshToken.Split(' ')[1])
                 {
                     //Invalidate refresh token family and force user to log in again
-                    user.UsedRefreshTokensFamily.Add(user.ActiveRefreshToken);
+                    if(user.ActiveRefreshToken != null)
+                        user.UsedRefreshTokensFamily.Add(user.ActiveRefreshToken);
                     user.ActiveRefreshToken = null;
 
                     await _unitOfWork.SaveChangesAsync();

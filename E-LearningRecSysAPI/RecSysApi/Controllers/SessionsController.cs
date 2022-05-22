@@ -58,10 +58,6 @@ namespace RecSysApi.Presentation.Controllers
                 {
                     var newAuthTokens = (await _sessionService.GetRefreshTokenForAuthenticatedUser(new Guid(claim.Value), authorizationToken));
 
-                    if (newAuthTokens != null)
-                    {
-                        return Ok(newAuthTokens);
-                    }
                     var response = new BasicHttpResponseDTO<RefreshedAuthTokensDTO>
                     {
                         Success = true,

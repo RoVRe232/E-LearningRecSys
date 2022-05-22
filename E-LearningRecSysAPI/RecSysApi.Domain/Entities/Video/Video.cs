@@ -14,6 +14,7 @@ namespace RecSysApi.Domain.Entities
         [Required]
         public Guid VideoID { get; set; }
         public Guid SectionID { get; set; }
+        public string InternalId { get; set; }
         public Section Section { get; set; }
         [StringLength(256)]
         public string Title { get; set; }

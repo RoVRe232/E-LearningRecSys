@@ -22,7 +22,7 @@ const routes: Routes = [
     component: SearchResultsComponent,
   },
   {
-    path: 'video/watch',
+    path: 'videos/watch',
     component: VideoPageComponent,
   },
   {

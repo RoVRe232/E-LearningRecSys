@@ -57,8 +57,18 @@ namespace RecSysApi.Infrastructure.Services
                 BucketName = "videos",
                 ChunkSizeBytes = 1048576 //1MB
             });
-            var result = await bucket.DownloadAsBytesAsync(new ObjectId(id));
-            return result;
+
+            var filter = Builders<GridFSFileInfo>.Filter.And(
+                Builders<GridFSFileInfo>.Filter.Eq(x => x.Metadata["internalId"], id));
+
+            var cursor = await bucket.FindAsync(filter);
+            var fileInfos = await cursor.ToListAsync();
+            foreach (GridFSFileInfo fileInfo in fileInfos)
+            {
+                var result = await bucket.DownloadAsBytesAsync(fileInfo.Id);
+                return result;
+            }
+            return null;
         }
     }
 }

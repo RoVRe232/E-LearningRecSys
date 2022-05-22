@@ -1,6 +1,7 @@
 export interface VideoCardModel {
-  videoId: string;
+  videoID: string;
   sectionId?: string;
+  internalId?: string;
   title: string;
   description: string;
   source?: {

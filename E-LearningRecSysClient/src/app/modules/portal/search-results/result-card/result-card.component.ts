@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { CourseCardModel } from 'src/app/modules/shared/models/course-card.model';
 import { VideoCardModel } from 'src/app/modules/shared/models/video-card.model';
 
@@ -9,7 +10,7 @@ import { VideoCardModel } from 'src/app/modules/shared/models/video-card.model';
 })
 export class ResultCardComponent {
   @Input() video: VideoCardModel = {
-    videoId: 'null',
+    videoID: 'null',
     title: 'Test',
     description: 'Test Description',
     thumbnail:
@@ -27,4 +28,23 @@ export class ResultCardComponent {
     hours: 100,
     hiddenInSearches: true,
   };
+
+  constructor(private router: Router) {}
+
+  onRedirectToVideo() {
+    console.log(`videoId: ${this.video.videoID}`);
+    this.router.navigate(['/', 'videos', 'watch'], {
+      queryParams: {
+        id: this.video.internalId,
+      },
+    });
+  }
+
+  onRedirectToCourse() {
+    this.router.navigate(['/', 'courses', 'details'], {
+      queryParams: {
+        id: this.course.courseId,
+      },
+    });
+  }
 }

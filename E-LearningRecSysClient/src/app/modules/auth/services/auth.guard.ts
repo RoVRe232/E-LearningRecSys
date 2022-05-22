@@ -12,6 +12,7 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router, private accountService: AccountService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    if (!this.accountService.isLoggedIn) this.accountService.restoreSession();
     return this.accountService.isLoggedIn;
     // TODO check if route is restricted by role
     // if (route.data['roles'] && !route.data['roles'].includes(account.role)) {

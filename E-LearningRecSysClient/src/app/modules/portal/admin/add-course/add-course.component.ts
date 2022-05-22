@@ -157,15 +157,17 @@ export class AddCourseComponent implements OnDestroy {
   }
 
   private getNewVideoFormGroup() {
+    const internalId = this.generateGuid();
     return this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       source: this.fb.group({
-        internalId: [this.generateGuid()],
+        internalId,
         type: [''],
         location: [''],
         videoContent: [null],
       }),
+      internalId,
       keywords: ['', Validators.required],
       thumbnail: ['', Validators.required], // TODO add upload for images
       hidden: [false],

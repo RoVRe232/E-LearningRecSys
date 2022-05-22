@@ -4,46 +4,33 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, take } from 'rxjs';
-import { AuthenticatedUserModel } from '../../accounts/models/authenticated-user.model';
+import { Injectable, Injector } from '@angular/core';
+import { firstValueFrom, Observable, take } from 'rxjs';
 import { AccountService } from '../../accounts/services/account.service';
 
 @Injectable()
 export class BackapiOutgoingInterceptor implements HttpInterceptor {
-  private activeAccount = new AuthenticatedUserModel(
-    'DEFAULT',
-    'DEFAULT',
-    '',
-    '',
-    '',
-    '',
-  );
-  private isLoggedIn = false;
+  constructor(
+    private injector: Injector,
+    private accountService: AccountService,
+  ) {}
 
-  constructor(private accountService: AccountService) {
-    accountService.account.pipe().subscribe((e) => (this.activeAccount = e));
-    accountService.isLoggedIn.pipe().subscribe((e) => (this.isLoggedIn = e));
-  }
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    console.log('interceptor!!');
-    if (this.isLoggedIn && !!this.activeAccount.authToken?.token) {
-      let token = this.activeAccount.authToken?.token;
-      if (
-        new Date(this.activeAccount.authToken?.expirationDate).getTime() <
-        Date.now()
-      ) {
-        if (this.activeAccount.refreshToken?.token)
-          token = this.activeAccount.refreshToken?.token;
+    const account = this.accountService.accountValue; //this.injector.get(AccountService).accountValue;
+
+    if (account.authToken?.token) {
+      let token = account.authToken?.token;
+      if (new Date(account.authToken?.expirationDate).getTime() < Date.now()) {
+        if (account.refreshToken?.token) token = account.refreshToken?.token;
       }
       if (
         req.url.endsWith('api/sessions/refreshToken') &&
-        this.activeAccount.refreshToken?.token
+        account.refreshToken?.token
       )
-        token = this.activeAccount.refreshToken?.token;
+        token = account.refreshToken?.token;
       const authReq = req.clone({
         headers: req.headers.set('Authorization', `Bearer ${token}`),
       });

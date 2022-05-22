@@ -41,10 +41,9 @@ namespace RecSysApi.Application.Services
         {
             string searchWords = query.KeyPhrases.Aggregate("", (acc, e) => acc += e);
             var queryResults = await _videoRepository
-                .GetQuery(e => EF.Functions.FreeText(e.Description, searchWords) &&
-                     EF.Functions.FreeText(e.Title, searchWords))
-                .Skip(query.PaginationOptions.Skip)
-                .Take(query.PaginationOptions.Take)
+                .GetQuery(e => EF.Functions.FreeText(e.Description, searchWords) ||
+                     EF.Functions.FreeText(e.Title, searchWords) ||
+                     EF.Functions.FreeText(e.Keywords, searchWords))
                 .ToListAsync();
             return queryResults;
         }

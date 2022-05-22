@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RecSysApi.Application.Dtos.Http;
 using RecSysApi.Application.Dtos.Search;
 using RecSysApi.Application.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RecSysApi.Presentation.Controllers
@@ -18,14 +20,20 @@ namespace RecSysApi.Presentation.Controllers
 
         [HttpPost]
         [Route("query")]
-        public async Task<ActionResult<SearchResultsDTO>> Query(SearchQueryDTO searchQueryDTO)
+        public async Task<ActionResult<BasicHttpResponseDTO<SearchResultsDTO>>> Query(SearchQueryDTO searchQueryDTO)
         {
+            //See https://www.bricelam.net/2020/08/08/mssql-freetext-and-efcore.html
             var coursesResults = _coursesServices.MapCoursesToCourseDTOs(await _coursesServices.SearchForCourses(searchQueryDTO));
             var videosResults = _videosService.MapVideosToVideoDTOs(await _videosService.SearchForVideos(searchQueryDTO));
-            return Ok(new SearchResultsDTO
+            return Ok(new BasicHttpResponseDTO<SearchResultsDTO>
             {
-                Courses = coursesResults,
-                Videos = videosResults
+                Success = true,
+                Errors = new List<string>(),
+                Result = new SearchResultsDTO
+                {
+                    Courses = coursesResults,
+                    Videos = videosResults
+                }
             });
         }
 

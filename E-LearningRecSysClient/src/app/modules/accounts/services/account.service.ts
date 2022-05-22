@@ -31,8 +31,7 @@ export class AccountService {
     this.account = this.accountSubject.asObservable();
     this.isLoggedIn = this.accountSubject.asObservable().pipe(
       map((e) => {
-        console.log(e);
-        return e.accountId !== 'DEFAULT';
+        return e.accountID !== 'DEFAULT';
       }),
     );
     this.restoreSession();
@@ -84,8 +83,11 @@ export class AccountService {
           .post(refreshTokenReq)
           .pipe(take(1))
           .subscribe((response) => {
-            this.accountSubject.next(JSON.parse(response.result));
-            this.startRefreshTokenTimer();
+            const accountState = { ...this.accountValue };
+            accountState.authToken = response.result.authToken;
+            accountState.refreshToken = response.result.refreshToken;
+            this.accountSubject.next(accountState);
+            localStorage.setItem('user', JSON.stringify(accountState));
           });
       }
     });
@@ -111,7 +113,7 @@ export class AccountService {
           return;
         }
       }
-      if (account.userId) {
+      if (account.userID) {
         this.accountSubject.next(account);
         this.startRefreshTokenTimer();
       }
@@ -120,13 +122,7 @@ export class AccountService {
 
   private startRefreshTokenTimer() {
     if (this.accountValue.authToken) {
-      const token = JSON.parse(
-        atob(this.accountValue.authToken.token.split('.')[1]),
-      );
-
-      const reloadInterval = new Date(token.exp).getTime() - Date.now() / 1000;
-      if (reloadInterval < 10800) this.refreshToken();
-      this.refreshTokenTimeout = timer(10800000, 10800000).subscribe((_) =>
+      this.refreshTokenTimeout = timer(1000, 10799000).subscribe((_) =>
         this.refreshToken(),
       );
     }
