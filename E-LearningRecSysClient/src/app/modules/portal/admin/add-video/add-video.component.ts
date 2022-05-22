@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Editor, Validators } from 'ngx-editor';
 import { BehaviorSubject, concatMap, filter, Subject, takeUntil } from 'rxjs';
@@ -20,7 +20,7 @@ export class AddVideoComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private httpClient: HttpClient) {
     this.videoForm = this.fb.group({
       title: ['', Validators.required],
-      description: [this.videoDescription],
+      description: [''],
       videoSource: this.fb.group({
         internalId: [this.generateGuid()],
         type: [''],
@@ -41,6 +41,9 @@ export class AddVideoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.editor.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((e) => this.description.setValue(e));
     this.isSubmitted
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -85,6 +88,15 @@ export class AddVideoComponent implements OnInit, OnDestroy {
     return this.videoSource.get('videoContent') as FormControl;
   }
 
+  get description() {
+    return this.videoForm.get('description') as FormControl;
+  }
+
+  descriptionChanged(event: any) {
+    console.log(this.videoDescription);
+    this.description.setValue(this.videoDescription);
+  }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(true);
     this.ngUnsubscribe.complete();
@@ -93,14 +105,6 @@ export class AddVideoComponent implements OnInit, OnDestroy {
   }
 
   uploadDocument(event: any) {
-    // var fr = new FileReader();
-    // fr.onloadend = function(){
-    //   //fr.result will be an ArrayBuffer so create an Int8Array view
-    //   var data = new Int8Array(fr.result);
-    //   //use data as you wish.
-    // };
-    // fr.readFileAsArrayBuffer(file.files[0]);
-
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);

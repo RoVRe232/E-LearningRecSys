@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CourseCardModel } from 'src/app/modules/shared/models/course-card.model';
 import { VideoCardModel } from 'src/app/modules/shared/models/video-card.model';
+import { SearchService } from 'src/app/modules/shared/services/search.service';
 
 @Component({
   selector: 'app-result-card',
@@ -29,10 +30,11 @@ export class ResultCardComponent {
     hiddenInSearches: true,
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private searchService: SearchService) {}
 
   onRedirectToVideo() {
     console.log(`videoId: ${this.video.videoID}`);
+    this.searchService.storeQueryKeywordsToStorage();
     this.router.navigate(['/', 'videos', 'watch'], {
       queryParams: {
         id: this.video.internalId,
@@ -41,6 +43,7 @@ export class ResultCardComponent {
   }
 
   onRedirectToCourse() {
+    this.searchService.storeQueryKeywordsToStorage();
     this.router.navigate(['/', 'courses', 'details'], {
       queryParams: {
         id: this.course.courseId,

@@ -10,7 +10,6 @@ import {
 } from '@angular/forms';
 import { Editor } from 'ngx-editor';
 import { BehaviorSubject } from 'rxjs';
-import { HttpService } from 'src/app/modules/shared/services/http.service';
 
 @Component({
   selector: 'app-add-course',
@@ -28,11 +27,7 @@ export class AddCourseComponent implements OnDestroy {
   sectionIndex = new FormControl(0);
   videoIndex = new FormControl(0);
 
-  constructor(
-    private fb: FormBuilder,
-    private httpService: HttpService,
-    private httpClient: HttpClient,
-  ) {
+  constructor(private fb: FormBuilder, private httpClient: HttpClient) {
     this.editor = new Editor();
   }
 
@@ -141,7 +136,6 @@ export class AddCourseComponent implements OnDestroy {
 
   onSubmit() {
     this.largeDescription.setValue(this.courseDescription);
-    console.log(this.courseData.value);
     const formData = new FormData();
     formData.append('name', this.name.value);
 

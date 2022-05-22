@@ -60,6 +60,7 @@
       [ngModelOptions]="{ standalone: true }"
       [disabled]="false"
       [placeholder]="'Type here course large description...'"
+      (change)="descriptionChanged($event)"
     ></ngx-editor>
   </div>
 </div>

@@ -65,10 +65,25 @@
             <mat-panel-description> Results for courses </mat-panel-description>
           </mat-expansion-panel-header>
           <div
-            class="result-card-wrapper"
-            *ngFor="let course of searchResults?.courses"
+            class="full-width full-height"
+            *ngIf="searchResults && searchResults?.videos?.length"
           >
-            <app-result-card [course]="course"></app-result-card>
+            <div
+              class="result-card-wrapper"
+              *ngFor="let course of searchResults?.courses"
+            >
+              <app-result-card [course]="course"></app-result-card>
+            </div>
+          </div>
+          <div
+            class="full-width full-height"
+            *ngIf="
+              !searchResults ||
+              !searchResults?.videos ||
+              !searchResults?.videos?.length
+            "
+          >
+            <h3>No results... Try searching for something else.</h3>
           </div>
         </mat-expansion-panel>
         <mat-expansion-panel [expanded]="true">
@@ -77,10 +92,25 @@
             <mat-panel-description> Results for videos </mat-panel-description>
           </mat-expansion-panel-header>
           <div
-            class="result-card-wrapper"
-            *ngFor="let video of searchResults?.videos"
+            class="full-width full-height"
+            *ngIf="searchResults && searchResults?.videos?.length"
           >
-            <app-result-card [video]="video"></app-result-card>
+            <div
+              class="result-card-wrapper"
+              *ngFor="let video of searchResults?.videos"
+            >
+              <app-result-card [video]="video"></app-result-card>
+            </div>
+          </div>
+          <div
+            class="full-width full-height"
+            *ngIf="
+              !searchResults ||
+              !searchResults?.videos ||
+              !searchResults?.videos?.length
+            "
+          >
+            <h3>No results... Try searching for something else.</h3>
           </div>
         </mat-expansion-panel>
       </mat-accordion>

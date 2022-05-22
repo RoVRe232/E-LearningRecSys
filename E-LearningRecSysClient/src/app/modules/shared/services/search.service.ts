@@ -15,36 +15,7 @@ export interface SearchResults {
 export class SearchService {
   private testData: SearchResults = {
     courses: [],
-    videos: [
-      {
-        videoID: 'testid',
-        sectionId: 'string',
-        title: 'string',
-        description: 'string',
-        source: {
-          videoSourceId: 'string',
-          type: 'string',
-          location: 'string',
-        },
-        keywords: 'string',
-        thumbnail:
-          'https://user-images.githubusercontent.com/101482/29592647-40da86ca-875a-11e7-8bc3-941700b0a323.png',
-        slides: [
-          {
-            videoSlidesId: 'string',
-            mimetype: 'string',
-            url: 'string',
-          },
-        ],
-        hidden: false,
-        creationDate: new Date(Date.now()),
-        language: 'string',
-        hiddenInSearches: false,
-        duration: 10,
-        transcription: 'string',
-        author: 'string',
-      },
-    ],
+    videos: [],
   };
 
   public searchAutocompleteOptions: BehaviorSubject<Array<string>>;
@@ -80,30 +51,55 @@ export class SearchService {
 
     this.keywords.next(keywords);
 
-    this.httpService
-      .post(
-        new BackApiHttpRequest(
-          'api/search/query',
-          {},
-          {
-            keyPhrases: [keywords],
-            filters: {},
-            paginationOptions: {
-              take: 0,
-              skip: 0,
+    const concatKeywords = this.searchTags.value.reduce(
+      (acc: string, e: SearchTagModel) => (acc += e.value + ' '),
+      '',
+    );
+
+    console.log(`concatKeywords ${concatKeywords}`);
+    if (concatKeywords) {
+      this.httpService
+        .post(
+          new BackApiHttpRequest(
+            'api/search/query',
+            {},
+            {
+              keyPhrases: [concatKeywords],
+              filters: {},
+              paginationOptions: {
+                take: 0,
+                skip: 0,
+              },
             },
-          },
-        ),
-      )
-      .pipe(
-        take(1),
-        map((response) => {
-          return response.result;
-        }),
-      )
-      .subscribe((searchResults: SearchResults) => {
-        console.log(`searchResults ${searchResults}`);
-        this.searchResults.next(searchResults);
-      });
+          ),
+        )
+        .pipe(
+          take(1),
+          map((response) => {
+            return response.result;
+          }),
+        )
+        .subscribe((searchResults: SearchResults) => {
+          console.log(`searchResults ${searchResults}`);
+          this.searchResults.next(searchResults);
+        });
+    } else {
+      this.searchResults.next({ courses: [], videos: [] } as SearchResults);
+    }
+  }
+
+  public storeQueryKeywordsToStorage() {
+    localStorage.setItem(
+      'user_last_query',
+      JSON.stringify(this.searchTags.value),
+    );
+  }
+
+  public retrieveQueryKeywordsFromStorage() {
+    const user_last_query = localStorage.getItem('user_last_query');
+    if (user_last_query) {
+      this.searchTags = JSON.parse(user_last_query);
+      this.performAnonymousSearch('', JSON.parse(user_last_query));
+    }
   }
 }

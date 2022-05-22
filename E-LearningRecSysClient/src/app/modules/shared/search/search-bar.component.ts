@@ -87,11 +87,18 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
 
   public remove(chip: SearchTagModel): void {
-    const index = this.searchTags.indexOf(chip);
-    this.submitAnonymousSearch();
+    this.searchService.searchTags.next(
+      this.searchService.searchTags.value.filter(
+        (e: SearchTagModel) => e.value !== chip.value,
+      ),
+    );
 
-    if (index >= 0) {
-      this.searchTags.splice(index, 1);
-    }
+    this.submitAnonymousSearch();
+  }
+
+  public addSelectedOptionToSearchQuery(value: string) {
+    console.log('addSelectedOptionToSearchQuery');
+    this.searchTags.push({ value, active: true });
+    this.submitAnonymousSearchTag(value);
   }
 }
