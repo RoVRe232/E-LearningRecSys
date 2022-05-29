@@ -20,7 +20,7 @@ export class AddVideoComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private httpClient: HttpClient) {
     this.videoForm = this.fb.group({
       title: ['', Validators.required],
-      description: [''],
+      description: ['Test'],
       videoSource: this.fb.group({
         internalId: [this.generateGuid()],
         type: [''],
@@ -41,9 +41,9 @@ export class AddVideoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.editor.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((e) => this.description.setValue(e));
+    // this.editor.valueChanges
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe((e) => this.description.setValue(e));
     this.isSubmitted
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -94,7 +94,7 @@ export class AddVideoComponent implements OnInit, OnDestroy {
 
   descriptionChanged(event: any) {
     console.log(this.videoDescription);
-    this.description.setValue(this.videoDescription);
+    this.description.setValue('this.videoDescription');
   }
 
   ngOnDestroy(): void {

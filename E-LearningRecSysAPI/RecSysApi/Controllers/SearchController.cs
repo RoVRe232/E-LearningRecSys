@@ -23,6 +23,8 @@ namespace RecSysApi.Presentation.Controllers
         public async Task<ActionResult<BasicHttpResponseDTO<SearchResultsDTO>>> Query(SearchQueryDTO searchQueryDTO)
         {
             //See https://www.bricelam.net/2020/08/08/mssql-freetext-and-efcore.html
+            if (searchQueryDTO.PaginationOptions.Take <= 0)
+                searchQueryDTO.PaginationOptions.Take = 10;
             var coursesResults = _coursesServices.MapCoursesToCourseDTOs(await _coursesServices.SearchForCourses(searchQueryDTO));
             var videosResults = _videosService.MapVideosToVideoDTOs(await _videosService.SearchForVideos(searchQueryDTO));
             return Ok(new BasicHttpResponseDTO<SearchResultsDTO>

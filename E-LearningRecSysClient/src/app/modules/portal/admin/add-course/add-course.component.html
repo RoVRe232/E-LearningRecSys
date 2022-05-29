@@ -28,6 +28,16 @@
           placeholder="Course smallDescription"
         />
       </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{
+          'Enter course keywords separated by space (first keyword will be considered as main)'
+        }}</mat-label>
+        <input
+          matInput
+          formControlName="courseKeywords"
+          placeholder="Course smallDescription"
+        />
+      </mat-form-field>
       <div class="NgxEditor__Wrapper full-width" style="overflow: scroll">
         <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
         <ngx-editor

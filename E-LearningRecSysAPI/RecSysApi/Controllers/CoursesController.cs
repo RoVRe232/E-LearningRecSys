@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RecSysApi.Application.Dtos.Account;
 using RecSysApi.Application.Dtos.Courses;
+using RecSysApi.Application.Dtos.Http;
 using RecSysApi.Application.Interfaces;
 using RecSysApi.Domain.Entities.Products;
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RecSysApi.Presentation.Controllers
@@ -14,9 +18,11 @@ namespace RecSysApi.Presentation.Controllers
     public class CoursesController : ApiBaseController
     {
         private readonly ICoursesService _coursesServices;
-        public CoursesController(ICoursesService coursesService)
+        private readonly ISessionService _sessionService;
+        public CoursesController(ICoursesService coursesService, ISessionService sessionService)
         {
             _coursesServices = coursesService;
+            _sessionService = sessionService;
         }
 
         [HttpGet]
@@ -27,12 +33,36 @@ namespace RecSysApi.Presentation.Controllers
 
         [HttpPost]
         [DisableRequestSizeLimit]
-        public async Task<ActionResult<bool>> CreateCourse([FromBody] CourseDTO course)
+        public async Task<ActionResult<BasicHttpResponseDTO<bool>>> CreateCourse([FromBody] CourseDTO course)
         {
-            var courseResult = await _coursesServices.CreateCourse(course);
-            if (courseResult == null)
-                return BadRequest();
-            return Ok(true);
+            
+            //TODO ADD CLAIMS EXTRACTOR MIDDLEWARE
+            var claimsIdentiy = User.Claims.GetEnumerator();
+            do
+            {
+                var claim = claimsIdentiy.Current;
+                if (claim != null && claim.Type != null && claim.Type == ClaimTypes.NameIdentifier)
+                {
+                    var userDetails = await _sessionService.GetAuthenticatedUserAsync(new Guid(claim.Value));
+                    course.Account = new AccountDTO
+                    {
+                        AccountID = userDetails.AccountID
+                    };
+                    var courseResult = await _coursesServices.CreateCourse(course);
+
+                    //TODO RETURN DTO HERE!!
+                    var response = new BasicHttpResponseDTO<bool>
+                    {
+                        Success = true,
+                        Errors = new List<string>(),
+                        Result = true
+                    };
+                    return Ok(response);
+                }
+
+            } while (claimsIdentiy.MoveNext());
+            
+            return BadRequest();
         }
 
         [HttpPut]

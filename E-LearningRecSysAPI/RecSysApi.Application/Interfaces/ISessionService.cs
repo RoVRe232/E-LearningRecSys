@@ -13,6 +13,7 @@ namespace RecSysApi.Application.Interfaces
     {
         public Task<User> GetUserFromLoginAsync(LoginData login);
         public Task<UserDetailsDTO> GetUserDetailsAsync(Guid userId);
+        public Task<AuthenticatedUserDTO> GetAuthenticatedUserAsync(Guid userId);
         public Task<AuthenticatedUserDTO> GetAuthenticatedUserFromLoginAsync(LoginDTO login);
         public Task<bool> CreateUnconfirmedUserAsync(SignupDTO signupData);
         public Task<bool> CreateUnconfirmedAdminAsync(SignupDTO signupData, string confirmationToken);

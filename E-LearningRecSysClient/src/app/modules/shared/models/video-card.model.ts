@@ -22,5 +22,8 @@ export interface VideoCardModel {
   hiddenInSearches?: boolean;
   duration: number;
   transcription?: string;
-  author?: string;
+  account?: {
+    accountID: string;
+    name: string;
+  };
 }

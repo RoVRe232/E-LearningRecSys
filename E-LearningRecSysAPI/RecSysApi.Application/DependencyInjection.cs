@@ -18,6 +18,7 @@ namespace RecSysApi.Application
         {
             var autoMapperConfig = new MapperConfiguration(cfg =>
             {
+                cfg.CreateMap<Account, AccountDTO>().IgnoreAllNonExisting().PreserveReferences().ReverseMap();
                 cfg.CreateMap<VideoSource, VideoSourceDTO>()
                     .IgnoreAllNonExisting()
                     .PreserveReferences()

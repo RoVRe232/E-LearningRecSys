@@ -85,6 +85,39 @@ namespace RecSysApi.Infrastructure.Services
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
+
+        public async Task<AuthenticatedUserDTO> GetAuthenticatedUserAsync(Guid userId)
+        {
+            var user = await _userRepository
+               .GetUserWithAccountByExpressionAsync(e => e.UserID == userId);
+
+            var authenticatedUser = new AuthenticatedUserDTO
+            {
+                UserID = user.UserID,
+                AccountID = user.AccountID,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role,
+                AuthToken = _authService.GenerateToken(user),
+                RefreshToken = _authService.GenerateToken(user, true)
+            };
+
+            user.ActiveRefreshToken = new JwtToken
+            {
+                Token = authenticatedUser.RefreshToken.Token,
+                ExpirationDate = authenticatedUser.RefreshToken.ExpirationDate
+            };
+
+            if (user != null)
+            {
+                await _unitOfWork.SaveChangesAsync();
+                return authenticatedUser;
+            }
+
+            throw new ApplicationException("User does not exist");
+        }
+
         public async Task<AuthenticatedUserDTO> GetAuthenticatedUserFromLoginAsync(LoginDTO login)
         {
             var user = await _userRepository
@@ -107,10 +140,9 @@ namespace RecSysApi.Infrastructure.Services
                 ExpirationDate = authenticatedUser.RefreshToken.ExpirationDate
             };
 
-            await _unitOfWork.SaveChangesAsync();
-
             if (user != null && BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
             {
+                await _unitOfWork.SaveChangesAsync();
                 return authenticatedUser;
             }
 

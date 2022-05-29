@@ -3,6 +3,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { SearchFiltersModel } from '../../shared/models/search-filters.model';
 import { SearchTagModel } from '../../shared/models/search-tag.model';
 import {
+  IntervalSearchFilter,
+  SearchFilter,
+  SearchFilterType,
   SearchResults,
   SearchService,
 } from '../../shared/services/search.service';
@@ -14,11 +17,12 @@ import {
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<boolean>();
-
+  public searchFilters: SearchFilter[] = [];
   public searchResults: SearchResults | null = null;
   public searchTags: SearchTagModel[] = [];
   public keywords = '';
   public showFiller = true;
+  public searchFilterTypeEnum = SearchFilterType;
   public categories: Array<SearchFiltersModel> = [
     {
       name: 'Java',
@@ -31,9 +35,15 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     },
   ];
 
-  constructor(private searchService: SearchService) {}
+  constructor(private searchService: SearchService) {
+    this.initializeSearchFilters();
+  }
 
   ngOnInit(): void {
+    this.searchService.performAnonymousSearch(
+      this.searchService.keywords.value,
+      [],
+    );
     this.searchService.searchResults
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((result) => (this.searchResults = result));
@@ -50,26 +60,122 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
 
   allComplete = false;
 
-  updateAllComplete(filters: SearchFiltersModel) {
-    this.allComplete =
-      filters.subtasks != null && filters.subtasks.every((t) => t.completed);
+  updateAllComplete(filtersGroup: SearchFilter) {
+    filtersGroup.allCompleted = true;
+    filtersGroup.filters != null &&
+      filtersGroup.filters.every((t) => t.checked);
   }
 
-  someComplete(filters: SearchFiltersModel): boolean {
-    if (filters.subtasks == null) {
+  someComplete(filtersGroup: SearchFilter): boolean {
+    if (filtersGroup.filters == null) {
       return false;
     }
     return (
-      filters.subtasks.filter((t) => t.completed).length > 0 &&
-      !this.allComplete
+      filtersGroup.filters.filter((t) => t.checked).length > 0 &&
+      !filtersGroup.allCompleted
     );
   }
 
-  setAll(filters: SearchFiltersModel, completed: boolean) {
-    this.allComplete = completed;
-    if (filters.subtasks == null) {
+  setAll(filtersGroup: SearchFilter, checked: boolean) {
+    filtersGroup.allCompleted = checked;
+    if (filtersGroup.filters == null) {
       return;
     }
-    filters.subtasks.forEach((t) => (t.completed = completed));
+    filtersGroup.filters.forEach((t) => (t.checked = checked));
+  }
+
+  asIntervalSearchFilter(searchFilter: SearchFilter): IntervalSearchFilter {
+    return searchFilter as IntervalSearchFilter;
+  }
+
+  initializeSearchFilters() {
+    this.searchFilters = [
+      {
+        name: 'Courses',
+        type: SearchFilterType.CHECKBOX_ALL,
+        description: '(246)',
+        checked: false,
+        color: 'primary',
+        filters: [
+          {
+            name: 'Java',
+            type: SearchFilterType.CHECKBOX,
+            description: '(123)',
+            checked: false,
+            color: 'primary',
+          },
+          {
+            name: 'C#',
+            type: SearchFilterType.CHECKBOX,
+            description: '(123)',
+            checked: false,
+            color: 'primary',
+          },
+        ],
+      },
+      {
+        name: 'Authors',
+        type: SearchFilterType.CHECKBOX_ALL,
+        description: '(246)',
+        checked: false,
+        color: 'primary',
+        filters: [
+          {
+            name: 'Author1',
+            type: SearchFilterType.CHECKBOX,
+            description: '(123)',
+            checked: false,
+            color: 'primary',
+          },
+          {
+            name: 'Author2',
+            type: SearchFilterType.CHECKBOX,
+            description: '(123)',
+            checked: false,
+            color: 'primary',
+          },
+        ],
+      },
+      {
+        name: 'Price',
+        type: SearchFilterType.INTERVAL,
+        description: '(500)',
+        checked: false,
+        color: 'primary',
+        filters: [
+          {
+            name: 'Course price',
+            type: SearchFilterType.INTERVAL,
+            description: '(123)',
+            checked: false,
+            color: 'primary',
+            lowerBound: 10,
+            upperBound: 70,
+            lowValue: 10,
+            highValue: 70,
+          } as IntervalSearchFilter,
+        ],
+      },
+      {
+        name: 'Duration',
+        type: SearchFilterType.INTERVAL,
+        description: '(minutes)',
+        checked: false,
+        color: 'primary',
+        filters: [
+          {
+            name: 'Duration (in minutes)',
+            type: SearchFilterType.INTERVAL,
+            description: '(123)',
+            checked: false,
+            color: 'primary',
+            lowerBound: 20,
+            upperBound: 50,
+            lowValue: 20,
+            highValue: 50,
+          } as IntervalSearchFilter,
+        ],
+      },
+    ];
   }
 }

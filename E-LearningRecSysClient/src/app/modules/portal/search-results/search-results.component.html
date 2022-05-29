@@ -16,37 +16,66 @@
         <mat-accordion [multi]="true" class="full-width">
           <mat-expansion-panel
             [expanded]="true"
-            *ngFor="let category of categories"
+            *ngFor="let filtersGroup of searchFilters"
           >
             <mat-expansion-panel-header>
-              <mat-panel-title> Java Courses </mat-panel-title>
-              <mat-panel-description> Description </mat-panel-description>
+              <mat-panel-title> {{ filtersGroup.name }} </mat-panel-title>
             </mat-expansion-panel-header>
             <section class="example-section">
-              <span class="example-list-section">
-                <mat-checkbox
-                  class="example-margin"
-                  [checked]="allComplete"
-                  [color]="category.color"
-                  [indeterminate]="someComplete(category)"
-                  (change)="setAll(category, $event.checked)"
-                >
-                  {{ category.name }}
-                </mat-checkbox>
-              </span>
-              <span class="example-list-section">
-                <ul>
-                  <li *ngFor="let subtask of category.subtasks">
-                    <mat-checkbox
-                      [(ngModel)]="subtask.completed"
-                      [color]="subtask.color"
-                      (ngModelChange)="updateAllComplete(category)"
+              <div
+                *ngIf="
+                  filtersGroup.type === searchFilterTypeEnum.CHECKBOX_ALL ||
+                  filtersGroup.type === searchFilterTypeEnum.CHECKBOX
+                "
+              >
+                <span class="example-list-section">
+                  <mat-checkbox
+                    class="example-margin"
+                    [checked]="filtersGroup.checked!"
+                    [color]="filtersGroup.color"
+                    [indeterminate]="someComplete(filtersGroup)"
+                    (change)="setAll(filtersGroup, $event.checked)"
+                  >
+                    {{ 'All' + ' - ' + filtersGroup.description }}
+                  </mat-checkbox>
+                </span>
+                <span class="example-list-section">
+                  <ul>
+                    <li *ngFor="let innerFilter of filtersGroup.filters">
+                      <mat-checkbox
+                        [(ngModel)]="innerFilter.checked"
+                        [color]="innerFilter.color"
+                        (ngModelChange)="updateAllComplete(filtersGroup)"
+                      >
+                        {{ innerFilter.name + ' - ' + innerFilter.description }}
+                      </mat-checkbox>
+                    </li>
+                  </ul>
+                </span>
+              </div>
+              <div *ngIf="filtersGroup.type === searchFilterTypeEnum.INTERVAL">
+                <span class="example-list-section">
+                  <ul>
+                    <li
+                      *ngFor="let innerFilter of filtersGroup.filters"
+                      class="custom-slider"
                     >
-                      {{ subtask.name }}
-                    </mat-checkbox>
-                  </li>
-                </ul>
-              </span>
+                      <ngx-slider
+                        [(value)]="asIntervalSearchFilter(innerFilter).lowValue"
+                        [(highValue)]="
+                          asIntervalSearchFilter(innerFilter).highValue
+                        "
+                        [options]="{
+                          floor: asIntervalSearchFilter(innerFilter).lowerBound,
+                          ceil: asIntervalSearchFilter(innerFilter).upperBound,
+                          showTicks: true,
+                          noSwitching: true
+                        }"
+                      ></ngx-slider>
+                    </li>
+                  </ul>
+                </span>
+              </div>
             </section>
           </mat-expansion-panel>
         </mat-accordion>

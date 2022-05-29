@@ -5,6 +5,7 @@ using RecSysApi.Application.Dtos.Video;
 using RecSysApi.Application.Interfaces;
 using RecSysApi.Domain.Entities;
 using RecSysApi.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,13 +40,27 @@ namespace RecSysApi.Application.Services
 
         public async Task<List<Video>> SearchForVideos(SearchQueryDTO query)
         {
-            string searchWords = query.KeyPhrases.Aggregate("", (acc, e) => acc += e);
-            var queryResults = await _videoRepository
-                .GetQuery(e => EF.Functions.FreeText(e.Description, searchWords) ||
-                     EF.Functions.FreeText(e.Title, searchWords) ||
-                     EF.Functions.FreeText(e.Keywords, searchWords))
-                .ToListAsync();
-            return queryResults;
+            if (query.KeyPhrases != null && query.KeyPhrases.Count() > 0 && query.KeyPhrases.All(e => !String.IsNullOrEmpty(e)))
+            {
+                string searchWords = query.KeyPhrases.Aggregate("", (acc, e) => acc += e);
+                var queryResults = await _videoRepository
+                    .GetQuery(e => EF.Functions.FreeText(e.Description, searchWords) ||
+                         EF.Functions.FreeText(e.Title, searchWords) ||
+                         EF.Functions.FreeText(e.Keywords, searchWords))
+                    .Skip(query.PaginationOptions.Skip)
+                    .Take(query.PaginationOptions.Take)
+                    .ToListAsync();
+                return queryResults;
+
+            } else {
+                var queryResults = await _videoRepository
+                    .GetQuery(e => true)
+                    .OrderBy(e => e.VideoID)
+                    .Skip(query.PaginationOptions.Skip)
+                    .Take(query.PaginationOptions.Take)
+                    .ToListAsync();
+                return queryResults;
+            }
         }
 
         public List<VideoDTO> MapVideosToVideoDTOs(List<Video> videos)

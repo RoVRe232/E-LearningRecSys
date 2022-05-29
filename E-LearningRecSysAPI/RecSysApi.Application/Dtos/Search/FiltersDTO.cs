@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace RecSysApi.Application.Dtos.Search
 {
-    public class QueryFiltersDTO
+    public class FiltersDTO
     {
+
     }
 }

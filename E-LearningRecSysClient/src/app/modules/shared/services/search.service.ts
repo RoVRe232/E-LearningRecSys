@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
 import { BehaviorSubject, map, take } from 'rxjs';
 import { BackApiHttpRequest } from '../models/back-api-http-request.model';
 import { CourseCardModel } from '../models/course-card.model';
@@ -6,9 +7,32 @@ import { SearchTagModel } from '../models/search-tag.model';
 import { VideoCardModel } from '../models/video-card.model';
 import { HttpService } from './http.service';
 
+export enum SearchFilterType {
+  CHECKBOX_ALL = 0,
+  CHECKBOX = 1,
+  INTERVAL = 2,
+}
+
 export interface SearchResults {
   courses?: CourseCardModel[];
   videos?: VideoCardModel[];
+}
+
+export interface SearchFilter {
+  name: string;
+  type: SearchFilterType;
+  description?: string;
+  allCompleted?: boolean;
+  checked?: boolean;
+  color: ThemePalette;
+  filters?: SearchFilter[];
+}
+
+export interface IntervalSearchFilter extends SearchFilter {
+  lowerBound: number;
+  upperBound: number;
+  lowValue: number;
+  highValue: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -37,6 +61,7 @@ export class SearchService {
   }
 
   public performAnonymousSearch(keywords: string, tags: SearchTagModel[]) {
+    //TODO Add support for reloading previous queries
     this.searchAutocompleteOptions
       .pipe(take(1))
       .subscribe((previousSearches) => {
@@ -57,7 +82,7 @@ export class SearchService {
     );
 
     console.log(`concatKeywords ${concatKeywords}`);
-    if (concatKeywords) {
+    if (concatKeywords != null && concatKeywords != undefined) {
       this.httpService
         .post(
           new BackApiHttpRequest(

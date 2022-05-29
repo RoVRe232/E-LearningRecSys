@@ -6,6 +6,7 @@ using RecSysApi.Application.Dtos.Search;
 using RecSysApi.Application.Interfaces;
 using RecSysApi.Domain.Entities.Products;
 using RecSysApi.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,13 +40,27 @@ namespace RecSysApi.Application.Services
 
         public async Task<List<Course>> SearchForCourses(SearchQueryDTO query)
         {
-            string searchWords = query.KeyPhrases.Aggregate("", (acc, e) => acc += e);
-            var queryResults = await _courseRepository
-                .GetQuery(e => EF.Functions.FreeText(e.LargeDescription, searchWords) ||
-                     EF.Functions.FreeText(e.SmallDescription, searchWords) ||
-                     EF.Functions.FreeText(e.Name, searchWords))
-                .ToListAsync();
-            return queryResults;
+            if(query.KeyPhrases != null && query.KeyPhrases.Count() > 0 && query.KeyPhrases.All(e=> !String.IsNullOrEmpty(e)))
+            {
+                string searchWords = query.KeyPhrases.Aggregate("", (acc, e) => acc += e);
+                var queryResults = await _courseRepository
+                    .GetCoursesWithAccountByExpressionAsync(e => EF.Functions.FreeText(e.LargeDescription, searchWords) ||
+                         EF.Functions.FreeText(e.SmallDescription, searchWords) ||
+                         EF.Functions.FreeText(e.Name, searchWords))
+                    .Skip(query.PaginationOptions.Skip)
+                    .Take(query.PaginationOptions.Take)
+                    .ToListAsync();
+                return queryResults;
+            } else
+            {
+                var queryResults = await _courseRepository
+                    .GetCoursesWithAccountByExpressionAsync(e => true)
+                    .OrderBy(e => e.CourseID)
+                    .Skip(query.PaginationOptions.Skip)
+                    .Take(query.PaginationOptions.Take)
+                    .ToListAsync();
+                return queryResults;
+            }
         }
 
         public List<CourseDTO> MapCoursesToCourseDTOs(List<Course> courses)

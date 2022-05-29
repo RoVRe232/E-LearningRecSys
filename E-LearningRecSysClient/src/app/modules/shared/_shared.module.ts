@@ -31,6 +31,7 @@ import { VgCoreModule } from '@videogular/ngx-videogular/core';
 import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 const materialModules = [
   MatButtonModule,
@@ -58,6 +59,7 @@ const materialModules = [
     FlexLayoutModule,
     materialModules,
     NgxEditorModule,
+    NgxSliderModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -74,6 +76,7 @@ const materialModules = [
     ReactiveFormsModule,
     materialModules,
     NgxEditorModule,
+    NgxSliderModule,
     AuthModule,
     VgCoreModule,
     VgControlsModule,

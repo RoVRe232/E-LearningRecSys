@@ -9,6 +9,7 @@
   font-weight: 500;
   font-size: 22px;
   margin-bottom: 12px;
+  line-height: 20px;
 }
 
 .thumbnail-image {
@@ -29,6 +30,39 @@
 .duration-chip{
   position: absolute;
   z-index: 1;
-  left: 214px;
+  left: 194px;
   top: 146px;
+}
+
+.user {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.video-author{
+  margin-bottom: 0px;
+}
+
+.author-info-wrapper{
+  margin-bottom: 16px;
+}
+
+.purchase-options-wrapper {
+  .shown-price {
+    font-size: 22px;
+    line-break: unset;
+    width: 140px;
+  }
+
+  .purchase-action-button {
+    width: 140px;
+    font-size: 18px;
+    font-weight: 500;
+  }
 }
