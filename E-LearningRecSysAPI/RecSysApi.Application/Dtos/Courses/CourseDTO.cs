@@ -1,5 +1,4 @@
-﻿using RecSysApi.Application.Dtos.Account;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace RecSysApi.Application.Dtos.Courses
@@ -13,7 +12,7 @@ namespace RecSysApi.Application.Dtos.Courses
         public string Keywords { get; set; }
         public string ThumbnailImage { get; set; }
         public double Hours { get; set; }
-        public AccountDTO Account { get; set; }
+        public Guid AccountID { get; set; }
         public PriceDTO Price { get; set; }
         public ICollection<SectionDTO> Sections { get; set; }
     }
