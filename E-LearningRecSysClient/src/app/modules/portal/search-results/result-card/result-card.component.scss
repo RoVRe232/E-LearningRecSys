@@ -58,11 +58,18 @@
     font-size: 22px;
     line-break: unset;
     width: 140px;
+    text-align: center;
   }
 
   .purchase-action-button {
     width: 140px;
     font-size: 18px;
+    font-weight: 500;
+  }
+
+  .remove-action-button {
+    width: 150px;
+    font-size: 14px;
     font-weight: 500;
   }
 }

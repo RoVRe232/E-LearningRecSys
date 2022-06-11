@@ -70,7 +70,15 @@
       fxLayout="row"
       fxLayoutAlign="space-between center"
     >
-      <button mat-fab aria-label="Cart" color="primary">
+      <button
+        mat-fab
+        aria-label="Cart"
+        [routerLink]="['/cart']"
+        color="primary"
+      >
+        <div mat-fab class="cart-size-container">
+          {{ cartService.cartSize | async }}
+        </div>
         <mat-icon class="shopping-cart-icon">shopping_cart</mat-icon>
       </button>
       <button
@@ -103,7 +111,15 @@
       fxLayout="row"
       fxLayoutAlign="space-between center"
     >
-      <button mat-fab aria-label="Cart" color="primary">
+      <button
+        mat-fab
+        aria-label="Cart"
+        [routerLink]="['/cart']"
+        color="primary"
+      >
+        <div mat-fab class="cart-size-container">
+          {{ cartService.cartSize | async }}
+        </div>
         <mat-icon class="shopping-cart-icon">shopping_cart</mat-icon>
       </button>
       <button

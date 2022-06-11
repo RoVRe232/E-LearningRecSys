@@ -1,0 +1,11 @@
+<div
+  fxLayout="column"
+  fxLayoutAlign="start start"
+  fxLayoutGap="16px"
+  class="cart-summary-wrapper full-width"
+>
+  <div class="result-card-wrapper" *ngFor="let item of cartContent">
+    <app-result-card [course]="item" [isCartSummary]="true"></app-result-card>
+  </div>
+  <hr />
+</div>

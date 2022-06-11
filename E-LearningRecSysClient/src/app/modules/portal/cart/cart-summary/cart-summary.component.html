@@ -1,0 +1,40 @@
+<div
+  fxLayout="column"
+  fxLayoutAlign="start start"
+  fxLayoutGap="8px"
+  class="cart-summary-wrapper full-width"
+>
+  <div
+    class="full-width"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+    *ngFor="let item of cartSummary.cartSummaryItems"
+  >
+    <p>{{ item.name }}</p>
+    <p class="shown-price">
+      <i
+        ><b>{{ formattedPrice(item) }}</b></i
+      >
+    </p>
+  </div>
+  <hr class="full-width" />
+  <div class="full-width" fxLayout="row" fxLayoutAlign="space-between center">
+    <h1 class="total">{{ 'Total' }}</h1>
+    <h2>
+      <p class="shown-price">
+        <i
+          ><b>{{ formattedTotal() }}</b></i
+        >
+      </p>
+    </h2>
+  </div>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    class="to-checkout-action-button full-width"
+    (click)="onCheckoutRedirect()"
+  >
+    {{ 'Checkout' }}
+  </button>
+</div>

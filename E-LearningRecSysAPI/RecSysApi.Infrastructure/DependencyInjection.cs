@@ -25,7 +25,6 @@ namespace RecSysApi.Infrastructure
             //var connection = "Server=127.0.0.1,5010;User ID=SA;Password=abcDEF123#;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0;Integrated Security=false";
             services.AddTransient<IVideosStorageService, VideosStorageService>();
             services.AddSingleton<IHttpService, HttpService>();
-            services.AddScoped<IVideosRetrievalService, VideosRetrievalService>();
             services.AddDbContext<RecSysApiContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("RecSysApi.Infrastructure")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ISessionService, SessionService>();

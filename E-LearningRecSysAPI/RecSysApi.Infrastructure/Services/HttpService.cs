@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RecSysApi.Application.Interfaces;
-using RecSysApi.Domain.Entities;
+using RecSysApi.Domain.Commons.Models;
 using RecSysApi.Domain.Interfaces;
 using System;
 using System.Linq;

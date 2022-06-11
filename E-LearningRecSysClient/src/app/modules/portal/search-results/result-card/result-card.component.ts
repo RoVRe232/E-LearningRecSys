@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CourseCardModel } from 'src/app/modules/shared/models/course-card.model';
 import { VideoCardModel } from 'src/app/modules/shared/models/video-card.model';
+import { CartService } from 'src/app/modules/shared/services/cart.service';
 import { SearchService } from 'src/app/modules/shared/services/search.service';
 
 @Component({
@@ -10,6 +11,7 @@ import { SearchService } from 'src/app/modules/shared/services/search.service';
   styleUrls: ['./result-card.component.scss'],
 })
 export class ResultCardComponent {
+  @Input() isCartSummary = false;
   @Input() video: VideoCardModel = {
     videoID: 'null',
     title: 'Test',
@@ -51,7 +53,11 @@ export class ResultCardComponent {
     return 'Owned';
   }
 
-  constructor(private router: Router, private searchService: SearchService) {}
+  constructor(
+    private router: Router,
+    private searchService: SearchService,
+    private cartService: CartService,
+  ) {}
 
   onRedirectToVideo() {
     console.log(`videoId: ${this.video.videoID}`);
@@ -67,9 +73,18 @@ export class ResultCardComponent {
     this.searchService.storeQueryKeywordsToStorage();
     this.router.navigate(['/', 'courses', 'details'], {
       queryParams: {
-        id: this.course.courseId,
+        id: this.course.courseID,
       },
     });
+  }
+
+  onAddToCart() {
+    this.cartService.addCourseToCardContent(this.course);
+  }
+
+  onRemoveFromCart(courseId: string | undefined) {
+    console.log(courseId);
+    if (courseId) this.cartService.removeCourseFromCardContent(courseId);
   }
 
   get videoDurationHHMMSS() {

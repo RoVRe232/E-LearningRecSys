@@ -1,5 +1,5 @@
 export interface CourseCardModel {
-  courseId?: string;
+  courseID?: string;
   name: string;
   smallDescription: string;
   largeDescription: string;

@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RecSysApi.Domain.Entities
+namespace RecSysApi.Domain.Commons.Models
 {
     public class RequestUrl<T>
     {
@@ -14,7 +14,7 @@ namespace RecSysApi.Domain.Entities
         public string Protocol { get; set; }
         public string Domain { get; set; }
         public string Path { get; set; }
-        public ICollection<Tuple<string,string>> QueryParams { get; set; }
+        public ICollection<Tuple<string, string>> QueryParams { get; set; }
         public string Anchor { get; set; }
     }
 }

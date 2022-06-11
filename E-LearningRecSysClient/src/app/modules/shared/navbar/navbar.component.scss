@@ -16,4 +16,15 @@
   .log-in-text {
     margin: 8px !important;
   }
+  .cart-size-container{
+    position: absolute;
+    z-index: 1;
+    background-color: gray;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 12px;
+    top: -6px;
+    left: -6px;
+  }
 }

@@ -3,7 +3,6 @@
   fxLayout="row"
   fxLayoutAlign="center-center"
   class="result-card container"
-  (click)="onRedirectToCourse()"
 >
   <div fxLayout="row" fxLayoutAlign="space-between center" class="full-width">
     <div class="full-height" fxLayout="row" fxLayoutGap="32px">
@@ -39,6 +38,7 @@
       </div>
     </div>
     <div
+      *ngIf="!isCartSummary"
       class="purchase-options-wrapper full-height"
       fxLayout="column"
       fxLayoutAlign="start start"
@@ -54,6 +54,7 @@
         color="primary"
         type="button"
         class="purchase-action-button"
+        (click)="onAddToCart()"
       >
         {{ 'Add to cart' }}
       </button>
@@ -63,6 +64,27 @@
         class="purchase-action-button"
       >
         {{ 'Buy now' }}
+      </button>
+    </div>
+    <div
+      *ngIf="isCartSummary"
+      class="purchase-options-wrapper full-height"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      fxLayoutGap="12px"
+    >
+      <p class="shown-price">
+        <i
+          ><b>{{ formattedPrice }}</b></i
+        >
+      </p>
+      <button
+        mat-raised-button
+        type="button"
+        class="remove-action-button"
+        (click)="onRemoveFromCart(course.courseID)"
+      >
+        {{ 'Remove from cart' }}
       </button>
     </div>
   </div>

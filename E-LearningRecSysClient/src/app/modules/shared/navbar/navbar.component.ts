@@ -1,18 +1,20 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AuthenticatedUserModel } from '../../accounts/models/authenticated-user.model';
 import { AccountService } from '../../accounts/services/account.service';
 import { UserService } from '../../auth/services/user.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnDestroy {
+export class NavbarComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<boolean>();
+  public cartSize = 0;
 
   public searchGroup = this.formBuilder.group({
     searchControl: [''],
@@ -31,11 +33,21 @@ export class NavbarComponent implements OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     public accountService: AccountService,
+    public cartService: CartService,
   ) {
     accountService.account
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((e) => {
         this.account = e;
+      });
+  }
+
+  ngOnInit(): void {
+    this.cartService.cartSize
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((e) => {
+        console.log(e);
+        this.cartSize = e;
       });
   }
 

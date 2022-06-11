@@ -7,6 +7,7 @@ import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { VideoPageComponent } from './video-page/video-page.component';
+import { CartPageComponent } from './cart/cart-page.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'admin/add-course',
     component: AddCourseComponent,
+  },
+  {
+    path: 'cart',
+    component: CartPageComponent,
   },
 ];
 

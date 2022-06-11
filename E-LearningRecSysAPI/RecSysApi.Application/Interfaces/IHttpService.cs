@@ -1,4 +1,4 @@
-﻿using RecSysApi.Domain.Entities;
+﻿using RecSysApi.Domain.Commons.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

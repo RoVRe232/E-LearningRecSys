@@ -32,6 +32,7 @@ import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { CartService } from './services/cart.service';
 
 const materialModules = [
   MatButtonModule,
@@ -83,6 +84,6 @@ const materialModules = [
     VgOverlayPlayModule,
     VgBufferingModule,
   ],
-  providers: [HttpService, SearchService, UserService],
+  providers: [UserService],
 })
 export class SharedModule {}

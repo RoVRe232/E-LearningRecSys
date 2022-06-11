@@ -14,6 +14,9 @@ import { SearchResultsComponent } from './search-results/search-results.componen
 import { PortalRoutingModule } from './_portal-routing.module';
 import { FormsModule } from '@angular/forms';
 import { VideoPageComponent } from './video-page/video-page.component';
+import { CartPageComponent } from './cart/cart-page.component';
+import { CartSummaryComponent } from './cart/cart-summary/cart-summary.component';
+import { CartOverviewComponent } from './cart/cart-overview/cart-overview.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,9 @@ import { VideoPageComponent } from './video-page/video-page.component';
     FileUploadComponent,
     VideoWrapperComponent,
     VideoPageComponent,
+    CartPageComponent,
+    CartSummaryComponent,
+    CartOverviewComponent,
   ],
   imports: [
     PortalRoutingModule,

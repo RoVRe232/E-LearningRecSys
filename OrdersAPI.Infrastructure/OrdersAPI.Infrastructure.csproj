@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\E-LearningRecSysAPI\RecSysApi.Domain\RecSysApi.Domain.csproj" />
+    <ProjectReference Include="..\OrdersAPI.Application\OrdersAPI.Application.csproj" />
+  </ItemGroup>
+
+</Project>

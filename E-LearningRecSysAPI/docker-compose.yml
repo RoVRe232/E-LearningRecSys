@@ -18,6 +18,15 @@ services:
       - "5006:443"
     depends_on:
       - recsysdb
+  ordersapi.presentation:
+    image: ${DOCKER_REGISTRY-}ordersapipresentation
+    build:
+      context: .
+      dockerfile: ../OrdersAPI/Dockerfile
+    ports:
+      - "5004:443"
+    depends_on:
+      - recsysdb
   recsysdb:
     image: "mcr.microsoft.com/mssql/server"
     volumes: 

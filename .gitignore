@@ -1,2 +1,8 @@
 /E-LearningRecSysAPI/bin/*
 /E-LearningRecSysAPI/obj/*
+/OrdersAPI/bin/*
+/OrdersAPI/obj/*
+/OrdersAPI.Application/bin/*
+/OrdersAPI.Application/obj/*
+/OrdersAPI.Infrastructure/bin/*
+/OrdersAPI.Infrastructure/obj/*
