@@ -40,7 +40,7 @@ namespace RecSysApi.Application.Services
 
         public async Task<List<Course>> SearchForCourses(SearchQueryDTO query)
         {
-            if(query.KeyPhrases != null && query.KeyPhrases.Count() > 0 && query.KeyPhrases.All(e=> !String.IsNullOrEmpty(e)))
+            if (query.KeyPhrases != null && query.KeyPhrases.Count() > 0 && query.KeyPhrases.All(e => !String.IsNullOrEmpty(e)))
             {
                 string searchWords = query.KeyPhrases.Aggregate("", (acc, e) => acc += e);
                 var queryResults = await _courseRepository
@@ -51,7 +51,8 @@ namespace RecSysApi.Application.Services
                     .Take(query.PaginationOptions.Take)
                     .ToListAsync();
                 return queryResults;
-            } else
+            }
+            else
             {
                 var queryResults = await _courseRepository
                     .GetCoursesWithAccountByExpressionAsync(e => true)

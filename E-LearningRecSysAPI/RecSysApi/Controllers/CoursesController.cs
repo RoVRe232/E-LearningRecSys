@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RecSysApi.Application.Dtos.Account;
 using RecSysApi.Application.Dtos.Courses;
 using RecSysApi.Application.Dtos.Http;
 using RecSysApi.Application.Dtos.Orders;
@@ -39,7 +37,7 @@ namespace RecSysApi.Presentation.Controllers
         [DisableRequestSizeLimit]
         public async Task<ActionResult<BasicHttpResponseDTO<bool>>> CreateCourse([FromBody] CourseDTO course)
         {
-            
+
             //TODO ADD CLAIMS EXTRACTOR MIDDLEWARE
             var claimsIdentiy = User.Claims.GetEnumerator();
             do
@@ -48,10 +46,8 @@ namespace RecSysApi.Presentation.Controllers
                 if (claim != null && claim.Type != null && claim.Type == ClaimTypes.NameIdentifier)
                 {
                     var userDetails = await _sessionService.GetAuthenticatedUserAsync(new Guid(claim.Value));
-                    course.Account = new AccountDTO
-                    {
-                        AccountID = userDetails.AccountID
-                    };
+                    course.AccountID = userDetails.AccountID;
+
                     var courseResult = await _coursesServices.CreateCourse(course);
 
                     //TODO RETURN DTO HERE!!
@@ -65,7 +61,7 @@ namespace RecSysApi.Presentation.Controllers
                 }
 
             } while (claimsIdentiy.MoveNext());
-            
+
             return BadRequest();
         }
 
