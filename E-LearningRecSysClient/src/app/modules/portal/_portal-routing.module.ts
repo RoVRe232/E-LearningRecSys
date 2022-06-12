@@ -8,6 +8,9 @@ import { HomeComponent } from './home/home.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { VideoPageComponent } from './video-page/video-page.component';
 import { CartPageComponent } from './cart/cart-page.component';
+import { OwnedCoursesPageComponent } from './owned-courses-page/owned-courses-page.component';
+import { CourseDetailsComponent } from './shared/course-details/course-details.component';
+import { CourseDetailsPageComponent } from './course/course-details-page/course-details-page.component';
 
 const routes: Routes = [
   {
@@ -21,6 +24,14 @@ const routes: Routes = [
   {
     path: 'search-results',
     component: SearchResultsComponent,
+  },
+  {
+    path: 'courses/owned-courses',
+    component: OwnedCoursesPageComponent,
+  },
+  {
+    path: 'course/details',
+    component: CourseDetailsPageComponent,
   },
   {
     path: 'videos/watch',

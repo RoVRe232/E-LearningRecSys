@@ -9,6 +9,7 @@ export interface CourseCardModel {
   externalLink?: string;
   internalLink?: string;
   hiddenInSearches?: boolean;
+  owned?: boolean;
   account?: {
     accountID: string;
     name: string;

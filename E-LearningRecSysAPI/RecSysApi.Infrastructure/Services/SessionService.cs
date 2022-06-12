@@ -7,6 +7,7 @@ using RecSysApi.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -155,18 +156,18 @@ namespace RecSysApi.Infrastructure.Services
                 .GetUserWithTokensFamilyAsync(e => e.UserID == userId);
             if (user != null)
             {
-                if(user.ActiveRefreshToken == null || user.ActiveRefreshToken.Token != refreshToken.Split(' ')[1])
-                {
-                    //Invalidate refresh token family and force user to log in again
-                    if(user.ActiveRefreshToken != null)
-                        user.UsedRefreshTokensFamily.Add(user.ActiveRefreshToken);
-                    user.ActiveRefreshToken = null;
+                //if(user.ActiveRefreshToken == null || user.ActiveRefreshToken.Token != refreshToken.Split(' ')[1])
+                //{
+                    //TODO Invalidate refresh token family and force user to log in again
+                    //if(user.ActiveRefreshToken != null)
+                    //    user.UsedRefreshTokensFamily.Add(user.ActiveRefreshToken);
+                    //user.ActiveRefreshToken = null;
 
-                    await _unitOfWork.SaveChangesAsync();
+                    //await _unitOfWork.SaveChangesAsync();
 
-                    throw new ApplicationException("Refresh token invalidated");
-                }
-                else
+                    //throw new ApplicationException("Refresh token invalidated");
+                //}
+                //else
                 {
                     var refreshedAuthTokens = new RefreshedAuthTokensDTO
                     {
@@ -187,6 +188,21 @@ namespace RecSysApi.Infrastructure.Services
             }
 
             throw new ApplicationException("Invalid username or password or user does not exist");
+        }
+
+        public async Task<AuthenticatedUserDTO> GetAuthenticatedUserFromClaimsAsync(IEnumerator<Claim> claimsIdentiy)
+        {
+            do
+            {
+                var claim = claimsIdentiy.Current;
+                if (claim != null && claim.Type != null && claim.Type == ClaimTypes.NameIdentifier)
+                {
+                    var userDetails = await GetAuthenticatedUserAsync(new Guid(claim.Value));
+                    return userDetails;
+                }
+
+            } while (claimsIdentiy.MoveNext());
+            return null;
         }
 
         public async Task<UserDetailsDTO> GetUserDetailsAsync(Guid userId)

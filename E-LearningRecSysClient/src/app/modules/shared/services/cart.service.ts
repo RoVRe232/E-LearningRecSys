@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { map, Subject } from 'rxjs';
+import { map, Subject, take } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { BackApiHttpRequest } from '../models/back-api-http-request.model';
 import { CartSummaryItemModel } from '../models/cart-summary-item.model';
 import { CartSummaryModel } from '../models/cart-summary.model';
 import { CourseCardModel } from '../models/course-card.model';
@@ -75,5 +76,20 @@ export class CartService {
   public storeCartContentToLocalStorage() {
     const cartState = [...this.cartContent.value];
     localStorage.setItem('cartContent', JSON.stringify(cartState));
+  }
+
+  public sendOrderToApi() {
+    const orderRequest = new BackApiHttpRequest(
+      'api/courses/new-order',
+      {},
+      {
+        courses: this.cartContent.value,
+        created: new Date(Date.now()),
+      },
+    );
+    this.httpService
+      .post(orderRequest)
+      .pipe(take(1))
+      .subscribe((order) => console.log(order));
   }
 }

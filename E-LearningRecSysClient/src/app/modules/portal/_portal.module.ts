@@ -18,6 +18,9 @@ import { CartPageComponent } from './cart/cart-page.component';
 import { CartSummaryComponent } from './cart/cart-summary/cart-summary.component';
 import { CartOverviewComponent } from './cart/cart-overview/cart-overview.component';
 import { CourseSectionsOverviewComponent } from './shared/course-sections-overview/course-sections-overview.component';
+import { OwnedCoursesPageComponent } from './owned-courses-page/owned-courses-page.component';
+import { CourseDetailsComponent } from './shared/course-details/course-details.component';
+import { CourseDetailsPageComponent } from './course/course-details-page/course-details-page.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { CourseSectionsOverviewComponent } from './shared/course-sections-overvi
     CartSummaryComponent,
     CartOverviewComponent,
     CourseSectionsOverviewComponent,
+    OwnedCoursesPageComponent,
+    CourseDetailsComponent,
+    CourseDetailsPageComponent,
   ],
   imports: [
     PortalRoutingModule,
@@ -49,6 +55,7 @@ import { CourseSectionsOverviewComponent } from './shared/course-sections-overvi
     SearchResultsComponent,
     ResultCardComponent,
     ContactComponent,
+    CourseDetailsComponent,
   ],
 })
 export class PortalModule {}

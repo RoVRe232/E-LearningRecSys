@@ -11,6 +11,7 @@ export interface CourseModel {
   hours?: number;
   accountID?: string;
   account?: AccountModel;
+  owned?: boolean;
   price?: {
     amount: number;
     currency: string;

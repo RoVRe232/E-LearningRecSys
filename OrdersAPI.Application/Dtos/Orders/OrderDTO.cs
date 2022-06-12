@@ -1,5 +1,6 @@
 ﻿using OrdersAPI.Application.Dtos.Account;
 using OrdersAPI.Application.Dtos.Courses;
+using RecSysApi.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace OrdersAPI.Application.Dtos.Orders
     {
         public Guid OrderID { get; set; }
         public Guid AccountID { get; set; }
-        public List<CourseDTO> Courses { get; set; } = new List<CourseDTO>();
+        public List<Course> Courses { get; set; } = new List<Course>();
         public DateTime Created { get; set; }
         public virtual AccountDTO? Account{ get; set; }
         public bool Acknowladged { get; set; }

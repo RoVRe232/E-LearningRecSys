@@ -1,0 +1,14 @@
+<div class="main-wrapper">
+  <div fxLayout="row" fxLayoutAlign="center start" class="full-width">
+    <h2>{{ 'Your owned courses' }}</h2>
+  </div>
+  <div
+    fxLayout="row"
+    fxLayoutAlign="space-around start"
+    class="full-width full-height"
+  >
+    <div class="result-card-wrapper" *ngFor="let item of courses">
+      <app-result-card [course]="item" [isOwnedItem]="true"></app-result-card>
+    </div>
+  </div>
+</div>

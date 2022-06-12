@@ -18,7 +18,8 @@ namespace OrdersAPI.Infrastructure
             //Swap to this connection string for Update Database commands
             //var connection = "Server=127.0.0.1,5010;User ID=SA;Password=abcDEF123#;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0;Integrated Security=false";
             services.AddSingleton<IHttpService, HttpService>();
-            services.AddDbContext<RecSysApiContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("RecSysApi.Infrastructure")));
+            services.AddTransient<IOrdersService, OrdersService>();
+            services.AddDbContext<RecSysApiContext>(options => options.UseSqlServer(connection));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

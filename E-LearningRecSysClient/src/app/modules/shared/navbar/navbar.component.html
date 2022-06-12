@@ -35,23 +35,15 @@
         type="button"
         [routerLink]="['/search-results']"
       >
-        {{ 'Search' | uppercase }}
+        {{ 'Search Courses & Videos' | uppercase }}
       </button>
       <button
         mat-raised-button
         class="navigation-button"
         type="button"
-        [routerLink]="['/videos/categories']"
+        [routerLink]="['/courses/owned-courses']"
       >
-        {{ 'Courses' | uppercase }}
-      </button>
-      <button
-        mat-raised-button
-        class="navigation-button"
-        type="button"
-        [routerLink]="['/videos/bundles']"
-      >
-        {{ 'Educational Bundles' | uppercase }}
+        {{ 'Owned Courses' | uppercase }}
       </button>
       <button
         mat-raised-button

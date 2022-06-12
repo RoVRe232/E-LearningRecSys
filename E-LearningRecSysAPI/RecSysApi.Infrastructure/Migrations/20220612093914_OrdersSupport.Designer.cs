@@ -10,7 +10,7 @@ using RecSysApi.Infrastructure.Context;
 namespace RecSysApi.Infrastructure.Migrations
 {
     [DbContext(typeof(RecSysApiContext))]
-    [Migration("20220611160410_OrdersSupport")]
+    [Migration("20220612093914_OrdersSupport")]
     partial class OrdersSupport
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,9 @@ namespace RecSysApi.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AccountID");
@@ -151,7 +154,29 @@ namespace RecSysApi.Infrastructure.Migrations
 
                     b.HasIndex("CourseID");
 
-                    b.ToTable("CourseLicense");
+                    b.ToTable("CourseLicenses");
+                });
+
+            modelBuilder.Entity("RecSysApi.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Property<Guid>("OrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AccountID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Acknowladged")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("OrderID");
+
+                    b.HasIndex("AccountID");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("RecSysApi.Domain.Entities.Products.Bundle", b =>
@@ -200,6 +225,9 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("OrderID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("PriceID")
                         .HasColumnType("uniqueidentifier");
 
@@ -214,6 +242,8 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.HasIndex("AccountID");
 
                     b.HasIndex("BundleID");
+
+                    b.HasIndex("OrderID");
 
                     b.HasIndex("PriceID");
 
@@ -462,6 +492,15 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("RecSysApi.Domain.Entities.Orders.Order", b =>
+                {
+                    b.HasOne("RecSysApi.Domain.Entities.Account.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountID");
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("RecSysApi.Domain.Entities.Products.Bundle", b =>
                 {
                     b.HasOne("RecSysApi.Domain.Entities.Account.Account", null)
@@ -478,6 +517,10 @@ namespace RecSysApi.Infrastructure.Migrations
                     b.HasOne("RecSysApi.Domain.Entities.Products.Bundle", null)
                         .WithMany("Courses")
                         .HasForeignKey("BundleID");
+
+                    b.HasOne("RecSysApi.Domain.Entities.Orders.Order", null)
+                        .WithMany("Courses")
+                        .HasForeignKey("OrderID");
 
                     b.HasOne("RecSysApi.Domain.Entities.Products.Price", "Price")
                         .WithMany()
@@ -557,6 +600,11 @@ namespace RecSysApi.Infrastructure.Migrations
             modelBuilder.Entity("RecSysApi.Domain.Entities.Account.User", b =>
                 {
                     b.Navigation("UsedRefreshTokensFamily");
+                });
+
+            modelBuilder.Entity("RecSysApi.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("RecSysApi.Domain.Entities.Products.Bundle", b =>

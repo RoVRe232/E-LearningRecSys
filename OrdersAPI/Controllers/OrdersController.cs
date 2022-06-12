@@ -19,7 +19,7 @@ namespace OrdersAPI.Presentation.Controllers
 
         [Route("create-order")]
         [HttpPost]
-        public async Task<ActionResult<OrderDTO>> CreateOrder([FromQuery] OrderDTO order)
+        public async Task<ActionResult<OrderDTO>> CreateOrder([FromBody] OrderDTO order)
         {
             var orderResult = await _ordersService.CreateOrder(order);
             if (orderResult == true)

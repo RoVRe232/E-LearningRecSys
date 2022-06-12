@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RecSysApi.Domain.Entities;
 using RecSysApi.Domain.Entities.Account;
+using RecSysApi.Domain.Entities.Licenses;
+using RecSysApi.Domain.Entities.Orders;
 using RecSysApi.Domain.Entities.Products;
 
 namespace RecSysApi.Infrastructure.Context
@@ -20,7 +22,8 @@ namespace RecSysApi.Infrastructure.Context
         public DbSet<Bundle> Bundles { get; set; }
         public DbSet<Price> Prices { get; set; }
         public DbSet<Section> Sections { get; set; }
-
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<CourseLicense> CourseLicenses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Video>().ToTable("Videos");
@@ -32,7 +35,8 @@ namespace RecSysApi.Infrastructure.Context
             modelBuilder.Entity<Bundle>().ToTable("Bundles");
             modelBuilder.Entity<Price>().ToTable("Prices");
             modelBuilder.Entity<Section>().ToTable("Sections");
-
+            modelBuilder.Entity<Order>().ToTable("Orders");
+            modelBuilder.Entity<CourseLicense>().ToTable("CourseLicenses");
         }
     }
 }

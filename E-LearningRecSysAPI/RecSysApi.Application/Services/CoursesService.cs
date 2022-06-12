@@ -75,9 +75,32 @@ namespace RecSysApi.Application.Services
             return _mapper.Map<CourseDTO>(queryResult);
         }
 
+        public async Task<List<CourseDTO>> GetOwnedCourses(Guid accountId)
+        {
+            var ownedLicensesIds = (await _unitOfWork.CourseLicenses.GetQuery(e => e.AccountID == accountId).ToArrayAsync())
+                .Select(e=> e.CourseID);
+
+            var ownedCourses = await _unitOfWork.Courses.GetQuery(e => ownedLicensesIds.Contains(e.CourseID)).ToListAsync();
+            return _mapper.Map<List<CourseDTO>>(ownedCourses);
+        }
+
         public List<CourseDTO> MapCoursesToCourseDTOs(List<Course> courses)
         {
             return _mapper.Map<List<CourseDTO>>(courses);
+        }
+
+        public async Task<List<CourseDTO>> CheckIfCoursesAreOwnedByAccount(List<CourseDTO> courses, Guid AccountID)
+        {
+            var checkedCourses = new List<CourseDTO>();
+            foreach (var result in courses)
+            {
+                var owned = await _unitOfWork.CourseLicenses.FirstOrDefaultAsync(e => e.CourseID == result.CourseID && e.AccountID == AccountID);
+                result.Owned = false;
+                if (owned != null)
+                    result.Owned = true;
+                checkedCourses.Add(result);
+            }
+            return checkedCourses;
         }
     }
 }

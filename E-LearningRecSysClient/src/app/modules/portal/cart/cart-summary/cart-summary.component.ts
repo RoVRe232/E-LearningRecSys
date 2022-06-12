@@ -12,6 +12,8 @@ import { CartService } from 'src/app/modules/shared/services/cart.service';
 export class CartSummaryComponent {
   @Input() cartSummary!: CartSummaryModel;
 
+  constructor(private cartService: CartService) {}
+
   formattedPrice(cartItem: CartSummaryItemModel) {
     if (cartItem) {
       return `${cartItem.amount} ${cartItem.currency}`;
@@ -27,6 +29,6 @@ export class CartSummaryComponent {
   }
 
   onCheckoutRedirect() {
-    //TODO REDIRECT TO PAYMENT PAGE
+    this.cartService.sendOrderToApi();
   }
 }

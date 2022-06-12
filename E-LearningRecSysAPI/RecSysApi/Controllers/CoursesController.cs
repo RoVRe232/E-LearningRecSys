@@ -27,6 +27,23 @@ namespace RecSysApi.Presentation.Controllers
             _httpService = httpService;
         }
 
+        [Route("owned-courses")]
+        [HttpGet]
+        public async Task<ActionResult<BasicHttpResponseDTO<List<CourseDTO>>>> GetOwnedCourses()
+        {
+            var userDetails = await _sessionService.GetAuthenticatedUserFromClaimsAsync(User.Claims.GetEnumerator());
+            var courseResult = await _coursesServices.GetOwnedCourses(userDetails.AccountID);
+            if (courseResult == null)
+                return BadRequest();
+            return Ok(new BasicHttpResponseDTO<List<CourseDTO>>
+            {
+                Success = true,
+                Errors = new List<string>(),
+                Result = courseResult
+            });
+        }
+
+        [Route("course")]
         [HttpGet]
         public async Task<ActionResult<BasicHttpResponseDTO<CourseDTO>>> GetCourse([FromQuery] Guid courseId)
         {
@@ -73,11 +90,10 @@ namespace RecSysApi.Presentation.Controllers
             return BadRequest();
         }
 
-        [Route("purchase-courses")]
+        [Route("new-order")]
         [HttpPost]
         public async Task<ActionResult<BasicHttpResponseDTO<bool>>> PurchaseCourses([FromBody] OrderDTO order)
         {
-
             //TODO ADD CLAIMS EXTRACTOR MIDDLEWARE
             var claimsIdentiy = User.Claims.GetEnumerator();
             do
@@ -86,21 +102,15 @@ namespace RecSysApi.Presentation.Controllers
                 if (claim != null && claim.Type != null && claim.Type == ClaimTypes.NameIdentifier)
                 {
                     var userDetails = await _sessionService.GetAuthenticatedUserAsync(new Guid(claim.Value));
-                    if(userDetails.AccountID != order.AccountID)
-                        return BadRequest(new BasicHttpResponseDTO<bool>
-                        {
-                            Success = false,
-                            Errors = new List<string>() { "Invalid account id for purchase order" },
-                            Result = false
-                        });
+                    order.AccountID = userDetails.AccountID;
 
                     var requestResult = await _httpService.SendPostRequestToApiAsync(new RequestUrl<OrderDTO>
                     {
                         RequestUrlID = Guid.NewGuid(),
                         Content = order,
                         Protocol = "https",
-                        Domain = "localhost://5006",
-                        Path = "/orders/create-order"
+                        Domain = "localhost:5002",
+                        Path = "api/orders/create-order"
                     });
 
                     if(requestResult.IsSuccessStatusCode)

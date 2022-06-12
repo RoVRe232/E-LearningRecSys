@@ -12,6 +12,7 @@ import { SearchService } from 'src/app/modules/shared/services/search.service';
 })
 export class ResultCardComponent {
   @Input() isCartSummary = false;
+  @Input() isOwnedItem = false;
   @Input() video: VideoCardModel = {
     videoID: 'null',
     title: 'Test',
@@ -47,10 +48,14 @@ export class ResultCardComponent {
   }
 
   get formattedPrice() {
-    if (this.course.price) {
+    if (this.course.price && !this.course.owned) {
       return `${this.course.price.amount} ${this.course.price.currency}`;
     }
     return 'Owned';
+  }
+
+  get owned() {
+    return this.course.owned;
   }
 
   constructor(
@@ -72,7 +77,7 @@ export class ResultCardComponent {
 
   onRedirectToCourse() {
     this.searchService.storeQueryKeywordsToStorage();
-    this.router.navigate(['/', 'courses', 'details'], {
+    this.router.navigate(['/', 'course', 'details'], {
       queryParams: {
         id: this.course.courseID,
       },

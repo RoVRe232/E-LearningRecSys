@@ -13,5 +13,7 @@ namespace RecSysApi.Application.Interfaces
         public Task<List<Course>> SearchForCourses(SearchQueryDTO query);
         public List<CourseDTO> MapCoursesToCourseDTOs(List<Course> courses);
         public Task<CourseDTO> GetCourse(Guid courseId);
+        public Task<List<CourseDTO>> CheckIfCoursesAreOwnedByAccount(List<CourseDTO> courses, Guid AccountID);
+        public Task<List<CourseDTO>> GetOwnedCourses(Guid accountId);
     }
 }

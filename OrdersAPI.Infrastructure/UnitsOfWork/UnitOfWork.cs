@@ -30,6 +30,8 @@ namespace OrdersAPI.Infrastructure.UnitsOfWork
 
         public UnitOfWork(RecSysApiContext dbContext)
         {
+            _dbContext = dbContext;
+
             Videos = _dbContext.Set<Video>();
             Users = _dbContext.Set<User>();
             Accounts = _dbContext.Set<Account>();
@@ -40,8 +42,6 @@ namespace OrdersAPI.Infrastructure.UnitsOfWork
             Prices = _dbContext.Set<Price>();
             CourseLicenses = _dbContext.Set<CourseLicense>();
             Orders = _dbContext.Set<Order>();
-
-            _dbContext = dbContext;
         }
 
         public void SaveChanges()
