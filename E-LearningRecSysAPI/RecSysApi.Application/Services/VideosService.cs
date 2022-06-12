@@ -38,6 +38,15 @@ namespace RecSysApi.Application.Services
             //return Encoding.ASCII.GetString(videoContent);
         }
 
+        public async Task<VideoDTO> GetVideo(Guid videoId)
+        {
+            var videoMetadata = await _videoRepository.GetQuery(e => e.VideoID == videoId)
+                .Include(e => e.Section)
+                .ThenInclude(e => e.Course)
+                .FirstOrDefaultAsync();
+            return _mapper.Map<VideoDTO>(videoMetadata);
+        }
+
         public async Task<List<Video>> SearchForVideos(SearchQueryDTO query)
         {
             if (query.KeyPhrases != null && query.KeyPhrases.Count() > 0 && query.KeyPhrases.All(e => !String.IsNullOrEmpty(e)))
@@ -47,6 +56,7 @@ namespace RecSysApi.Application.Services
                     .GetQuery(e => EF.Functions.FreeText(e.Description, searchWords) ||
                          EF.Functions.FreeText(e.Title, searchWords) ||
                          EF.Functions.FreeText(e.Keywords, searchWords))
+                    .Include(e => e.Section.Course)
                     .Skip(query.PaginationOptions.Skip)
                     .Take(query.PaginationOptions.Take)
                     .ToListAsync();
@@ -55,6 +65,7 @@ namespace RecSysApi.Application.Services
             } else {
                 var queryResults = await _videoRepository
                     .GetQuery(e => true)
+                    .Include(e => e.Section.Course)
                     .OrderBy(e => e.VideoID)
                     .Skip(query.PaginationOptions.Skip)
                     .Take(query.PaginationOptions.Take)

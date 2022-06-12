@@ -81,7 +81,6 @@ export class SearchService {
       '',
     );
 
-    console.log(`concatKeywords ${concatKeywords}`);
     if (concatKeywords != null && concatKeywords != undefined) {
       this.httpService
         .post(

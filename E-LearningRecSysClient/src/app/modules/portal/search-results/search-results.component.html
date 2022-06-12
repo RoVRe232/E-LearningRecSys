@@ -21,16 +21,15 @@
             <mat-expansion-panel-header>
               <mat-panel-title> {{ filtersGroup.name }} </mat-panel-title>
             </mat-expansion-panel-header>
-            <section class="example-section">
+            <section>
               <div
                 *ngIf="
                   filtersGroup.type === searchFilterTypeEnum.CHECKBOX_ALL ||
                   filtersGroup.type === searchFilterTypeEnum.CHECKBOX
                 "
               >
-                <span class="example-list-section">
+                <span>
                   <mat-checkbox
-                    class="example-margin"
                     [checked]="filtersGroup.checked!"
                     [color]="filtersGroup.color"
                     [indeterminate]="someComplete(filtersGroup)"
@@ -39,7 +38,7 @@
                     {{ 'All' + ' - ' + filtersGroup.description }}
                   </mat-checkbox>
                 </span>
-                <span class="example-list-section">
+                <span>
                   <ul>
                     <li *ngFor="let innerFilter of filtersGroup.filters">
                       <mat-checkbox
@@ -54,7 +53,7 @@
                 </span>
               </div>
               <div *ngIf="filtersGroup.type === searchFilterTypeEnum.INTERVAL">
-                <span class="example-list-section">
+                <span>
                   <ul>
                     <li
                       *ngFor="let innerFilter of filtersGroup.filters"
@@ -106,6 +105,7 @@
           </div>
           <div
             class="full-width full-height"
+            f
             *ngIf="
               !searchResults ||
               !searchResults?.videos ||

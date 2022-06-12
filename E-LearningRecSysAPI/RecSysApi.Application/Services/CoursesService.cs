@@ -64,6 +64,17 @@ namespace RecSysApi.Application.Services
             }
         }
 
+        public async Task<CourseDTO> GetCourse(Guid courseId)
+        {
+            var queryResult = await _courseRepository.GetQuery(e => e.CourseID == courseId)
+                .Include(e => e.Price)
+                .Include(e => e.Account)
+                .Include(e => e.Sections)
+                .ThenInclude(e => e.Videos)
+                .FirstOrDefaultAsync();
+            return _mapper.Map<CourseDTO>(queryResult);
+        }
+
         public List<CourseDTO> MapCoursesToCourseDTOs(List<Course> courses)
         {
             return _mapper.Map<List<CourseDTO>>(courses);

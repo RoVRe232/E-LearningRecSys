@@ -18,6 +18,7 @@ namespace RecSysApi.Domain.Entities
         public Section Section { get; set; }
         [StringLength(256)]
         public string Title { get; set; }
+        public string ShortDescription { get; set; }
         public string Description { get; set; }
         public VideoSource Source { get; set; }
         public string Keywords { get; set; }

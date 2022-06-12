@@ -12,6 +12,7 @@ namespace RecSysApi.Application.Dtos.Video
         public string InternalId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string ShortDescription { get; set; }
         public VideoSourceDTO Source { get; set; }
         public string Keywords { get; set; }
         public string Thumbnail { get; set; }

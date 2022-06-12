@@ -9,6 +9,8 @@ namespace RecSysApi.Application.Dtos.Courses
 {
     public class SectionDTO
     {
+        public Guid? SectionID { get; set; }
+        public Guid? CourseID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string ThumbnailImage { get; set; }

@@ -10,5 +10,6 @@ namespace RecSysApi.Application.Dtos.Account
     {
         public Guid AccountID { get; set; }
         public string Name { get; set; }
+        public string ProfileImageUrl { get; set; }
     }
 }

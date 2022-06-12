@@ -13,7 +13,7 @@ namespace RecSysApi.Domain.Entities.Account
     {
         public Guid AccountID { get; set; }
         public string Name { get; set; }
-
+        public string? ProfileImageUrl { get; set; }
         public virtual ICollection<User> Users { get; set; } = new List<User>();
         public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
         public virtual ICollection<CourseLicense> PurchasedCourses { get; set; } = new List<CourseLicense>();

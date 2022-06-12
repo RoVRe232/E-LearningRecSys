@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RecSysApi.Application.Dtos.Courses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace RecSysApi.Application.Dtos.Video
         public string InternalId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string ShortDescription { get; set; }
         public VideoSourceDTO Source { get; set; }
         public string Keywords { get; set; }
         public string Thumbnail { get; set; }
@@ -24,5 +26,6 @@ namespace RecSysApi.Application.Dtos.Video
         public double Duration { get; set; }
         public string Transcription { get; set; }
         public string Author { get; set; }
+        public SectionDTO? Section { get; set; }
     }
 }

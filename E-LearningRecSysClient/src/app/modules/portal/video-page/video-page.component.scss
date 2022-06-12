@@ -6,3 +6,30 @@
     left: 0;
     right: 0;
 }
+
+.user {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.video-author{
+    margin-bottom: 0px;
+}
+
+.author-info-wrapper {
+    margin-top: 16px;
+}
+
+.video-title{
+    margin-top: 16px;
+}
+
+hr {
+    border: 1px solid gray;
+}

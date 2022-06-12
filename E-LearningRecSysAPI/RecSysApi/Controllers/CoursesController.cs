@@ -28,9 +28,17 @@ namespace RecSysApi.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Course>> GetCourse([FromQuery] Guid courseId)
+        public async Task<ActionResult<BasicHttpResponseDTO<CourseDTO>>> GetCourse([FromQuery] Guid courseId)
         {
-            throw new NotImplementedException();
+            var courseResult = await _coursesServices.GetCourse(courseId);
+            if(courseResult == null)
+                return BadRequest();
+            return Ok(new BasicHttpResponseDTO<CourseDTO>
+            {
+                Success = true,
+                Errors = new List<string>(),
+                Result = courseResult
+            });
         }
 
         [HttpPost]

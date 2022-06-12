@@ -24,7 +24,15 @@
 
 
 .video-description-wrapper {
-  width: 40%;
+  width: 60%;
+}
+
+.video-description {
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .duration-chip{

@@ -159,7 +159,8 @@ export class AddCourseComponent implements OnDestroy {
     const internalId = this.generateGuid();
     return this.fb.group({
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      shortDescription: ['', Validators.required],
+      description: [''],
       source: this.fb.group({
         internalId,
         type: [''],

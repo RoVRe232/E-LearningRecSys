@@ -60,11 +60,12 @@ export class ResultCardComponent {
   ) {}
 
   onRedirectToVideo() {
-    console.log(`videoId: ${this.video.videoID}`);
     this.searchService.storeQueryKeywordsToStorage();
     this.router.navigate(['/', 'videos', 'watch'], {
       queryParams: {
         id: this.video.internalId,
+        videoId: this.video.videoID,
+        courseId: this.video.section?.courseID,
       },
     });
   }

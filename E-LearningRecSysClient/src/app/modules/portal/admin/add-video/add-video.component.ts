@@ -20,6 +20,7 @@ export class AddVideoComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private httpClient: HttpClient) {
     this.videoForm = this.fb.group({
       title: ['', Validators.required],
+      shortDescription: ['Test', Validators.required],
       description: ['Test'],
       videoSource: this.fb.group({
         internalId: [this.generateGuid()],
@@ -89,6 +90,10 @@ export class AddVideoComponent implements OnInit, OnDestroy {
   }
 
   get description() {
+    return this.videoForm.get('description') as FormControl;
+  }
+
+  get shortDescription() {
     return this.videoForm.get('description') as FormControl;
   }
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RecSysApi.Application.Dtos;
+using RecSysApi.Application.Dtos.Http;
 using RecSysApi.Application.Dtos.Video;
 using RecSysApi.Application.Interfaces;
 using RecSysApi.Application.Models;
@@ -22,6 +23,20 @@ namespace RecSysApi.Presentation.Controllers
         {
             _logger = logger;
             _videosService = videosService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<BasicHttpResponseDTO<VideoDTO>>> GetVideo([FromQuery] Guid videoId)
+        {
+            var result = await _videosService.GetVideo(videoId);
+            if (result == null)
+                return BadRequest();
+            return Ok(new BasicHttpResponseDTO<VideoDTO>
+            {
+                Success = true,
+                Errors = new List<string>(),
+                Result = result
+            });
         }
 
         [HttpPost]

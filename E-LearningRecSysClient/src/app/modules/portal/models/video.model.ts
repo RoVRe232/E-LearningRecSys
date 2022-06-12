@@ -1,9 +1,10 @@
-export interface VideoCardModel {
+export interface VideoModel {
   videoID: string;
   sectionId?: string;
   internalId?: string;
   title: string;
   description: string;
+  shortDescription?: string;
   source?: {
     videoSourceId: string;
     type: string;
@@ -25,9 +26,5 @@ export interface VideoCardModel {
   account?: {
     accountID: string;
     name: string;
-  };
-  section?: {
-    courseID: string;
-    sectionID: string;
   };
 }

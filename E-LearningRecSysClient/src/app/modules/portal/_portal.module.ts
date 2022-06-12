@@ -17,6 +17,7 @@ import { VideoPageComponent } from './video-page/video-page.component';
 import { CartPageComponent } from './cart/cart-page.component';
 import { CartSummaryComponent } from './cart/cart-summary/cart-summary.component';
 import { CartOverviewComponent } from './cart/cart-overview/cart-overview.component';
+import { CourseSectionsOverviewComponent } from './shared/course-sections-overview/course-sections-overview.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { CartOverviewComponent } from './cart/cart-overview/cart-overview.compon
     CartPageComponent,
     CartSummaryComponent,
     CartOverviewComponent,
+    CourseSectionsOverviewComponent,
   ],
   imports: [
     PortalRoutingModule,

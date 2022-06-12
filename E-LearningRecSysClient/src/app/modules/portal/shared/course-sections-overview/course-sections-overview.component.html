@@ -1,0 +1,22 @@
+<div class="full-width full-height">
+  <mat-accordion [multi]="true" class="full-width">
+    <mat-expansion-panel [expanded]="true" *ngFor="let section of sections">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="section-header">{{ section.title }}</h2>
+        </mat-panel-title>
+        <mat-panel-description class="section-description">
+          {{ section.description }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div
+        class="full-width full-height"
+        *ngFor="let video of mapVideosToVideoCards(section.videos)"
+      >
+        <div class="result-card-wrapper">
+          <app-result-card [video]="video"></app-result-card>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

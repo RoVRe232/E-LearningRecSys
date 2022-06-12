@@ -13,6 +13,14 @@
     <input matInput formControlName="keywords" placeholder="Video keywords" />
   </mat-form-field>
   <mat-form-field appearance="outline" class="full-width">
+    <mat-label>{{ 'Enter video short description' }}</mat-label>
+    <textarea
+      matInput
+      formControlName="shortDescription"
+      placeholder="Video short description"
+    ></textarea>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>{{ 'Enter video thumbnail' }}</mat-label>
     <input matInput formControlName="thumbnail" placeholder="Video thumbnail" />
   </mat-form-field>
@@ -52,7 +60,7 @@
     />
   </div>
 
-  <div class="NgxEditor__Wrapper full-width" style="overflow: scroll">
+  <!-- <div class="NgxEditor__Wrapper full-width" style="overflow: scroll">
     <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
     <ngx-editor
       [editor]="editor"
@@ -62,5 +70,10 @@
       [placeholder]="'Type here course large description...'"
       (change)="descriptionChanged($event)"
     ></ngx-editor>
-  </div>
+  </div> -->
+  <textarea
+    matInput
+    formControlName="description"
+    placeholder="Video description"
+  ></textarea>
 </div>

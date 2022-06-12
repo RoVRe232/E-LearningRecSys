@@ -1,3 +1,48 @@
-<div class="video-box full-width" fxLayout="row" fxLayoutAlign="center center">
-  <app-video-wrapper class="full-width" [videoId]="videoId"></app-video-wrapper>
+<div
+  fxLayout="row"
+  fxLayoutAlign="space-around start"
+  class="full-width full-height"
+>
+  <div *ngIf="parentCourse" fxFlex="40" class="full-height">
+    <app-course-sections-overview
+      [course]="parentCourse"
+    ></app-course-sections-overview>
+  </div>
+  <div
+    fxFlex="50"
+    class="video-box full-height"
+    fxLayout="column"
+    fxLayoutAlign="start start"
+  >
+    <h1 *ngIf="videoMetadata" class="video-title">{{ videoMetadata.title }}</h1>
+    <app-video-wrapper
+      class="full-width"
+      [videoId]="videoId"
+    ></app-video-wrapper>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="12px"
+      class="author-info-wrapper"
+    >
+      <div
+        class="user"
+        style="background-image: url('https://via.placeholder.com/400x200')"
+      ></div>
+      <h3 class="video-author">
+        <i
+          ><b>{{ courseAuthorName }}</b></i
+        >
+      </h3>
+    </div>
+    <p>
+      <i>{{ videoCreationDate | date: 'dd/MM/yyyy HH:mm' }}</i>
+    </p>
+    <hr class="full-width" />
+    <p class="video-description">
+      {{ videoShortDescription }}
+    </p>
+    <hr class="full-width" />
+    <p>{{ videoDescription }}</p>
+  </div>
 </div>
