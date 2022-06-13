@@ -7,6 +7,8 @@ volumes:
     driver: local
   recsysdb-data:
     driver: local
+  mongodb-data:
+    driver: local
 
 services:
   recsysapi.presentation:
@@ -15,7 +17,7 @@ services:
       context: .
       dockerfile: RecSysApi/Dockerfile
     ports:
-      - "5006:443"
+      - "6001:443"
     depends_on:
       - recsysdb
   ordersapi.presentation:
@@ -24,7 +26,7 @@ services:
       context: .
       dockerfile: ../OrdersAPI/Dockerfile
     ports:
-      - "5004:443"
+      - "6002:443"
     depends_on:
       - recsysdb
   recsysdb:
@@ -32,10 +34,28 @@ services:
     volumes: 
         - recsysdb-data:/app
     ports:
-        - "5010:1433"
+        - "6003:1433"
     environment:
         SA_PASSWORD: "abcDEF123#"
         ACCEPT_EULA: "Y"
+  mongodb:
+    image: "mongo"
+    volumes: 
+        - mongodb-data:/app
+    ports:
+        - "6004:27017" 
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+    - 8080:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+    - recsysapi.presentation
   prometheus:
     container_name: prometheus
     build:
@@ -52,12 +72,13 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
+    depends_on:
+        - prometheus
     ports:
         - "3000:3000"
     volumes:
         - grafana-data:/var/lib/grafana
     restart: unless-stopped
-
 networks:
   localdev:
     external:

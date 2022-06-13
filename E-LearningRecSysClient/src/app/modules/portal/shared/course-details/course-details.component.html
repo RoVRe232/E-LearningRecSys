@@ -1,3 +1,16 @@
-<div *ngIf="course">
-  <h2>{{ course.name }}</h2>
+<div
+  *ngIf="course"
+  fxLayout="column"
+  fxLayoutAlign="start start"
+  fxLayoutGap="16px"
+>
+  <div class="full-width">
+    <h2>{{ course.name }}</h2>
+  </div>
+  <app-course-sections-overview
+    [course]="course"
+  ></app-course-sections-overview>
+  <p class="course-short-description">{{ course.smallDescription }}</p>
+  <hr class="full-width" />
+  <div [innerHTML]="course.largeDescription"></div>
 </div>

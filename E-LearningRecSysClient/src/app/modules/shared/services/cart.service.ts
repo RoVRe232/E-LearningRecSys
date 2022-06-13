@@ -55,10 +55,12 @@ export class CartService {
     );
   }
 
-  public addCourseToCardContent(course: CourseCardModel) {
-    const cartState = [...this.cartContent.value, course];
-    this.cartContent.next(cartState);
-    this.storeCartContentToLocalStorage();
+  public addCourseToCardContent(course: CourseCardModel | undefined) {
+    if (course) {
+      const cartState = [...this.cartContent.value, course];
+      this.cartContent.next(cartState);
+      this.storeCartContentToLocalStorage();
+    }
   }
 
   public removeCourseFromCardContent(courseID: string) {

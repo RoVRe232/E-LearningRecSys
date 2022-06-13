@@ -6,21 +6,25 @@ global:
   # external_labels:
   #  monitor: 'codelab-monitor'
 
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
-    # Override the global default and scrape targets from this job every 5 seconds.
+  - job_name: 'recsysapi.presentation'
     scrape_interval: 5s
     static_configs:
-      - targets: ['localhost:9090']
-
-  - job_name: 'recsysapi.presentation'
+      - targets: ['localhost:6001']
+  - job_name: 'ordersapi.presentation'
+    scrape_interval: 5s
     static_configs:
-      - targets: ['localhost:5006']
-
-  # Example job for cadvisor
-  # - job_name: 'cadvisor'
-  #   static_configs:
-  #     - targets: ['cadvisor:8080']
+      - targets: ['localhost:6002']
+  - job_name: 'recsysdb-data'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:6003']
+  - job_name: 'mongo-data'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:6004']
+  - job_name: cadvisor
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+        - cadvisor:8080

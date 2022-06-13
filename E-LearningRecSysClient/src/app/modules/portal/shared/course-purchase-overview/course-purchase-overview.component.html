@@ -1,0 +1,61 @@
+<mat-card
+  class="purchase-options-wrapper full-height full-width"
+  fxLayout="column"
+  fxLayoutAlign="start start"
+  fxLayoutGap="12px"
+>
+  <p class="shown-price">
+    <i
+      ><b>{{ formattedPrice }}</b></i
+    >
+  </p>
+  <button
+    *ngIf="!owned"
+    mat-raised-button
+    color="primary"
+    type="button"
+    class="purchase-action-button"
+    (click)="onAddToCart()"
+  >
+    {{ 'Add to cart' }}
+  </button>
+  <button
+    *ngIf="!owned"
+    mat-raised-button
+    [routerLink]="['/']"
+    class="purchase-action-button"
+  >
+    {{ 'Buy now' }}
+  </button>
+  <hr class="full-width" />
+  <div class="full-width" fxLayout="column" fxLayoutAlign="start start">
+    <h2>Course contents:</h2>
+    <div
+      class="full-width"
+      fxLayout="row"
+      fxLayoutAlign="start start"
+      fxLayoutGap="4px"
+    >
+      <mat-icon>{{ 'segment' }}</mat-icon>
+      <p>{{ sectionsCount }} Sections</p>
+    </div>
+    <div
+      class="full-width"
+      fxLayout="row"
+      fxLayoutAlign="start start"
+      fxLayoutGap="4px"
+    >
+      <mat-icon>{{ 'play_arrow' }}</mat-icon>
+      <p>{{ videosCount }} Videos</p>
+    </div>
+    <div
+      class="full-width"
+      fxLayout="row"
+      fxLayoutAlign="start start"
+      fxLayoutGap="4px"
+    >
+      <mat-icon>{{ 'all_inclusive' }}</mat-icon>
+      <p>All life access</p>
+    </div>
+  </div>
+</mat-card>

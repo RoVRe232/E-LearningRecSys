@@ -1,4 +1,9 @@
 <div class="main-wrapper" fxLayout="column" fxLayoutAlign="start start">
-  <h2>Courses page</h2>
-  <app-course-details [course]="course"></app-course-details>
+  <div class="full-width" fxLayout="row" fxLayoutAlign="space-between start">
+    <app-course-details [course]="course" fxFlex="70"></app-course-details>
+    <app-course-purchase-overview
+      [course]="course"
+      fxFlex="25"
+    ></app-course-purchase-overview>
+  </div>
 </div>

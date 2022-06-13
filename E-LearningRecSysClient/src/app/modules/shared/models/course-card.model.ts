@@ -11,8 +11,8 @@ export interface CourseCardModel {
   hiddenInSearches?: boolean;
   owned?: boolean;
   account?: {
-    accountID: string;
-    name: string;
+    accountID?: string;
+    name?: string;
   };
   price?: {
     amount: number;
