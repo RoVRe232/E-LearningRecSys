@@ -4,6 +4,7 @@ import { CourseCardModel } from 'src/app/modules/shared/models/course-card.model
 import { VideoCardModel } from 'src/app/modules/shared/models/video-card.model';
 import { CartService } from 'src/app/modules/shared/services/cart.service';
 import { SearchService } from 'src/app/modules/shared/services/search.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-result-card',
@@ -62,6 +63,7 @@ export class ResultCardComponent {
     private router: Router,
     private searchService: SearchService,
     private cartService: CartService,
+    private notificationService: NotificationService,
   ) {}
 
   onRedirectToVideo() {
@@ -86,10 +88,10 @@ export class ResultCardComponent {
 
   onAddToCart() {
     this.cartService.addCourseToCardContent(this.course);
+    this.notificationService.showSuccessNotification('Item added to cart');
   }
 
   onRemoveFromCart(courseId: string | undefined) {
-    console.log(courseId);
     if (courseId) this.cartService.removeCourseFromCardContent(courseId);
   }
 

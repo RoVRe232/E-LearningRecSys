@@ -6,12 +6,16 @@ import { CartSummaryItemModel } from '../models/cart-summary-item.model';
 import { CartSummaryModel } from '../models/cart-summary.model';
 import { CourseCardModel } from '../models/course-card.model';
 import { HttpService } from './http.service';
+import { NotificationService } from './notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private cartContent: BehaviorSubject<CourseCardModel[]>;
 
-  constructor(private httpService: HttpService) {
+  constructor(
+    private httpService: HttpService,
+    private notificationService: NotificationService,
+  ) {
     if (localStorage.getItem('cartContent')) {
       const cartContent: CourseCardModel[] = JSON.parse(
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -57,9 +61,19 @@ export class CartService {
 
   public addCourseToCardContent(course: CourseCardModel | undefined) {
     if (course) {
+      const elementInCart = this.cartContent.value.some(
+        (e) => e.courseID == course.courseID,
+      );
+      if (elementInCart) {
+        this.notificationService.showInfoNotification(
+          'Course is already in cart',
+        );
+        return;
+      }
       const cartState = [...this.cartContent.value, course];
       this.cartContent.next(cartState);
       this.storeCartContentToLocalStorage();
+      this.notificationService.showSuccessNotification('Course added to cart!');
     }
   }
 

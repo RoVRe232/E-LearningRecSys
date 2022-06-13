@@ -4,10 +4,29 @@
   fxLayoutAlign="start start"
   fxLayoutGap="16px"
 >
-  <div class="full-width">
+  <div class="full-width" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
     <h2>{{ course.name }}</h2>
+    <h3 class="video-author"><i><b>&nbsp;-&nbsp;</b></i></h3>
+    <div
+    fxLayout="row"
+    fxLayoutAlign="start center"
+    fxLayoutGap="12px"
+    class="author-info-wrapper"
+  >
+    <div
+      class="user"
+      style="background-image: url('https://via.placeholder.com/400x200')"
+    ></div>
+    <h3 class="video-author">
+
+      <i
+        ><b>{{ courseAuthorName }}</b></i
+      >
+    </h3>
+  </div>
   </div>
   <app-course-sections-overview
+    class="full-width"
     [course]="course"
   ></app-course-sections-overview>
   <p class="course-short-description">{{ course.smallDescription }}</p>

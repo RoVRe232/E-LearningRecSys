@@ -33,6 +33,7 @@ import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { CartService } from './services/cart.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const materialModules = [
   MatButtonModule,
@@ -51,6 +52,7 @@ const materialModules = [
   MatExpansionModule,
   MatCheckboxModule,
   MatSelectModule,
+  MatSnackBarModule,
 ];
 
 @NgModule({

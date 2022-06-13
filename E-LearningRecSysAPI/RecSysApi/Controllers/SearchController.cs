@@ -27,7 +27,6 @@ namespace RecSysApi.Presentation.Controllers
         [Route("query")]
         public async Task<ActionResult<BasicHttpResponseDTO<SearchResultsDTO>>> Query(SearchQueryDTO searchQueryDTO)
         {
-            //See https://www.bricelam.net/2020/08/08/mssql-freetext-and-efcore.html
             if (searchQueryDTO.PaginationOptions.Take <= 0)
                 searchQueryDTO.PaginationOptions.Take = 10;
             var coursesResults = await CheckIfOwnedForAuthenticatedAccounts(
@@ -60,6 +59,11 @@ namespace RecSysApi.Presentation.Controllers
 
             } while (claimsIdentiy.MoveNext());
             return courses;
+        }
+
+        private async Task<List<FilterDTO>> GetAvailableFilters([FromBody] List<FilterDTO> appliedFilters)
+        {
+            _coursesServices.GetAvailableFilters(appliedFilters);
         }
 
     }

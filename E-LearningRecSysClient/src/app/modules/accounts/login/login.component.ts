@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from '../services/account.service';
 
 @Component({
@@ -11,6 +12,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private accountService: AccountService,
+    private snackBar: MatSnackBar,
   ) {}
 
   loginData = this.fb.group({
@@ -48,6 +50,5 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.accountService.login(this.email.value, this.password.value);
-    //TODO send login request
   }
 }

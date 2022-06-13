@@ -9,7 +9,7 @@ namespace RecSysApi.Application.Dtos.Search
         {
             get; set;
         }
-        public FiltersDTO Filters
+        public List<FilterDTO> Filters
         {
             get; set;
         }

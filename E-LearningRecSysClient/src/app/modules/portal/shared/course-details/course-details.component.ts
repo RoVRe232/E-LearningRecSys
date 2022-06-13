@@ -8,4 +8,8 @@ import { CourseModel } from '../../models/course.model';
 })
 export class CourseDetailsComponent {
   @Input() course!: CourseModel;
+
+  get courseAuthorName() {
+    return this.course.account?.name || 'Unknown Author';
+  }
 }

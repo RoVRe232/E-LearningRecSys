@@ -78,7 +78,7 @@ namespace RecSysApi.Application.Services
         public async Task<List<CourseDTO>> GetOwnedCourses(Guid accountId)
         {
             var ownedLicensesIds = (await _unitOfWork.CourseLicenses.GetQuery(e => e.AccountID == accountId).ToArrayAsync())
-                .Select(e=> e.CourseID);
+                .Select(e => e.CourseID);
 
             var ownedCourses = await _unitOfWork.Courses.GetQuery(e => ownedLicensesIds.Contains(e.CourseID)).ToListAsync();
             return _mapper.Map<List<CourseDTO>>(ownedCourses);
@@ -101,6 +101,30 @@ namespace RecSysApi.Application.Services
                 checkedCourses.Add(result);
             }
             return checkedCourses;
+        }
+
+        public async Task<List<Course>> FilterCourses(List<Course> courses, List<FilterDTO> filters)
+        {
+            return courses.Where(e => filters.Any(x => CheckFilter(e, x))).ToList();
+        }
+
+        private bool CheckFilter(Course course, FilterDTO filter)
+        {
+            if (filter.Type == Dtos.Enums.FilterType.CHECKBOX)
+            {
+                switch (filter.Name)
+                {
+                    case "AuthorName":
+                        if (course.Account.Name == filter.Value)
+                            return true;
+                        break;
+                    case "FirstKeyword":
+                        if (course.Keywords.Split(' ')[0] == filter.Value)
+                            return true;
+                        break;
+                }
+            }
+            return false;
         }
     }
 }

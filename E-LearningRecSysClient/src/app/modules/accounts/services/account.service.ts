@@ -7,6 +7,8 @@ import { map, take } from 'rxjs/operators';
 import { AuthenticatedUserModel } from '../models/authenticated-user.model';
 import { HttpService } from '../../shared/services/http.service';
 import { BackApiHttpRequest } from '../../shared/models/back-api-http-request.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -24,7 +26,11 @@ export class AccountService {
   public account: Observable<AuthenticatedUserModel>;
   public isLoggedIn: Observable<boolean>;
 
-  constructor(private router: Router, private httpService: HttpService) {
+  constructor(
+    private router: Router,
+    private httpService: HttpService,
+    private notificationService: NotificationService,
+  ) {
     this.accountSubject = new BehaviorSubject<AuthenticatedUserModel>(
       this.defaultAccount,
     );
@@ -53,15 +59,31 @@ export class AccountService {
     this.httpService
       .post(request)
       .pipe(take(1))
-      .subscribe((response) => {
-        if (response.errors?.length === 0 && response.result) {
-          const account = response.result;
-          this.accountSubject.next(response.result as AuthenticatedUserModel);
-          localStorage.setItem('user', JSON.stringify(account));
-          this.router.navigate(['/']);
-          this.startRefreshTokenTimer();
-        }
-      });
+      .subscribe(
+        (response) => {
+          if (response.errors?.length === 0 && response.result) {
+            const account = response.result;
+            this.accountSubject.next(response.result as AuthenticatedUserModel);
+            localStorage.setItem('user', JSON.stringify(account));
+            this.router.navigate(['/']);
+            this.startRefreshTokenTimer();
+            this.notificationService.showSuccessNotification(
+              'Login successful',
+              'Close',
+            );
+          } else {
+            this.notificationService.showFailureNotification(
+              'Login failed, please try again!',
+            );
+          }
+        },
+        (err) => {
+          console.log(err);
+          this.notificationService.showFailureNotification(
+            'Login failed, please try again!',
+          );
+        },
+      );
   }
 
   logout() {
