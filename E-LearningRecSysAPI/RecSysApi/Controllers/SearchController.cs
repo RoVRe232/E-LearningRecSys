@@ -13,12 +13,12 @@ namespace RecSysApi.Presentation.Controllers
     [Route("api/search")]
     public class SearchController : ApiBaseController
     {
-        private readonly ICoursesService _coursesServices;
+        private readonly ICoursesService _coursesService;
         private readonly IVideosService _videosService;
         private readonly ISessionService _sessionService;
         public SearchController(ICoursesService coursesService, IVideosService videosService, ISessionService sessionService)
         {
-            _coursesServices = coursesService;
+            _coursesService = coursesService;
             _videosService = videosService;
             _sessionService = sessionService;
         }
@@ -29,8 +29,10 @@ namespace RecSysApi.Presentation.Controllers
         {
             if (searchQueryDTO.PaginationOptions.Take <= 0)
                 searchQueryDTO.PaginationOptions.Take = 10;
+            var databaseCourses = await _coursesService.SearchForCourses(searchQueryDTO);
+            var courseFilters = await _coursesService.GetCourseFilters(databaseCourses);
             var coursesResults = await CheckIfOwnedForAuthenticatedAccounts(
-                _coursesServices.MapCoursesToCourseDTOs(await _coursesServices.SearchForCourses(searchQueryDTO)));
+                _coursesService.MapCoursesToCourseDTOs(databaseCourses));
             var videosResults = _videosService.MapVideosToVideoDTOs(await _videosService.SearchForVideos(searchQueryDTO));
             return Ok(new BasicHttpResponseDTO<SearchResultsDTO>
             {
@@ -54,17 +56,11 @@ namespace RecSysApi.Presentation.Controllers
                 {
                     var userDetails = await _sessionService.GetAuthenticatedUserAsync(new Guid(claim.Value));
 
-                    return await _coursesServices.CheckIfCoursesAreOwnedByAccount(courses, userDetails.AccountID);
+                    return await _coursesService.CheckIfCoursesAreOwnedByAccount(courses, userDetails.AccountID);
                 }
 
             } while (claimsIdentiy.MoveNext());
             return courses;
         }
-
-        private async Task<List<FilterDTO>> GetAvailableFilters([FromBody] List<FilterDTO> appliedFilters)
-        {
-            _coursesServices.GetAvailableFilters(appliedFilters);
-        }
-
     }
 }
