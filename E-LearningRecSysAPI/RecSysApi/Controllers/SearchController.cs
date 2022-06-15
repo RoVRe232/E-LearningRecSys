@@ -30,7 +30,7 @@ namespace RecSysApi.Presentation.Controllers
             if (searchQueryDTO.PaginationOptions.Take <= 0)
                 searchQueryDTO.PaginationOptions.Take = 10;
             var databaseCourses = await _coursesService.SearchForCourses(searchQueryDTO);
-            var courseFilters = await _coursesService.GetCourseFilters(databaseCourses);
+            var courseFilters = _coursesService.GetAvailableFilters(databaseCourses);
             var coursesResults = await CheckIfOwnedForAuthenticatedAccounts(
                 _coursesService.MapCoursesToCourseDTOs(databaseCourses));
             var videosResults = _videosService.MapVideosToVideoDTOs(await _videosService.SearchForVideos(searchQueryDTO));

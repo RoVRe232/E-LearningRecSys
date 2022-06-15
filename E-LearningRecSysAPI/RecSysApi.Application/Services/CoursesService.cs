@@ -108,6 +108,77 @@ namespace RecSysApi.Application.Services
             return courses.Where(e => filters.Any(x => CheckFilter(e, x))).ToList();
         }
 
+        public Dictionary<string, List<FilterDTO>> GetAvailableFilters(List<Course> courses)
+        {
+            var results = GetBaseFilters();
+            var minPrice = new PriceDTO { Amount = 9999999.9 };
+            var maxPrice = new PriceDTO { Amount = 0 };
+            var minDuration = 999999.9;
+            var maxDuration = 0.0;
+            foreach (var course in courses)
+            {
+                try
+                {
+                    var mainKeyword = course.Keywords.Split(" ")[0];
+                    results["MainKeyword"]?.Add(new FilterDTO
+                    {
+                        Name = mainKeyword,
+                        Value = mainKeyword,
+                        Type = Dtos.Enums.FilterType.CHECKBOX
+                    });
+                }
+                catch (Exception ex) { }
+
+                results["Authors"]?.Add(new FilterDTO
+                {
+                    Name = course.Account.Name,
+                    Value = course.Account.AccountID.ToString(),
+                    Type = Dtos.Enums.FilterType.CHECKBOX
+                });
+
+                if (course.Price.Amount <= minPrice.Amount)
+                    minPrice = _mapper.Map<PriceDTO>(course.Price);
+                if (course.Price.Amount >= maxPrice.Amount)
+                    maxPrice = _mapper.Map<PriceDTO>(course.Price);
+
+                if (course.Hours <= minDuration)
+                    minDuration = course.Hours;
+                if (course.Hours >= maxDuration)
+                    maxDuration = course.Hours;
+            }
+            results["Price"]?.Add(new FilterDTO
+            {
+                Name = "Price",
+                Value = minPrice.Currency,
+                MinValue = minPrice.Amount,
+                MaxValue = maxPrice.Amount,
+                Type = Dtos.Enums.FilterType.INTERVAL
+            });
+
+            results["Duration"]?.Add(new FilterDTO
+            {
+                Name = "Duration",
+                Value = "Hours",
+                MinValue = minDuration,
+                MaxValue = maxDuration,
+                Type = Dtos.Enums.FilterType.INTERVAL
+            });
+
+            return results;
+        }
+
+        public Dictionary<string, List<FilterDTO>> GetBaseFilters()
+        {
+            var result = new Dictionary<string, List<FilterDTO>>
+            {
+                {"MainKeyword", new List<FilterDTO>() },
+                {"Authors", new List<FilterDTO>() },
+                {"Price", new List<FilterDTO>() },
+                {"Duration", new List<FilterDTO>() },
+            };
+            return result;
+        }
+
         private bool CheckFilter(Course course, FilterDTO filter)
         {
             if (filter.Type == Dtos.Enums.FilterType.CHECKBOX)

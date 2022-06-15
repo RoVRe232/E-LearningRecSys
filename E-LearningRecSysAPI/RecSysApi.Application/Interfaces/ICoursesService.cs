@@ -15,5 +15,6 @@ namespace RecSysApi.Application.Interfaces
         public Task<CourseDTO> GetCourse(Guid courseId);
         public Task<List<CourseDTO>> CheckIfCoursesAreOwnedByAccount(List<CourseDTO> courses, Guid AccountID);
         public Task<List<CourseDTO>> GetOwnedCourses(Guid accountId);
+        public Dictionary<string, List<FilterDTO>> GetAvailableFilters(List<Course> courses);
     }
 }
