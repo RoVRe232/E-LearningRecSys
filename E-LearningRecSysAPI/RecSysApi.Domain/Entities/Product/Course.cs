@@ -17,5 +17,6 @@ namespace RecSysApi.Domain.Entities.Products
         public virtual Price Price { get; set; }
         public virtual Account.Account Account { get; set; }
         public virtual ICollection<Section> Sections { get; set; }
+        public virtual ICollection<Orders.Order> Orders { get; set; }
     }
 }

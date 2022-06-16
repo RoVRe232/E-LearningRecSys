@@ -12,6 +12,6 @@ namespace RecSysApi.Application.Dtos.Search
     {
         public ICollection<CourseDTO> Courses { get; set; }
         public ICollection<VideoDTO> Videos { get; set; }
-        public ICollection<FilterDTO> Filters { get; set; }
+        public List<FilterDTO> Filters { get; set; }
     }
 }

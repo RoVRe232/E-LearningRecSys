@@ -3,6 +3,7 @@ import { ThemePalette } from '@angular/material/core';
 import { BehaviorSubject, map, take } from 'rxjs';
 import { BackApiHttpRequest } from '../models/back-api-http-request.model';
 import { CourseCardModel } from '../models/course-card.model';
+import { SearchFiltersModel } from '../models/search-filters.model';
 import { SearchTagModel } from '../models/search-tag.model';
 import { VideoCardModel } from '../models/video-card.model';
 import { HttpService } from './http.service';
@@ -16,10 +17,12 @@ export enum SearchFilterType {
 export interface SearchResults {
   courses?: CourseCardModel[];
   videos?: VideoCardModel[];
+  filters?: { [key: string]: IntervalSearchFilter[] };
 }
 
 export interface SearchFilter {
   name: string;
+  value?: string;
   type: SearchFilterType;
   description?: string;
   allCompleted?: boolean;
@@ -89,7 +92,7 @@ export class SearchService {
             {},
             {
               keyPhrases: [concatKeywords],
-              filters: {},
+              filters: [],
               paginationOptions: {
                 take: 0,
                 skip: 0,

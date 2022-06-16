@@ -40,7 +40,7 @@ export class AddCourseComponent implements OnDestroy {
     smallDescription: ['', [Validators.required]],
     largeDescription: [''],
     thumbnailImage: ['', [Validators.required]],
-    courseKeywords: ['', [Validators.required]],
+    keywords: ['', [Validators.required]],
     price: this.fb.group({
       amount: [0, [Validators.required, Validators.min(1)]],
       currency: ['USD', [Validators.required]],
@@ -80,8 +80,8 @@ export class AddCourseComponent implements OnDestroy {
     return this.courseData.controls['largeDescription'] as FormControl;
   }
 
-  get courseKeywords() {
-    return this.courseData.controls['courseKeywords'] as FormControl;
+  get keywords() {
+    return this.courseData.controls['keywords'] as FormControl;
   }
 
   abstractControlToFormGroup(abstractControl: AbstractControl) {

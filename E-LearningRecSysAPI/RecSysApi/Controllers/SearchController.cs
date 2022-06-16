@@ -41,7 +41,8 @@ namespace RecSysApi.Presentation.Controllers
                 Result = new SearchResultsDTO
                 {
                     Courses = coursesResults,
-                    Videos = videosResults
+                    Videos = videosResults,
+                    Filters = courseFilters
                 }
             });
         }

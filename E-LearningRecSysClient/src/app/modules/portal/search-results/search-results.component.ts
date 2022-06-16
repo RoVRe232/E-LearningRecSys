@@ -46,7 +46,10 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     );
     this.searchService.searchResults
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((result) => (this.searchResults = result));
+      .subscribe((result) => {
+        this.searchResults = result;
+        this.searchFilters = result.filters;
+      });
     this.searchService.searchTags
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((result) => (this.searchTags = result));
