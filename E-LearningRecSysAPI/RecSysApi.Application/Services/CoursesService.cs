@@ -119,18 +119,21 @@ namespace RecSysApi.Application.Services
             {
                 try
                 {
-                    var mainKeyword = course.Keywords.Split(" ")[0];
-                    if(results.ContainsKey("MainKeyword") && !results["MainKeyword"].Any(e => e.Value == mainKeyword))
-                        results["MainKeyword"]?.Add(new FilterDTO
-                        {
-                            Name = mainKeyword,
-                            Value = mainKeyword,
-                            Type = Dtos.Enums.FilterType.CHECKBOX
-                        });
+                    if (results.ContainsKey("MainKeyword"))
+                    {
+                        var mainKeyword = course.Keywords.Split(" ").Length > 0 ? course.Keywords.Split(" ")[0] : course.Keywords;
+                        if (!results["MainKeyword"].Any(e => e.Value == mainKeyword))
+                            results["MainKeyword"]?.Add(new FilterDTO
+                            {
+                                Name = mainKeyword,
+                                Value = mainKeyword,
+                                Type = Dtos.Enums.FilterType.CHECKBOX
+                            });
+                    }
                 }
                 catch (Exception ex) { }
 
-                if(results.ContainsKey("Authors") && !results["Authors"].Any(e => e.Value == course.Account.AccountID.ToString()))
+                if (results.ContainsKey("Authors") && !results["Authors"].Any(e => e.Value == course.Account.AccountID.ToString()))
                     results["Authors"]?.Add(new FilterDTO
                     {
                         Name = course.Account.Name,

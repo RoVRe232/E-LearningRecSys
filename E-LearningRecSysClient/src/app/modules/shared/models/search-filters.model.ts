@@ -4,5 +4,5 @@ export interface SearchFiltersModel {
   name: string;
   completed: boolean;
   color: ThemePalette;
-  subtasks?: SearchFiltersModel[];
+  subFilters?: SearchFiltersModel[];
 }

@@ -28,7 +28,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       name: 'Java',
       completed: false,
       color: 'primary',
-      subtasks: [
+      subFilters: [
         { name: 'Spring boot', completed: false, color: 'primary' },
         { name: 'Jenkins', completed: false, color: 'primary' },
       ],
@@ -48,7 +48,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((result) => {
         this.searchResults = result;
-        this.searchFilters = result.filters;
+        this.searchFilters = result.filters!;
       });
     this.searchService.searchTags
       .pipe(takeUntil(this.ngUnsubscribe))

@@ -17,7 +17,7 @@ export enum SearchFilterType {
 export interface SearchResults {
   courses?: CourseCardModel[];
   videos?: VideoCardModel[];
-  filters?: { [key: string]: IntervalSearchFilter[] };
+  filters?: SearchFilter[];
 }
 
 export interface SearchFilter {
