@@ -32,7 +32,7 @@ namespace RecSysApi.Presentation.Controllers
             var databaseCourses = await _coursesService.SearchForCourses(searchQueryDTO);
             var courseFilters = _coursesService.GetAvailableFilters(databaseCourses);
             var coursesResults = await CheckIfOwnedForAuthenticatedAccounts(
-                _coursesService.MapCoursesToCourseDTOs(databaseCourses));
+                _coursesService.MapCoursesToCourseDTOs(_coursesService.FilterCourses(databaseCourses, searchQueryDTO.Filters)));
             var videosResults = _videosService.MapVideosToVideoDTOs(await _videosService.SearchForVideos(searchQueryDTO));
             return Ok(new BasicHttpResponseDTO<SearchResultsDTO>
             {

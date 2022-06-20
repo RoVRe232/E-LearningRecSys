@@ -103,9 +103,11 @@ namespace RecSysApi.Application.Services
             return checkedCourses;
         }
 
-        public async Task<List<Course>> FilterCourses(List<Course> courses, List<FilterDTO> filters)
+        public List<Course> FilterCourses(List<Course> courses, List<FilterDTO> filters)
         {
-            return courses.Where(e => filters.Any(x => CheckFilter(e, x))).ToList();
+            if (filters != null)
+                return courses.Where(e => filters.Any(x => CheckFilter(e, x))).ToList();
+            return courses;
         }
 
         public List<FilterDTO> GetAvailableFilters(List<Course> courses)
@@ -226,13 +228,24 @@ namespace RecSysApi.Application.Services
                 switch (filter.Name)
                 {
                     case "AuthorName":
-                        if (course.Account.Name == filter.Value)
+                        if (filter.SubFilters.Any(e => e.Checked == true && course.Account.Name == e.Value ))
                             return true;
                         break;
-                    case "FirstKeyword":
-                        if (course.Keywords.Split(' ')[0] == filter.Value)
+                    case "MainKeyword":
+                        var mainKeyword = course.Keywords.Split(" ").Length > 0 ? course.Keywords.Split(" ")[0] : course.Keywords;
+                        if (filter.SubFilters.Any(e => e.Checked == true && e.Value == mainKeyword ))
                             return true;
                         break;
+                    case "Price":
+                        var priceFilter = filter.SubFilters.First();
+                        if (filter.LowValue > course.Price.Amount || filter.HighValue < course.Price.Amount)
+                            return false;
+                        return true;
+                    case "Duration":
+                        var durationFilter = filter.SubFilters.First();
+                        if (filter.LowValue > course.Hours || filter.HighValue < course.Hours)
+                            return false;
+                        return true;
                 }
             }
             return false;

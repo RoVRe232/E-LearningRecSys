@@ -40,7 +40,7 @@
                 </span>
                 <span>
                   <ul>
-                    <li *ngFor="let innerFilter of filtersGroup.filters">
+                    <li *ngFor="let innerFilter of filtersGroup.subFilters">
                       <mat-checkbox
                         [(ngModel)]="innerFilter.checked"
                         [color]="innerFilter.color"
@@ -56,7 +56,7 @@
                 <span>
                   <ul>
                     <li
-                      *ngFor="let innerFilter of filtersGroup.filters"
+                      *ngFor="let innerFilter of filtersGroup.subFilters"
                       class="custom-slider"
                     >
                       <ngx-slider

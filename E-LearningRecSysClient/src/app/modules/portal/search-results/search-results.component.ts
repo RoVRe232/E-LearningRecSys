@@ -65,26 +65,32 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
 
   updateAllComplete(filtersGroup: SearchFilter) {
     filtersGroup.allCompleted = true;
-    filtersGroup.filters != null &&
-      filtersGroup.filters.every((t) => t.checked);
+    if (filtersGroup.subFilters != null) {
+      filtersGroup.subFilters.every((t) => t.checked);
+      this.searchService.performAnonymousSearch(
+        this.keywords,
+        this.searchTags,
+        this.searchFilters,
+      );
+    }
   }
 
   someComplete(filtersGroup: SearchFilter): boolean {
-    if (filtersGroup.filters == null) {
+    if (filtersGroup.subFilters == null) {
       return false;
     }
     return (
-      filtersGroup.filters.filter((t) => t.checked).length > 0 &&
+      filtersGroup.subFilters.filter((t) => t.checked).length > 0 &&
       !filtersGroup.allCompleted
     );
   }
 
   setAll(filtersGroup: SearchFilter, checked: boolean) {
     filtersGroup.allCompleted = checked;
-    if (filtersGroup.filters == null) {
+    if (filtersGroup.subFilters == null) {
       return;
     }
-    filtersGroup.filters.forEach((t) => (t.checked = checked));
+    filtersGroup.subFilters.forEach((t) => (t.checked = checked));
   }
 
   asIntervalSearchFilter(searchFilter: SearchFilter): IntervalSearchFilter {
@@ -99,7 +105,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
         description: '(246)',
         checked: false,
         color: 'primary',
-        filters: [
+        subFilters: [
           {
             name: 'Java',
             type: SearchFilterType.CHECKBOX,
@@ -122,7 +128,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
         description: '(246)',
         checked: false,
         color: 'primary',
-        filters: [
+        subFilters: [
           {
             name: 'Author1',
             type: SearchFilterType.CHECKBOX,
@@ -145,7 +151,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
         description: '(500)',
         checked: false,
         color: 'primary',
-        filters: [
+        subFilters: [
           {
             name: 'Course price',
             type: SearchFilterType.INTERVAL,
@@ -165,7 +171,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
         description: '(minutes)',
         checked: false,
         color: 'primary',
-        filters: [
+        subFilters: [
           {
             name: 'Duration (in minutes)',
             type: SearchFilterType.INTERVAL,

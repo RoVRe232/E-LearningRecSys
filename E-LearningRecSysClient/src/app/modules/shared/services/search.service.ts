@@ -28,7 +28,7 @@ export interface SearchFilter {
   allCompleted?: boolean;
   checked?: boolean;
   color: ThemePalette;
-  filters?: SearchFilter[];
+  subFilters?: SearchFilter[];
 }
 
 export interface IntervalSearchFilter extends SearchFilter {
@@ -63,7 +63,11 @@ export class SearchService {
     this.searchTags.next([]);
   }
 
-  public performAnonymousSearch(keywords: string, tags: SearchTagModel[]) {
+  public performAnonymousSearch(
+    keywords: string,
+    tags: SearchTagModel[],
+    filters?: SearchFilter[],
+  ) {
     //TODO Add support for reloading previous queries
     this.searchAutocompleteOptions
       .pipe(take(1))
@@ -92,7 +96,7 @@ export class SearchService {
             {},
             {
               keyPhrases: [concatKeywords],
-              filters: [],
+              filters: filters,
               paginationOptions: {
                 take: 0,
                 skip: 0,
