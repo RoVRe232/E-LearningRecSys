@@ -35,7 +35,8 @@
                     [indeterminate]="someComplete(filtersGroup)"
                     (change)="setAll(filtersGroup, $event.checked)"
                   >
-                    {{ 'All' + ' - ' + filtersGroup.description }}
+                    {{ 'All' }}
+                    <!-- {{ 'All' + ' - ' + filtersGroup.description }} -->
                   </mat-checkbox>
                 </span>
                 <span>
@@ -46,7 +47,8 @@
                         [color]="innerFilter.color"
                         (ngModelChange)="updateAllComplete(filtersGroup)"
                       >
-                        {{ innerFilter.name + ' - ' + innerFilter.description }}
+                        {{ innerFilter.name }}
+                        <!-- {{ innerFilter.name + ' - ' + innerFilter.description }} -->
                       </mat-checkbox>
                     </li>
                   </ul>

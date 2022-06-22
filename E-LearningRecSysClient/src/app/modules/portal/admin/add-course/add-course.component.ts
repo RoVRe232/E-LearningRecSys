@@ -145,7 +145,7 @@ export class AddCourseComponent implements OnDestroy {
     formData.append('name', this.name.value);
 
     this.httpClient
-      .post('https://localhost:5001/api/courses', this.courseData.value)
+      .post('https://localhost:6001/api/courses', this.courseData.value)
       .subscribe((e) => console.log(e));
 
     this.isSubmitted.next(true);

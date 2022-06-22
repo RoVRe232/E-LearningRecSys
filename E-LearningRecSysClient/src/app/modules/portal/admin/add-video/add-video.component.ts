@@ -62,7 +62,7 @@ export class AddVideoComponent implements OnInit, OnDestroy {
         );
         this.httpClient
           .post<any>(
-            'https://localhost:5001/api/videos/add-source-content',
+            'https://localhost:6001/api/videos/add-source-content',
             formData,
           )
           .subscribe((e) => console.log(e));

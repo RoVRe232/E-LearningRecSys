@@ -17,7 +17,7 @@ export class VideoWrapperComponent implements OnInit {
   ngOnInit(): void {
     this.httpClient
       .get(
-        `https://localhost:5001/api/videos/get-source-content?id=${this.videoId}`,
+        `https://localhost:6001/api/videos/get-source-content?id=${this.videoId}`,
         { responseType: 'text' },
       )
       .subscribe((e) => {

@@ -109,7 +109,7 @@ namespace RecSysApi.Presentation.Controllers
                         RequestUrlID = Guid.NewGuid(),
                         Content = order,
                         Protocol = "https",
-                        Domain = "localhost:5002",
+                        Domain = "localhost:6002",
                         Path = "api/orders/create-order"
                     });
 

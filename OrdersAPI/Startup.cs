@@ -61,7 +61,7 @@ namespace OrdersAPI
             {
                 builder.WithOrigins("http://localhost:4200")
                 .AllowAnyHeader().AllowAnyMethod().AllowCredentials();
-                builder.WithOrigins("http://localhost:5006")
+                builder.WithOrigins("http://localhost:6001")
                 .AllowAnyHeader().AllowAnyMethod().AllowCredentials();
             });
             app.UseRouting();
