@@ -1,3 +1,5 @@
+import { SectionModel } from './section.model';
+import { AccountModel } from './account.model';
 export interface VideoModel {
   videoID: string;
   sectionId?: string;
@@ -23,8 +25,6 @@ export interface VideoModel {
   hiddenInSearches?: boolean;
   duration: number;
   transcription?: string;
-  account?: {
-    accountID: string;
-    name: string;
-  };
+  account?: AccountModel;
+  section?: SectionModel;
 }

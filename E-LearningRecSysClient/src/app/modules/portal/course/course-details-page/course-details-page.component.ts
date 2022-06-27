@@ -29,6 +29,15 @@ export class CourseDetailsPageComponent implements OnInit {
     this.httpService
       .get(getCourseDetailsRequest)
       .pipe(take(1))
-      .subscribe((e) => (this.course = e.result));
+      .subscribe((e) => {
+        this.course = e.result;
+        this.course.sections?.forEach((section) => {
+          section.videos?.forEach((video) => {
+            section.course = this.course;
+            video.section = section;
+            video.account = this.course.account;
+          });
+        });
+      });
   }
 }

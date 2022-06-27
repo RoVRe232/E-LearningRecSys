@@ -43,7 +43,7 @@ export class VideoPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const courseRequest = new BackApiHttpRequest('api/courses', {
+    const courseRequest = new BackApiHttpRequest('api/courses/course', {
       courseId: this.courseId,
     });
     this.httpService

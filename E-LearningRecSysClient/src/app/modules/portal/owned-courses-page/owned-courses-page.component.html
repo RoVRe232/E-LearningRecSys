@@ -3,11 +3,12 @@
     <h2>{{ 'Your owned courses' }}</h2>
   </div>
   <div
-    fxLayout="row"
+    fxLayout="column"
+    fxLayoutGap="12px"
     fxLayoutAlign="space-around start"
     class="full-width full-height"
   >
-    <div class="result-card-wrapper" *ngFor="let item of courses">
+    <div class="result-card-wrapper full-width" *ngFor="let item of courses">
       <app-result-card [course]="item" [isOwnedItem]="true"></app-result-card>
     </div>
   </div>

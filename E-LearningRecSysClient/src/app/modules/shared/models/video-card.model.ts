@@ -1,3 +1,5 @@
+import { SectionModel } from '../../portal/models/section.model';
+import { AccountModel } from '../../portal/models/account.model';
 export interface VideoCardModel {
   videoID: string;
   sectionId?: string;
@@ -22,12 +24,6 @@ export interface VideoCardModel {
   hiddenInSearches?: boolean;
   duration: number;
   transcription?: string;
-  account?: {
-    accountID: string;
-    name: string;
-  };
-  section?: {
-    courseID: string;
-    sectionID: string;
-  };
+  account?: AccountModel;
+  section?: SectionModel;
 }

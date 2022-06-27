@@ -71,6 +71,8 @@ namespace RecSysApi.Application.Services
                 .Include(e => e.Account)
                 .Include(e => e.Sections)
                 .ThenInclude(e => e.Videos)
+                .Include(e => e.Sections)
+                .ThenInclude(e => e.Course)
                 .FirstOrDefaultAsync();
             return _mapper.Map<CourseDTO>(queryResult);
         }
@@ -228,12 +230,12 @@ namespace RecSysApi.Application.Services
                 switch (filter.Name)
                 {
                     case "AuthorName":
-                        if (filter.SubFilters.Any(e => e.Checked == true && course.Account.Name == e.Value ))
+                        if (filter.SubFilters.Any(e => e.Checked == true && course.Account.Name == e.Value))
                             return true;
                         break;
                     case "MainKeyword":
                         var mainKeyword = course.Keywords.Split(" ").Length > 0 ? course.Keywords.Split(" ")[0] : course.Keywords;
-                        if (filter.SubFilters.Any(e => e.Checked == true && e.Value == mainKeyword ))
+                        if (filter.SubFilters.Any(e => e.Checked == true && e.Value == mainKeyword))
                             return true;
                         break;
                     case "Price":

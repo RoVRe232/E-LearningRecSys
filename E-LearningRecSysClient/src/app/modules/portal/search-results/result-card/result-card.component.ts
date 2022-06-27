@@ -72,7 +72,7 @@ export class ResultCardComponent {
       queryParams: {
         id: this.video.internalId,
         videoId: this.video.videoID,
-        courseId: this.video.section?.courseID,
+        courseId: this.video.section?.course?.courseID,
       },
     });
   }
