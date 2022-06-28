@@ -108,8 +108,8 @@ namespace RecSysApi.Presentation.Controllers
                     {
                         RequestUrlID = Guid.NewGuid(),
                         Content = order,
-                        Protocol = "https",
-                        Domain = "localhost:6002",
+                        Protocol = "http",
+                        Domain = "host.docker.internal:6002",
                         Path = "api/orders/create-order"
                     });
 

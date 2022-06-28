@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "recsysapi.presentation",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "cadvisor": "StartWithoutDebugging",
+        "grafana": "StartWithoutDebugging",
+        "mongodb": "StartWithoutDebugging",
+        "ordersapi.presentation": "StartDebugging",
+        "prometheus": "StartWithoutDebugging",
+        "recsysapi.presentation": "StartDebugging",
+        "recsysdb": "StartWithoutDebugging"
+      }
+    }
+  }
+}

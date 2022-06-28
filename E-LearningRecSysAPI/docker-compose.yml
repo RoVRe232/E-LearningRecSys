@@ -2,17 +2,27 @@ version: '3.4'
 
 volumes:
   prometheus-data:
+    name: prometheus-data
     driver: local
   grafana-data:
+    name: grafana-data
     driver: local
   recsysdb-data:
+    name: recsysdb-data
     driver: local
   mongodb-data:
+    name: mongodb-data
     driver: local
+
+networks:
+  recsysnetwork:
+    name: recsysnetwork
 
 services:
   recsysapi.presentation:
     image: ${DOCKER_REGISTRY-}recsysapipresentation
+    networks:
+      - recsysnetwork
     build:
       context: .
       dockerfile: RecSysApi/Dockerfile
@@ -22,17 +32,36 @@ services:
       - recsysdb
   ordersapi.presentation:
     image: ${DOCKER_REGISTRY-}ordersapipresentation
+    networks:
+      - recsysnetwork
     build:
       context: .
-      dockerfile: ../OrdersAPI/Dockerfile
+      dockerfile: ./../OrdersAPI/Dockerfile
+    environment:
+      - DOCKER_DATABASE=true
     ports:
-      - "6002:443"
+      - "6002:80"
     depends_on:
       - recsysdb
+  #recsysdb:
+  #  image: "mcr.microsoft.com/mssql/server"
+  #  volumes: 
+  #      - recsysdb-data:/app
+  #  ports:
+  #      - "6003:1433"
+  #  environment:
+  #      SA_PASSWORD: "abcDEF123#"
+  #      ACCEPT_EULA: "Y"
   recsysdb:
-    image: "mcr.microsoft.com/mssql/server"
+    image: "recsysdbimg"
+    container_name: "recsysdb"
+    networks:
+      - recsysnetwork
+    build:
+      context: .
+      dockerfile: RecSysApiSqlExpressDb/Dockerfile
     volumes: 
-        - recsysdb-data:/app
+        - recsysdb-data
     ports:
         - "6003:1433"
     environment:
@@ -40,12 +69,17 @@ services:
         ACCEPT_EULA: "Y"
   mongodb:
     image: "mongo"
+    networks:
+      - recsysnetwork
+    container_name: "mongodb"
     volumes: 
-        - mongodb-data:/app
+        - mongodb-data
     ports:
         - "6004:27017" 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
+    networks:
+      - recsysnetwork
     container_name: cadvisor
     ports:
     - 8080:8080
@@ -57,19 +91,22 @@ services:
     depends_on:
     - recsysapi.presentation
   prometheus:
+    networks:
+      - recsysnetwork
     container_name: prometheus
     build:
       context: .
       dockerfile: Dockerfile-prometheus
     ports:
       - "9090:9090"
-    #volumes:
-    #  - /etc/prometheus:/etc/prometheus
-    #  - prometheus-data:/prometheus
+    volumes:
+      - prometheus-data
     restart: unless-stopped
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
   grafana:
+    networks:
+      - recsysnetwork
     image: grafana/grafana:latest
     container_name: grafana
     depends_on:
@@ -79,7 +116,3 @@ services:
     volumes:
         - grafana-data:/var/lib/grafana
     restart: unless-stopped
-networks:
-  localdev:
-    external:
-      name: localdev

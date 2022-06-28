@@ -11,6 +11,7 @@ import { CartPageComponent } from './cart/cart-page.component';
 import { OwnedCoursesPageComponent } from './owned-courses-page/owned-courses-page.component';
 import { CourseDetailsComponent } from './shared/course-details/course-details.component';
 import { CourseDetailsPageComponent } from './course/course-details-page/course-details-page.component';
+import { AuthGuard } from '../auth/services/auth.guard';
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
   },
   {
     path: 'courses/owned-courses',
+    canActivate: [AuthGuard],
     component: OwnedCoursesPageComponent,
   },
   {
@@ -35,14 +37,17 @@ const routes: Routes = [
   },
   {
     path: 'videos/watch',
+    canActivate: [AuthGuard],
     component: VideoPageComponent,
   },
   {
     path: 'admin/home',
+    canActivate: [AuthGuard],
     component: AdminHomeComponent,
   },
   {
     path: 'admin/add-course',
+    canActivate: [AuthGuard],
     component: AddCourseComponent,
   },
   {

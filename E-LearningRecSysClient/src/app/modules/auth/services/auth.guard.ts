@@ -12,8 +12,14 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router, private accountService: AccountService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (!this.accountService.isLoggedIn) this.accountService.restoreSession();
-    return this.accountService.isLoggedIn;
+    // if (this.accountService.accountValue.accountID == 'DEFAULT')
+    //   this.accountService.restoreSession();
+    if (this.accountService.accountValue.accountID == 'DEFAULT') {
+      this.router.navigate(['/', 'accounts', 'login']);
+      return false;
+    }
+
+    return true;
     // TODO check if route is restricted by role
     // if (route.data['roles'] && !route.data['roles'].includes(account.role)) {
     //     // role not authorized so redirect to home page

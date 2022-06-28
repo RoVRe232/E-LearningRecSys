@@ -22,4 +22,4 @@ RUN dotnet publish "OrdersAPI.Presentation.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "OrdersAPI.Presentation.dll"]
+ENTRYPOINT ["dotnet", "OrdersAPI.Presentation.dll", "http://*:5003;http://*:6002"]

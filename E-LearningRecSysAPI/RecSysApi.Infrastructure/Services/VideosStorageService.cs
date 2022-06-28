@@ -16,7 +16,12 @@ namespace RecSysApi.Infrastructure.Services
     {
         public async Task<string> StoreVideoToPermanentStorage(VideoSourceUploadDTO source)
         {
-            var client = new MongoClient("mongodb://localhost:27017");
+            var clientString = "mongodb://mongodb:27017";
+            var envDockerDatabase = Environment.GetEnvironmentVariable("DOCKER_DATABASE");
+
+            if (Environment.GetEnvironmentVariable("DOCKER_DATABASE") != null && Environment.GetEnvironmentVariable("DOCKER_DATABASE") == "true")
+                clientString = "mongodb://mongodb:27017";
+            var client = new MongoClient(clientString);
             var database = client.GetDatabase("RecSysDb");
 
             var bucket = new GridFSBucket(database, new GridFSBucketOptions
@@ -49,7 +54,12 @@ namespace RecSysApi.Infrastructure.Services
 
         public async Task<byte[]> GetVideoContentFromPermanentStorage(string id)
         {
-            var client = new MongoClient("mongodb://localhost:27017");
+            var clientString = "mongodb://mongodb:27017";
+            var envDockerDatabase = Environment.GetEnvironmentVariable("DOCKER_DATABASE");
+
+            if (Environment.GetEnvironmentVariable("DOCKER_DATABASE") != null && Environment.GetEnvironmentVariable("DOCKER_DATABASE") == "true")
+                clientString = "mongodb://mongodb:27017";
+            var client = new MongoClient(clientString);
             var database = client.GetDatabase("RecSysDb");
             
             var bucket = new GridFSBucket(database, new GridFSBucketOptions
