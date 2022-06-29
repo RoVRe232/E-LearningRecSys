@@ -54,9 +54,7 @@ namespace RecSysApi.Infrastructure.Services
 
         public async Task<byte[]> GetVideoContentFromPermanentStorage(string id)
         {
-            var clientString = "mongodb://mongodb:27017";
-            var envDockerDatabase = Environment.GetEnvironmentVariable("DOCKER_DATABASE");
-
+            var clientString = "mongodb://localhost:27017";
             if (Environment.GetEnvironmentVariable("DOCKER_DATABASE") != null && Environment.GetEnvironmentVariable("DOCKER_DATABASE") == "true")
                 clientString = "mongodb://mongodb:27017";
             var client = new MongoClient(clientString);

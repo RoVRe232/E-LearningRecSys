@@ -64,7 +64,7 @@ namespace RecSysApi.Application.Services
             }
         }
 
-        public async Task<CourseDTO> GetCourse(Guid courseId)
+        public async Task<CourseDTO> GetCourse(Guid courseId, Guid accountId = new Guid())
         {
             var queryResult = await _courseRepository.GetQuery(e => e.CourseID == courseId)
                 .Include(e => e.Price)
@@ -74,7 +74,11 @@ namespace RecSysApi.Application.Services
                 .Include(e => e.Sections)
                 .ThenInclude(e => e.Course)
                 .FirstOrDefaultAsync();
-            return _mapper.Map<CourseDTO>(queryResult);
+            var mappedQueryResult = _mapper.Map<CourseDTO>(queryResult);
+
+            if (accountId != Guid.Empty)
+                mappedQueryResult.Owned = await _unitOfWork.CourseLicenses.GetQuery(e => e.AccountID == accountId && courseId == e.CourseID).AnyAsync();
+            return mappedQueryResult;
         }
 
         public async Task<List<CourseDTO>> GetOwnedCourses(Guid accountId)
@@ -108,7 +112,10 @@ namespace RecSysApi.Application.Services
         public List<Course> FilterCourses(List<Course> courses, List<FilterDTO> filters)
         {
             if (filters != null)
-                return courses.Where(e => filters.Any(x => CheckFilter(e, x))).ToList();
+            {
+                var filteredCourses = courses.Where(e => filters.All(x => CheckFilter(e, x))).ToList();
+                return filteredCourses;
+            }
             return courses;
         }
 
@@ -131,18 +138,18 @@ namespace RecSysApi.Application.Services
                             {
                                 Name = mainKeyword,
                                 Value = mainKeyword,
-                                Type = Dtos.Enums.FilterType.CHECKBOX
+                                Type = Dtos.Enums.FilterType.CHECKBOX,
                             });
                     }
                 }
                 catch (Exception ex) { }
 
-                if (results.ContainsKey("Authors") && !results["Authors"].Any(e => e.Value == course.Account.AccountID.ToString()))
-                    results["Authors"]?.Add(new FilterDTO
+                if (results.ContainsKey("AuthorName") && !results["AuthorName"].Any(e => e.Value == course.Account.AccountID.ToString()))
+                    results["AuthorName"]?.Add(new FilterDTO
                     {
                         Name = course.Account.Name,
                         Value = course.Account.AccountID.ToString(),
-                        Type = Dtos.Enums.FilterType.CHECKBOX
+                        Type = Dtos.Enums.FilterType.CHECKBOX,
                     });
 
                 if (course.Price.Amount <= minPrice.Amount)
@@ -189,9 +196,9 @@ namespace RecSysApi.Application.Services
             finalResults.Add(new FilterDTO
             {
                 Type = Dtos.Enums.FilterType.CHECKBOX,
-                Name = "Authors",
-                Value = "Authors",
-                SubFilters = results["Authors"]
+                Name = "AuthorName",
+                Value = "AuthorName",
+                SubFilters = results["AuthorName"]
             });
             finalResults.Add(new FilterDTO
             {
@@ -216,7 +223,7 @@ namespace RecSysApi.Application.Services
             var result = new Dictionary<string, List<FilterDTO>>
             {
                 {"MainKeyword", new List<FilterDTO>() },
-                {"Authors", new List<FilterDTO>() },
+                {"AuthorName", new List<FilterDTO>() },
                 {"Price", new List<FilterDTO>() },
                 {"Duration", new List<FilterDTO>() },
             };
@@ -225,27 +232,31 @@ namespace RecSysApi.Application.Services
 
         private bool CheckFilter(Course course, FilterDTO filter)
         {
-            if (filter.Type == Dtos.Enums.FilterType.CHECKBOX)
+            if (filter.Type == Dtos.Enums.FilterType.CHECKBOX || filter.Type == Dtos.Enums.FilterType.INTERVAL)
             {
                 switch (filter.Name)
                 {
                     case "AuthorName":
-                        if (filter.SubFilters.Any(e => e.Checked == true && course.Account.Name == e.Value))
+                        if (filter.SubFilters.All(e => e.Checked == false))
+                            return true;
+                        if (filter.SubFilters.Any(e => e.Checked == true && course.Account.Name == e.Name))
                             return true;
                         break;
                     case "MainKeyword":
+                        if (filter.SubFilters.All(e => e.Checked == false))
+                            return true;
                         var mainKeyword = course.Keywords.Split(" ").Length > 0 ? course.Keywords.Split(" ")[0] : course.Keywords;
                         if (filter.SubFilters.Any(e => e.Checked == true && e.Value == mainKeyword))
                             return true;
                         break;
                     case "Price":
                         var priceFilter = filter.SubFilters.First();
-                        if (filter.LowValue > course.Price.Amount || filter.HighValue < course.Price.Amount)
+                        if (priceFilter.LowValue > course.Price.Amount || priceFilter.HighValue < course.Price.Amount)
                             return false;
                         return true;
                     case "Duration":
                         var durationFilter = filter.SubFilters.First();
-                        if (filter.LowValue > course.Hours || filter.HighValue < course.Hours)
+                        if (durationFilter.LowValue > course.Hours || durationFilter.HighValue < course.Hours)
                             return false;
                         return true;
                 }

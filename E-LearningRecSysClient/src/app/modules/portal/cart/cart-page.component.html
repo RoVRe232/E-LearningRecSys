@@ -1,8 +1,32 @@
-<div class="main-wrapper" fxLayout="row" fxLayoutAlign="space-around start">
+<div
+  *ngIf="cartContent.length > 0"
+  class="main-wrapper"
+  fxLayout="row"
+  fxLayoutAlign="space-around start"
+>
   <mat-card fxFlex="67" fxLayout="column" fxLayoutAlign="start start">
     <app-cart-overview [cartContent]="cartContent"></app-cart-overview>
   </mat-card>
   <mat-card fxFlex="30" fxLayout="column" fxLayoutAlign="start start">
     <app-cart-summary [cartSummary]="cartSummary"></app-cart-summary>
   </mat-card>
+</div>
+
+<div
+  *ngIf="cartContent.length == 0"
+  class="main-wrapper"
+  fxLayout="column"
+  fxLayoutAlign="space-around center"
+>
+  <h2 class="full-width" style="text-align: center">
+    Cart is empty, add something in it by clicking on the button below
+  </h2>
+  <button
+    mat-raised-button
+    class="navigation-button"
+    type="button"
+    [routerLink]="['/search-results']"
+  >
+    {{ 'Search Courses & Videos' | uppercase }}
+  </button>
 </div>

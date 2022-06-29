@@ -71,9 +71,12 @@
       (change)="descriptionChanged($event)"
     ></ngx-editor>
   </div> -->
-  <textarea
-    matInput
-    formControlName="description"
-    placeholder="Video description"
-  ></textarea>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>{{ 'Enter video long description' }}</mat-label>
+    <textarea
+      matInput
+      formControlName="description"
+      placeholder="Video long description"
+    ></textarea>
+  </mat-form-field>
 </div>

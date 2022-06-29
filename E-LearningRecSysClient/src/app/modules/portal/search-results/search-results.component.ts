@@ -97,6 +97,14 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     return searchFilter as IntervalSearchFilter;
   }
 
+  sliderValueChanged() {
+    this.searchService.performAnonymousSearch(
+      this.keywords,
+      this.searchTags,
+      this.searchFilters,
+    );
+  }
+
   initializeSearchFilters() {
     this.searchFilters = [
       {

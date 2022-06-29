@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using RecSysApi.Application.Dtos.Courses;
 using RecSysApi.Application.Dtos.Search;
 using RecSysApi.Application.Dtos.Video;
 using RecSysApi.Application.Interfaces;
@@ -72,6 +73,11 @@ namespace RecSysApi.Application.Services
                     .ToListAsync();
                 return queryResults;
             }
+        }
+
+        public List<VideoDTO> FilterVideosBelongingToCourses(List<VideoDTO> videos, List<CourseDTO> courses)
+        {
+            return videos.Where(e => courses.Any(x => x.CourseID == e.Section.CourseID)).ToList();
         }
 
         public List<VideoDTO> MapVideosToVideoDTOs(List<Video> videos)

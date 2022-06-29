@@ -107,5 +107,9 @@ export class CartService {
       .post(orderRequest)
       .pipe(take(1))
       .subscribe((order) => console.log(order));
+    this.clearCartContent();
+    this.notificationService.showSuccessNotification(
+      'Order request successfully sent!',
+    );
   }
 }

@@ -1,4 +1,5 @@
-﻿using RecSysApi.Application.Dtos.Search;
+﻿using RecSysApi.Application.Dtos.Courses;
+using RecSysApi.Application.Dtos.Search;
 using RecSysApi.Application.Dtos.Video;
 using RecSysApi.Domain.Entities;
 using System;
@@ -14,5 +15,6 @@ namespace RecSysApi.Application.Interfaces
         public Task<List<Video>> SearchForVideos(SearchQueryDTO query);
         public List<VideoDTO> MapVideosToVideoDTOs(List<Video> courses);
         public Task<VideoDTO> GetVideo(Guid videoId);
+        public List<VideoDTO> FilterVideosBelongingToCourses(List<VideoDTO> videos, List<CourseDTO> courses);
     }
 }

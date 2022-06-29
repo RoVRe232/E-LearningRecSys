@@ -14,8 +14,8 @@ namespace RecSysApi.Infrastructure
         public static IServiceCollection AddInfrastructureLayerDependencies(this IServiceCollection services)
         {
             //var connection = @"Server=DESKTOP-3LKRNT7\SQLEXPRESS;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0";
-            //var connection = @"Server=DESKTOP-OMFT137\SQLEXPRESS;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0";
-            var connection = "Server=host.docker.internal,6003;User ID=SA;Password=abcDEF123#;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0;Integrated Security=false";
+            var connection = @"Server=DESKTOP-OMFT137\SQLEXPRESS;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0";
+            //var connection = "Server=host.docker.internal,6003;User ID=SA;Password=abcDEF123#;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0;Integrated Security=false";
             if (Environment.GetEnvironmentVariable("DOCKER_DATABASE") != null && Environment.GetEnvironmentVariable("DOCKER_DATABASE") == "true")
                 connection = "Server=host.docker.internal,6003;User ID=SA;Password=abcDEF123#;Database=RecSysApiDb;Trusted_Connection=True;ConnectRetryCount=0;Integrated Security=false";
             //Swap to this connection string for Update Database commands

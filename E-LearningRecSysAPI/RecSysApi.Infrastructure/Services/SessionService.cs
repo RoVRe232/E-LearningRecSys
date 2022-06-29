@@ -205,6 +205,18 @@ namespace RecSysApi.Infrastructure.Services
             return null;
         }
 
+        public Guid GetUserGuidClaim(ClaimsPrincipal user)
+        {
+            var claimsIdentiy = user.Claims.GetEnumerator();
+            do
+            {
+                var claim = claimsIdentiy.Current;
+                if (claim != null && claim.Type != null && claim.Type == ClaimTypes.NameIdentifier)
+                    return new Guid(claim.Value);
+            } while (claimsIdentiy.MoveNext());
+            return new Guid();
+        }
+
         public async Task<UserDetailsDTO> GetUserDetailsAsync(Guid userId)
         {
             var user = await _userRepository
@@ -224,6 +236,8 @@ namespace RecSysApi.Infrastructure.Services
                 PostalCode = user.PostalCode
             };
         }
+
+
 
         public Task<User> GetUserFromLoginAsync(LoginData login)
         {

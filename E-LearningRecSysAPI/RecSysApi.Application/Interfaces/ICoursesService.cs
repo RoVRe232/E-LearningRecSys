@@ -12,7 +12,7 @@ namespace RecSysApi.Application.Interfaces
         public Task<Course> CreateCourse(CourseDTO course);
         public Task<List<Course>> SearchForCourses(SearchQueryDTO query);
         public List<CourseDTO> MapCoursesToCourseDTOs(List<Course> courses);
-        public Task<CourseDTO> GetCourse(Guid courseId);
+        public Task<CourseDTO> GetCourse(Guid courseId, Guid userId = new Guid());
         public Task<List<CourseDTO>> CheckIfCoursesAreOwnedByAccount(List<CourseDTO> courses, Guid AccountID);
         public Task<List<CourseDTO>> GetOwnedCourses(Guid accountId);
         public List<FilterDTO> GetAvailableFilters(List<Course> courses);
