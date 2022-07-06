@@ -250,13 +250,11 @@ namespace RecSysApi.Application.Services
                             return true;
                         break;
                     case "Price":
-                        var priceFilter = filter.SubFilters.First();
-                        if (priceFilter.LowValue > course.Price.Amount || priceFilter.HighValue < course.Price.Amount)
+                        if (filter.LowValue > course.Price.Amount || filter.HighValue < course.Price.Amount)
                             return false;
                         return true;
                     case "Duration":
-                        var durationFilter = filter.SubFilters.First();
-                        if (durationFilter.LowValue > course.Hours || durationFilter.HighValue < course.Hours)
+                        if (filter.LowValue > course.Hours || filter.HighValue < course.Hours)
                             return false;
                         return true;
                 }

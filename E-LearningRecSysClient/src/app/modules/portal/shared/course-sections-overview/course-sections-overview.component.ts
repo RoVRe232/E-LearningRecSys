@@ -3,6 +3,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { VideoCardModel } from 'src/app/modules/shared/models/video-card.model';
 import { CourseModel } from '../../models/course.model';
 import { VideoModel } from '../../models/video.model';
+import { SectionModel } from '../../models/section.model';
 
 @Component({
   selector: 'app-course-sections-overview',
@@ -16,14 +17,19 @@ export class CourseSectionsOverviewComponent {
     return this.course.sections || [];
   }
 
-  mapVideosToVideoCards(videos: VideoModel[] | undefined): VideoCardModel[] {
-    if (videos) return videos.map((e) => this.mapVideoToVideoCard(e));
+  mapVideosToVideoCards(section: SectionModel | undefined): VideoCardModel[] {
+    if (section && section.videos)
+      return section.videos.map((e) => this.mapVideoToVideoCard(e, section));
     return [];
   }
 
-  mapVideoToVideoCard(video: VideoModel): VideoCardModel {
+  mapVideoToVideoCard(
+    video: VideoModel,
+    section: SectionModel,
+  ): VideoCardModel {
     return {
       ...video,
+      section,
     } as VideoCardModel;
   }
 }

@@ -28,16 +28,16 @@ namespace RecSysApi.Presentation.Controllers
         public async Task<ActionResult<BasicHttpResponseDTO<SearchResultsDTO>>> Query(SearchQueryDTO searchQueryDTO)
         {
             if (searchQueryDTO.PaginationOptions.Take <= 0)
-                searchQueryDTO.PaginationOptions.Take = 10;
+                searchQueryDTO.PaginationOptions.Take = 50;
             var databaseCourses = await _coursesService.SearchForCourses(searchQueryDTO);
 
             var courseFilters = searchQueryDTO.Filters;
-            if(courseFilters == null || courseFilters.Count == 0)
+            if (courseFilters == null || courseFilters.Count == 0)
                 courseFilters = _coursesService.GetAvailableFilters(databaseCourses);
 
             var coursesResults = await CheckIfOwnedForAuthenticatedAccounts(
                 _coursesService.MapCoursesToCourseDTOs(_coursesService.FilterCourses(databaseCourses, searchQueryDTO.Filters)));
-            
+
             var videosResults = _videosService.FilterVideosBelongingToCourses(
                 _videosService.MapVideosToVideoDTOs(await _videosService.SearchForVideos(searchQueryDTO)), coursesResults);
             return Ok(new BasicHttpResponseDTO<SearchResultsDTO>

@@ -1,9 +1,5 @@
 ﻿using RecSysApi.Application.Dtos.Courses;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecSysApi.Application.Dtos.Video
 {
@@ -25,7 +21,7 @@ namespace RecSysApi.Application.Dtos.Video
         public bool HiddenInSearches { get; set; }
         public double Duration { get; set; }
         public string Transcription { get; set; }
-        public string Author { get; set; }
+        public string AuthorName { get; set; }
         public SectionDTO? Section { get; set; }
     }
 }

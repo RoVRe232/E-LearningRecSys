@@ -7,4 +7,5 @@ export interface SectionModel {
   thumbnailImage?: string;
   videos?: VideoModel[];
   course?: CourseModel;
+  courseID?: string;
 }

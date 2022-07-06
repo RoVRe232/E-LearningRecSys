@@ -45,7 +45,7 @@ export class ResultCardComponent {
   }
 
   get videoAuthorName() {
-    return this.video.account?.name || 'Unknown Author';
+    return this.video.authorName;
   }
 
   get formattedPrice() {
@@ -68,13 +68,15 @@ export class ResultCardComponent {
 
   onRedirectToVideo() {
     this.searchService.storeQueryKeywordsToStorage();
-    this.router.navigate(['/', 'videos', 'watch'], {
-      queryParams: {
-        id: this.video.internalId,
-        videoId: this.video.videoID,
-        courseId: this.video.section?.course?.courseID,
-      },
-    });
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate(['/', 'videos', 'watch'], {
+        queryParams: {
+          id: this.video.internalId,
+          videoId: this.video.videoID,
+          courseId: this.video.section?.courseID,
+        },
+      }),
+    );
   }
 
   onRedirectToCourse() {

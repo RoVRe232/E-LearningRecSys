@@ -22,6 +22,8 @@ import { OwnedCoursesPageComponent } from './owned-courses-page/owned-courses-pa
 import { CourseDetailsComponent } from './shared/course-details/course-details.component';
 import { CourseDetailsPageComponent } from './course/course-details-page/course-details-page.component';
 import { CoursePurchaseOverviewComponent } from './shared/course-purchase-overview/course-purchase-overview.component';
+import { EditCourseComponent } from './admin/edit-course/edit-course.component';
+import { CoursesOverviewComponent } from './admin/courses-overview/courses-overview.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { CoursePurchaseOverviewComponent } from './shared/course-purchase-overvi
     CourseDetailsComponent,
     CourseDetailsPageComponent,
     CoursePurchaseOverviewComponent,
+    EditCourseComponent,
+    CoursesOverviewComponent,
   ],
   imports: [
     PortalRoutingModule,

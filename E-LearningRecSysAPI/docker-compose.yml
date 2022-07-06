@@ -61,7 +61,9 @@ services:
       context: .
       dockerfile: RecSysApiSqlExpressDb/Dockerfile
     volumes: 
-        - recsysdb-data
+        - ~/apps/mssql/data:/var/opt/mssql/data
+        - ~/apps/mssql/log:/var/opt/mssql/log
+        - ~/apps/mssql/secrets:/var/opt/mssql/secrets
     ports:
         - "6003:1433"
     environment:
@@ -72,8 +74,8 @@ services:
     networks:
       - recsysnetwork
     container_name: "mongodb"
-    volumes: 
-        - mongodb-data
+    volumes:
+        - ~/apps/mongodb/data:/data/db:rw
     ports:
         - "6004:27017" 
   cadvisor:

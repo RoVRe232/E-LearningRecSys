@@ -12,6 +12,8 @@ import { OwnedCoursesPageComponent } from './owned-courses-page/owned-courses-pa
 import { CourseDetailsComponent } from './shared/course-details/course-details.component';
 import { CourseDetailsPageComponent } from './course/course-details-page/course-details-page.component';
 import { AuthGuard } from '../auth/services/auth.guard';
+import { EditCourseComponent } from './admin/edit-course/edit-course.component';
+import { CoursesOverviewComponent } from './admin/courses-overview/courses-overview.component';
 
 const routes: Routes = [
   {
@@ -49,6 +51,16 @@ const routes: Routes = [
     path: 'admin/add-course',
     canActivate: [AuthGuard],
     component: AddCourseComponent,
+  },
+  {
+    path: 'admin/edit-course',
+    canActivate: [AuthGuard],
+    component: EditCourseComponent,
+  },
+  {
+    path: 'admin/courses-overview',
+    canActivate: [AuthGuard],
+    component: CoursesOverviewComponent,
   },
   {
     path: 'cart',

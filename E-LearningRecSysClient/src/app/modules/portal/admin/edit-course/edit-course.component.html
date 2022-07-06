@@ -1,0 +1,267 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <h1>Edit Course</h1>
+    <mat-card
+      class="add-course-form"
+      fxFlex="40"
+      fxLayout="column"
+      fxLayoutGap="6px"
+      fxLayoutAlign="start center"
+    >
+      <form
+        class="full-width"
+        [formGroup]="courseData"
+        fxLayout="column"
+        fxLayoutGap="8px"
+        fxLayoutAlign="start center"
+        id="courseDataId"
+        (ngSubmit)="onSubmit()"
+      >
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'Enter course name' }}</mat-label>
+          <input matInput formControlName="name" placeholder="Course name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'Enter course small description' }}</mat-label>
+          <input
+            matInput
+            formControlName="smallDescription"
+            placeholder="Course smallDescription"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{
+            'Enter course keywords separated by space (first keyword will be considered as main)'
+          }}</mat-label>
+          <input
+            matInput
+            formControlName="keywords"
+            placeholder="Course smallDescription"
+          />
+        </mat-form-field>
+        <div class="NgxEditor__Wrapper full-width" style="overflow: scroll">
+          <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+          <ngx-editor
+            [editor]="editor"
+            [(ngModel)]="courseDescription"
+            [ngModelOptions]="{ standalone: true }"
+            [disabled]="false"
+            [placeholder]="'Type here course large description...'"
+          ></ngx-editor>
+        </div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'Enter a thumbnail image' }}</mat-label>
+          <input
+            matInput
+            formControlName="thumbnailImage"
+            placeholder="Course thumbnail image"
+          />
+        </mat-form-field>
+        <mat-card fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
+          <h3>Price:</h3>
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Amount</mat-label>
+            <input
+              matInput
+              [formControl]="amount"
+              type="number"
+              style="text-align: right"
+              placeholder="0"
+            />
+            <span matPrefix>$&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Currency</mat-label>
+            <mat-select matNativeControl [formControl]="currency" required>
+              <mat-option value="USD">USD</mat-option>
+              <mat-option value="EUR">EUR</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card>
+        <ng-container formArrayName="sections" class="full-width">
+          <ng-container
+            class="full-width"
+            *ngFor="
+              let sectionForm of sections.controls;
+              let sectionNumber = index
+            "
+          >
+            <mat-card
+              class="add-section-wrapper full-width"
+              fxLayout="column"
+              fxLayoutAlign="start center"
+            >
+              <div
+                class="full-width"
+                fxLayout="column"
+                fxLayoutAlign="start center"
+                fxLayoutGap="6px"
+                [formGroup]="abstractControlToFormGroup(sectionForm)"
+                class="section-form-field"
+              >
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ 'Enter section title' }}</mat-label>
+                  <input
+                    matInput
+                    formControlName="title"
+                    placeholder="Section title"
+                  />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ 'Enter section description' }}</mat-label>
+                  <input
+                    matInput
+                    formControlName="description"
+                    placeholder="Description"
+                  />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ 'Enter thumbnail image' }}</mat-label>
+                  <input
+                    matInput
+                    formControlName="thumbnailImage"
+                    placeholder="Thumbnail image"
+                  />
+                </mat-form-field>
+                <mat-expansion-panel
+                  [expanded]="false"
+                  class="full-width"
+                  style="margin-top: 16px"
+                >
+                  <mat-expansion-panel-header>
+                    <mat-panel-title> <h2>Videos</h2> </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div
+                    fxLayout="column"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="12px"
+                  >
+                    <mat-card
+                      *ngFor="
+                        let videoForm of abstractControlToFormArray(
+                          abstractControlToFormGroup(sectionForm).get('videos')
+                        ).controls;
+                        let videoIndex = index
+                      "
+                      class="full-width"
+                    >
+                      <app-add-video
+                        [isSubmitted]="isSubmitted"
+                        [videoForm]="abstractControlToFormGroup(videoForm)"
+                      ></app-add-video>
+                      <button
+                        mat-mini-fab
+                        type="button"
+                        color="primary"
+                        (click)="deleteVideo(sectionNumber, videoIndex)"
+                      >
+                        <mat-icon class="add-course-btn">delete</mat-icon>
+                      </button>
+                    </mat-card>
+                  </div>
+  
+                  <div
+                    fxLayout="row"
+                    fxLayoutAlign="center center"
+                    fxLayoutGap="8px"
+                  >
+                    <div
+                      fxLayout="row"
+                      fxLayoutAlign="center center"
+                      fxLayoutGap="8px"
+                    >
+                      <h3>Add video:</h3>
+                      <button
+                        mat-mini-fab
+                        type="button"
+                        color="primary"
+                        (click)="addVideo(sectionNumber)"
+                      >
+                        <mat-icon class="add-section-btn">add</mat-icon>
+                      </button>
+                    </div>
+  
+                    <div
+                      fxLayout="row"
+                      fxLayoutAlign="center center"
+                      fxLayoutGap="8px"
+                    >
+                      <h3>Add video at index:</h3>
+                      <mat-form-field
+                        appearance="outline"
+                        floatLabel="always"
+                        style="width: 64px"
+                      >
+                        <mat-label>Index</mat-label>
+                        <input
+                          matInput
+                          [formControl]="sectionIndex"
+                          type="number"
+                          placeholder="0"
+                          value="0"
+                        />
+                      </mat-form-field>
+                      <button
+                        mat-mini-fab
+                        type="button"
+                        color="primary"
+                        (click)="addVideoAtIndex(sectionNumber)"
+                      >
+                        <mat-icon class="add-section-btn">add</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+                <button
+                  mat-mini-fab
+                  type="button"
+                  (click)="deleteSection(sectionNumber)"
+                >
+                  <mat-icon class="add-course-btn">delete</mat-icon>
+                </button>
+              </div>
+            </mat-card>
+          </ng-container>
+        </ng-container>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+            <h3>Add section:</h3>
+            <button mat-mini-fab type="button" (click)="addSection()">
+              <mat-icon class="add-section-btn">add</mat-icon>
+            </button>
+          </div>
+  
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+            <h3>Add section at index:</h3>
+            <mat-form-field
+              appearance="outline"
+              floatLabel="always"
+              style="width: 64px"
+            >
+              <mat-label>Index</mat-label>
+              <input
+                matInput
+                [formControl]="sectionIndex"
+                type="number"
+                placeholder="0"
+                value="0"
+              />
+            </mat-form-field>
+            <button mat-mini-fab type="button" (click)="addSectionAtIndex()">
+              <mat-icon class="add-section-btn">add</mat-icon>
+            </button>
+          </div>
+        </div>
+  
+        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="12px">
+          <button mat-raised-button color="primary" type="submit">
+            {{ 'Add course' }}
+          </button>
+          <button mat-raised-button type="button" [routerLink]="'/admin/home'">
+            {{ 'Back to home' }}
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+  

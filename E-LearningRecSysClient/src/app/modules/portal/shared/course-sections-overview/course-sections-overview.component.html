@@ -11,7 +11,7 @@
       </mat-expansion-panel-header>
       <div
         class="full-width full-height"
-        *ngFor="let video of mapVideosToVideoCards(section.videos)"
+        *ngFor="let video of mapVideosToVideoCards(section)"
       >
         <div class="result-card-wrapper">
           <app-result-card [video]="video"></app-result-card>

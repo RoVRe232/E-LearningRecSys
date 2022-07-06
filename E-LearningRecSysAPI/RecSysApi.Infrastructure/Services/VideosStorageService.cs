@@ -1,13 +1,9 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using RecSysApi.Application.Dtos.Video;
 using RecSysApi.Application.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RecSysApi.Infrastructure.Services
@@ -16,7 +12,7 @@ namespace RecSysApi.Infrastructure.Services
     {
         public async Task<string> StoreVideoToPermanentStorage(VideoSourceUploadDTO source)
         {
-            var clientString = "mongodb://mongodb:27017";
+            var clientString = "mongodb://localhost:27017";
             var envDockerDatabase = Environment.GetEnvironmentVariable("DOCKER_DATABASE");
 
             if (Environment.GetEnvironmentVariable("DOCKER_DATABASE") != null && Environment.GetEnvironmentVariable("DOCKER_DATABASE") == "true")
@@ -59,7 +55,7 @@ namespace RecSysApi.Infrastructure.Services
                 clientString = "mongodb://mongodb:27017";
             var client = new MongoClient(clientString);
             var database = client.GetDatabase("RecSysDb");
-            
+
             var bucket = new GridFSBucket(database, new GridFSBucketOptions
             {
                 BucketName = "videos",

@@ -112,7 +112,15 @@ export class SearchService {
         )
         .subscribe((searchResults: SearchResults) => {
           console.log(`searchResults ${searchResults}`);
-          this.searchResults.next(searchResults);
+          if (
+            searchResults &&
+            searchResults.courses &&
+            searchResults.courses?.length > 0
+          )
+            this.searchResults.next(searchResults);
+          else {
+            this.searchResults.next(this.testData);
+          }
         });
     } else {
       this.searchResults.next({ courses: [], videos: [] } as SearchResults);

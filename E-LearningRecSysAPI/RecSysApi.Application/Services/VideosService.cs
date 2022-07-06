@@ -63,7 +63,9 @@ namespace RecSysApi.Application.Services
                     .ToListAsync();
                 return queryResults;
 
-            } else {
+            }
+            else
+            {
                 var queryResults = await _videoRepository
                     .GetQuery(e => true)
                     .Include(e => e.Section.Course)
@@ -82,7 +84,9 @@ namespace RecSysApi.Application.Services
 
         public List<VideoDTO> MapVideosToVideoDTOs(List<Video> videos)
         {
-            return _mapper.Map<List<VideoDTO>>(videos);
+            var mappedResults = _mapper.Map<List<VideoDTO>>(videos);
+            mappedResults.ForEach(e => e.AuthorName = e.Section.Course.Account.Name);
+            return mappedResults;
         }
     }
 }
